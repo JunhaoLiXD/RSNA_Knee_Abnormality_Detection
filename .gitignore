@@ -1,0 +1,93 @@
+# Private agent instructions
+AGENTS.md
+.agents/
+.codex/
+
+# Competition data and derived run artifacts
+/data/
+/results/
+/models/
+/working/
+/output/
+/outputs/
+/checkpoints/
+
+# Medical images, caches, and serialized datasets
+*.dcm
+*.pkl
+*.pickle
+*.npy
+*.npz
+*.parquet
+*.h5
+*.hdf5
+
+# Model weights and exported models
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+
+# Kaggle credentials and local Kaggle state
+.kaggle/
+kaggle.json
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python caches and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# Experiment tracking and logs
+wandb/
+mlruns/
+lightning_logs/
+runs/
+logs/
+*.log
+
+# Temporary files and downloaded archives
+*.tmp
+*.temp
+*.bak
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+desktop.ini
