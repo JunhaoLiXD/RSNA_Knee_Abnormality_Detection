@@ -2,6 +2,7 @@
 AGENTS.md
 .agents/
 .codex/
+.claude/
 
 # Competition data and derived run artifacts
 /data/
