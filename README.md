@@ -15,7 +15,7 @@ generation.
 |---|---|---|---|
 | V01 | `v01-rsna-knee-2p5d-baseline.ipynb` | Initial rule-weak 3-plane 2.5D EfficientNet-B0 baseline | Kaggle score 0.613 |
 | V02 | `v02-rsna-knee-2p5d-baseline.ipynb` | Fold-safe calibrated soft labels, gold weight 8, no class `pos_weight`, resumable runtime guard | Trained fold 0; OOF predictions collapsed to the base rate (mean per-label std ~0.05) |
-| V03 | `v03-rsna-knee-2p5d-baseline.ipynb` | Hierarchical pooled **state-specific** soft-label priors, ordering + margin constraints, 15% zero-support confidence floor, best reference-AUC checkpoint, prediction-spread collapse diagnostic | Ready to run |
+| V03 | `v03-rsna-knee-2p5d-baseline.ipynb` | Hierarchical pooled **state-specific** soft-label priors, ordering + margin constraints, 15% zero-support confidence floor, best reference-AUC checkpoint, prediction-spread collapse diagnostic | **Kaggle public score 0.664** (V01 baseline 0.613); full five-fold done, 58-gold OOF AUC 0.632 / log loss 0.605 / pred-std 0.091, recovered from the V02 collapse |
 
 Starting with V02, every new model Notebook is an `.ipynb`-only artifact whose
 filename starts with its two-digit version, such as `v03-...ipynb`.
@@ -127,7 +127,7 @@ The default image configuration is:
 | Batch size | 1 |
 | Gradient accumulation | 4 |
 | Epochs | 4 |
-| Default folds | Fold 0 only |
+| Default folds | All five (0-4) |
 
 ## Series selection
 
@@ -173,12 +173,17 @@ directory so headers are not reread every epoch.
   and prints a per-fold prediction-spread diagnostic. A near-zero spread flags the V02
   base-rate collapse; it is a collapse alarm only, never an optimization target.
 
-The default notebook trains only fold 0 to verify the pipeline. For complete
-five-fold training, change:
+The notebook now trains all five folds by default and ensembles their best
+checkpoints at inference. To verify the pipeline quickly on a single fold, change:
 
 ```python
-cfg.folds_to_train = (0, 1, 2, 3, 4)
+cfg.folds_to_train = (0,)
 ```
+
+Five folds will not finish in one Kaggle session (`runtime_limit_hours = 9`). When the
+runtime guard triggers, the notebook saves a resumable `*_last.pt` per fold and stops
+before inference; the submission and OOF are written only after all five folds complete.
+Attach the notebook output as input and re-run to auto-resume.
 
 ## Project structure
 
@@ -229,11 +234,12 @@ not retained in `results/`.
 3. Select a GPU accelerator.
 4. Provide pretrained EfficientNet-B0 weights through Internet access or a Kaggle
    Dataset and set `cfg.local_backbone_weights`.
-5. Keep `cfg.folds_to_train = (0,)` for the first full run.
+5. Keep `cfg.folds_to_train = (0, 1, 2, 3, 4)` for the full run, or set `(0,)` to
+   validate the pipeline on one fold first.
 6. Run all cells and inspect DICOM preflight, series coverage, loss curves, metrics,
    and the generated submission.
 7. If runtime protection triggers, save the Notebook output, attach it to a new run,
-   and rerun; V03 automatically finds `v03_fold_0_last.pt` and resumes.
+   and rerun; V03 automatically finds the latest `v03_fold_<fold>_last.pt` and resumes.
 
 If pretrained weights cannot be loaded, the notebook falls back to random
 initialization and prints a warning. Random initialization is supported for
@@ -277,9 +283,11 @@ The final submission is also written to `/kaggle/working/submission.csv`.
   labels satisfy the state ordering, the V02 reversals/degeneracies are repaired, and the
   zero-support confidence drops from 0.30 to 0.09.
 - Notebook Markdown, comments, logs, and error messages are written in English.
-- Full GPU training has **not** yet been run for V03 (no local Python/GPU/data); the
-  notebook must be executed on Kaggle to confirm the assertion passes and the prediction
-  spread recovers off the V02 collapse.
+- Full five-fold GPU training completed on Kaggle across multiple resumable sessions.
+  The calibration assertion passed on all five folds and the prediction spread recovered
+  off the V02 collapse (mean per-label std 0.091). The 58-study gold OOF gives mean
+  ROC-AUC 0.632 and log loss 0.605, and the 5-fold `best.pt` mean ensemble scored **0.664**
+  on the Kaggle public leaderboard (V01 baseline 0.613).
 
 ## Main limitations
 
@@ -289,7 +297,6 @@ The final submission is also written to `/kaggle/working/submission.csv`.
 - Mean pooling may underweight small focal abnormalities.
 - Gold-subset metrics are unstable because each fold contains very few gold studies.
 
-The next experiments, in order: run V03 fold 0 on Kaggle and confirm the prediction
-spread recovers; run all five folds for a trustworthy 58-study gold OOF and submit for a
-real Kaggle score; then improve report-derived labels before increasing model size or
-input complexity.
+The next experiments, in order: strengthen the weakest labels — PF OA scores below chance
+(gold AUC 0.415) and a few OA/meniscus labels stay low-variance — by improving the
+report-derived labels; only then increase model size or input complexity.
