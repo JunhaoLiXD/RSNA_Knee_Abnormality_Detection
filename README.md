@@ -16,6 +16,7 @@ generation.
 | V01 | `v01-rsna-knee-2p5d-baseline.ipynb` | Initial rule-weak 3-plane 2.5D EfficientNet-B0 baseline | Kaggle score 0.613 |
 | V02 | `v02-rsna-knee-2p5d-baseline.ipynb` | Fold-safe calibrated soft labels, gold weight 8, no class `pos_weight`, resumable runtime guard | Trained fold 0; OOF predictions collapsed to the base rate (mean per-label std ~0.05) |
 | V03 | `v03-rsna-knee-2p5d-baseline.ipynb` | Hierarchical pooled **state-specific** soft-label priors, ordering + margin constraints, 15% zero-support confidence floor, best reference-AUC checkpoint, prediction-spread collapse diagnostic | **Kaggle public score 0.664** (V01 baseline 0.613); full five-fold done, 58-gold OOF AUC 0.632 / log loss 0.605 / pred-std 0.091, recovered from the V02 collapse |
+| V04 | `v04-rsna-knee-2p5d-baseline.ipynb` | **DINOv2-small (ViT-S/14)** backbone at 224px, **laterality normalization** (right knees mirrored), and a **target-specific attention-pooling head** replacing V03's mean pool; keeps the V03 weak-label calibration, folds, resume, OOF, and inference | Implemented, not yet trained on Kaggle. Follows the leading public DINOv2 solutions (pilkwang baseline 0.809) |
 
 Starting with V02, every new model Notebook is an `.ipynb`-only artifact whose
 filename starts with its two-digit version, such as `v03-...ipynb`.
