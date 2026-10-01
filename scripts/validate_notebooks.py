@@ -37,7 +37,8 @@ def strip_magics(source: str) -> str:
     lines = []
     for line in source.splitlines():
         stripped = line.lstrip()
-        if stripped.startswith(MAGIC_PREFIXES):
+        # A continuation line such as "!= x" is Python, not a shell escape.
+        if stripped.startswith(MAGIC_PREFIXES) and not stripped.startswith("!="):
             indent = line[: len(line) - len(stripped)]
             lines.append(f"{indent}pass")
         else:

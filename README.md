@@ -19,6 +19,7 @@ best scores, and next steps live in [docs/STATUS.md](docs/STATUS.md).
 ```text
 .
 |-- README.md
+|-- IMPROVEMENT_PLAN.md      # prioritized directions after the v05 anchor, with reasons
 |-- environment.yml          # local conda env (analysis only; training runs on Kaggle)
 |-- docs/
 |   |-- STATUS.md            # current state and next steps (read first)

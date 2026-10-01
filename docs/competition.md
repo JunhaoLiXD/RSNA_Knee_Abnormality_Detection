@@ -1,6 +1,7 @@
 # Competition Facts
 
-Verified against the Kaggle competition pages and the local CSV metadata on 2026-10-01.
+Verified against the Kaggle competition pages and the local CSV metadata on 2026-10-01
+(rules, prizes and test-set facts re-read on 2026-10-01 during the baseline survey).
 Update this file when a fact is re-verified or changes.
 
 ## Task
@@ -38,8 +39,30 @@ StudyInstanceUID,ACL,MCL,Medial Meniscus,Lateral Meniscus,Medial OA,Lateral OA,P
   attached as Kaggle Datasets or Models.
 - Freely and publicly available external data is allowed, including pretrained models.
 - Up to 5 submissions per day.
-- The local `data/test.csv` has only 3 placeholder studies; the hidden test set replaces it
-  on rerun.
+- The local `data/test.csv` has only 3 placeholder studies; the hidden test set (about
+  1,300 studies per the data page) replaces it on rerun. The `Report` column is absent at
+  test time.
+- Prevalence is not guaranteed to match between train, public and private test sets.
+
+## Efficiency Prize (second track)
+
+- USD 18,000 of the pool (7,000 / 6,000 / 5,000). Main board: USD 59,000 for places 1-10.
+- Score to minimise on the private set:
+  `AUC / (Benchmark - maxAUC) + RuntimeSeconds / 32400`, where Benchmark is the
+  `sample_submission.csv` score and maxAUC the best private AUC.
+- Only the submissions selected for the main board are considered.
+- Public efficiency ranks: notebook `ryanholbrook/rsna-knee-abnormalities-efficiency-lb`.
+
+## Host rulings (forum)
+
+- Commercial LLM APIs may be used to read reports and derive labels; LLM-derived labels or
+  embeddings may be used for training (host, topic 733965).
+- Gold labels were assigned from the images, independently of the reports; images are
+  authoritative when they disagree (host, topic 733826).
+- External datasets: a non-commercial licence alone does not exclude a dataset;
+  click-through registration is generally acceptable; institution approvals, IRB or long
+  credentialing may not be (host, 733965). No explicit allow-list yet (topic 743416).
+- Winners must publish code and weights openly; see the Prizes page.
 
 ## Data
 
@@ -51,13 +74,15 @@ StudyInstanceUID,ACL,MCL,Medial Meniscus,Lateral Meniscus,Medial OA,Lateral OA,P
 | Studies with complete gold labels | 58 |
 | Studies with report only (no structured labels) | 4,349 |
 
-- Image layout on Kaggle (confirmed by the legacy pipeline):
-  `{train|test}/StudyInstanceUID/SeriesInstanceUID/*.dcm` under
+- Image layout on Kaggle (verified 2026-10-01 in the legacy notebooks and the public
+  notebooks): `{train_series|test_series}/StudyInstanceUID/SeriesInstanceUID/*.dcm` under
   `/kaggle/input/rsna-knee-abnormality-detection/` (newer Kaggle mounts may use
   `/kaggle/input/competitions/rsna-knee-abnormality-detection/`; probe both). Keep train
   and test path handling symmetric.
 - `train_series.csv` / `test_series.csv` columns: `StudyInstanceUID`,
   `SeriesInstanceUID`, `Fluid_Sensitive`, `Fat_Suppression`, `Anatomical_Plane`.
+  `Fluid_Sensitive` and `Fat_Suppression` are identical on every row of both CSVs
+  (verified 2026-10-01), so they encode one property, not two.
 - Every training study has Sagittal, Coronal, and Axial series; 3-14 series per study
   (median 5); 11-320 slices per series (median 30).
 - Reports are multilingual source data and must not be modified.
