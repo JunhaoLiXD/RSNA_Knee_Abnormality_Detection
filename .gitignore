@@ -13,6 +13,13 @@ AGENTS.md
 /outputs/
 /checkpoints/
 
+# Third-party code pulled from Kaggle (analyses live in docs/research/)
+/external/
+
+# Legacy run artifacts (archived notebooks and README stay tracked)
+/archive/legacy/models/
+/archive/legacy/results/
+
 # Medical images, caches, and serialized datasets
 *.dcm
 *.pkl

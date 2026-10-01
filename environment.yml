@@ -1,0 +1,26 @@
+# Local analysis environment (no GPU training; training runs on Kaggle).
+# Create with:  conda env create -f environment.yml
+name: kaggle
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - kaggle
+      - pandas
+      - numpy
+      - scikit-learn
+      - pydicom
+      - nbformat
+      - matplotlib
+      - tqdm
+      - requests
+      # Required by the Claude Code Kaggle plugins (kaggle@shepsci, nvidia-kaggle).
+      - kagglehub
+      - kagglesdk
+      - httpx
+      - pydantic
+      - python-dotenv
+      - rich
+      - claude-agent-sdk
