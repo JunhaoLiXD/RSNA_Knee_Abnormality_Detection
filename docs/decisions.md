@@ -3,6 +3,35 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-005 - 2026-10-01 - Own model leg: design revision 2 approved
+
+**Decision.** Build our own model leg per `docs/research/v06-own-model-design.md`
+revision 2: v06 DICOM audit (CPU), v07 320 px cache (CPU), v08 ConvNeXt-tiny (fold-0
+224/320 ablation, then 5 folds), v09 explicit ensemble of v05 and v08 with two
+pre-registered blend weights (0.45, 0.30) and a fixed decision table.
+
+**Reason.** Revision 1 was reviewed by Codex (D-004); its five findings were verified and
+addressed (design section 9). The user approved revision 2 on 2026-10-01.
+
+**Consequences.** Labels are fixed a priori (mean of four public tables, UNK cells
+down-weighted); the 58 gold studies are never trained on and serve only as a bug detector;
+folds are scanner-grouped when the audit allows. Data-preparation notebooks get their own
+version numbers.
+
+## D-004 - 2026-10-01 - Codex review gate for improvement strategies
+
+**Decision.** Every new improvement strategy or design note is reviewed by Codex (OpenAI
+Codex CLI via the `codex@openai-codex` Claude Code plugin) for direction-level soundness
+before any Kaggle GPU time is spent on it.
+
+**Reason.** GPU time is the binding constraint (30 h per week until 2026-10-22); an
+independent second review catches wrong directions before they cost a week of quota.
+
+**Consequences.** Design docs stay uncommitted until reviewed so the working-tree review
+sees them. Codex findings are claims to verify, not instructions; each accepted or
+rejected finding is noted in the reviewed document. Procedure in `AGENTS.md` (User
+preferences).
+
 ## D-003 - 2026-10-01 - v05 is the unchanged Jiwei Liu public stack
 
 **Decision.** Version v05 (`notebooks/v05-public-stack-anchor.ipynb`) is an unchanged,

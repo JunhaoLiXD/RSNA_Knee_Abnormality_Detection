@@ -8,32 +8,32 @@ Last updated: 2026-10-01
 
 ## Current phase
 
-**Phase 1 - Anchor reproduction.** Decision D-003: v05 is an unchanged reproduction of
-`jiweiliu/rsna-knee-fast-2xt4-inference` v11 (public LB 0.943, all inputs public).
-`notebooks/v05-public-stack-anchor.ipynb` is built and passes static validation; it has
-not run on Kaggle yet. Improvement directions and reasons: `IMPROVEMENT_PLAN.md`.
+**Phase 2 - Own model leg (design).** v05 (unchanged jiweiliu v11 public stack, D-003)
+scored **0.943** public on 2026-10-01, reproducing the source. The design for our own
+model leg is in `docs/research/v06-own-model-design.md` (revision 2 after Codex review:
+v06 DICOM audit, v07 cache, v08 model, v09 blend) and awaits user approval (D-004)
+before any GPU time.
 Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 ## Best results
 
 | Scope | Version | Public LB | Notes |
 |---|---|---:|---|
-| New line | - | - | Not started |
+| New line | v05 | 0.943 | Public stack anchor, inference only |
 | Legacy (archived) | v03 | 0.664 | EfficientNet-B0 2.5D, 5 folds |
 | Reference: best public notebook | - | 0.946 | pjmathematician d4-blend; uses private datasets, not reproducible |
-| Reference: best reproducible public | - | 0.943 | Speedy Raptors lineage (jiweiliu v11) |
 | Reference: leaderboard (2026-10-01) | - | 0.961 | #1; 0.957 at #10; 0.949 at #100; 1,001 teams >= 0.943 |
 
 ## Next steps
 
-1. With user approval: push v05 to Kaggle (private, GPU T4 x2, the 18 public inputs from
-   the source `kernel-metadata.json`), run it, and spend one submission to confirm 0.943
-   and record the hidden-test runtime in `docs/experiments.md`.
-2. Write the design note for v06 (our own 2.5D model, `IMPROVEMENT_PLAN.md` Priority 1)
-   and discuss it before building; then build the cached slice dataset and run a single
-   fold.
-3. Entry and team-merger deadline is 2026-10-15: the account must have accepted the
-   competition rules by then (a first submission confirms it).
+1. User approval of design revision 2 (Codex findings and dispositions in its section 9);
+   then commit.
+2. Read the v05 hidden-test runtime from the Kaggle submissions page and record it in
+   `docs/experiments.md`.
+3. After approval: build `notebooks/v06-dicom-audit.ipynb` (CPU) and the public-corpus
+   trainer smoke test.
+4. Entry and team-merger deadline is 2026-10-15 (already satisfied by the v05
+   submission).
 
 ## Open questions
 
