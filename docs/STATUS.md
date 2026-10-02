@@ -10,8 +10,8 @@ Last updated: 2026-10-02
 
 **Phase 2 - Own model leg (v07 cache complete; v08 trainer built, Gate S next).** v05 (unchanged jiweiliu v11 public stack, D-003)
 scored **0.943** public on 2026-10-01, reproducing the source. The design for our own
-model leg is in `docs/research/v06-own-model-design.md` (revision 2 after Codex review:
-v06 DICOM audit, v07 cache, v08 model, v09 blend), approved as D-005.
+model leg is `docs/research/v06-own-model-design.md` revision 3.3 (D-006; Gate S on our
+own cache, D-007): v06 audit and v07 cache are done (4,407 studies, 0 errors).
 Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 ## Best results
