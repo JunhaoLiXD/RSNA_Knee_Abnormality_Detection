@@ -6,6 +6,7 @@ filename.
 
 | Date | Version | Notebook | Base / change | Folds | CV (metric, scope) | Public LB | Kaggle run link | Notes |
 |---|---|---|---|---|---|---:|---|---|
+| 2026-10-01 | v07 | `notebooks/v07-cache-320.ipynb` | Dry run of the 320 px JPEG cache (first 50 studies) | - | - | - | https://www.kaggle.com/code/lingxd/v07-cache-320 (version 1) | 0 errors; projected full cache 14.4 GB, 1.1 h CPU; 22.7 kB per slice, median 30 slices per slot; side from tag 26, geometry 23, unresolved 1; tag vs geometry agreement 26/26; previews checked: orientation consistent across L/R knees |
 | 2026-10-01 | v06 | `notebooks/v06-dicom-audit.ipynb` | CPU audit of all training DICOMs, slot selection, targets, folds | 5 (scanner-grouped) | - | - | https://www.kaggle.com/code/lingxd/v06-dicom-audit (version 1) | All gates pass: 4,407/4,407 studies decode, 141,024 selected slices 0 errors, 24,371/24,371 series geometry-sorted; 45 fingerprint groups, coverage 94.7%; 56 min CPU |
 | 2026-10-01 | v05 | `notebooks/v05-public-stack-anchor.ipynb` | Unchanged jiweiliu/rsna-knee-fast-2xt4-inference v11 (inference only) | - | - | 0.943 | https://www.kaggle.com/code/lingxd/v05-public-stack-anchor (version 1) | Reproduces the source score. Commit run 233 s on 3 placeholder studies, no failed arms; hidden-test runtime not recorded yet |
 | 2026-08-09 | v03 (legacy) | `archive/legacy/notebooks/v03-...` | EffNet-B0 2.5D + calibrated report weak labels | 5 | gold macro AUC 0.632 (58 studies) | 0.664 | - | Best result of the abandoned in-house line |

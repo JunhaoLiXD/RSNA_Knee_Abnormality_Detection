@@ -13,6 +13,7 @@ dependencies:
       - scikit-learn
       - pydicom
       - nbformat
+      - opencv-python-headless   # local tests of cache notebooks (v07+)
       - matplotlib
       - tqdm
       - requests

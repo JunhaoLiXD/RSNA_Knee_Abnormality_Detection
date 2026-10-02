@@ -330,6 +330,10 @@ submissions page and fixes the inference budget for v09.
 5. **Runtime:** anchor plus our leg must stay under 9 hours on the hidden set.
 6. **Fingerprint coverage** may be too low for grouped folds; the fallback rule in 4.5
    applies.
+7. **Adjacency for long series** (v07 dry run): 29% of stored series have more than 32
+   slices; most only slightly (up to about 41, stride about 1.3), but 3D acquisitions with
+   up to 320 thin slices are stored at a stride of about 10 slices, so their triplets are
+   not raw-adjacent (the physical gap stays small because such slices are thin).
 
 ## 8. Changes
 
