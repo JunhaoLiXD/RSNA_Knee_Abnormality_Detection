@@ -86,5 +86,17 @@ StudyInstanceUID,ACL,MCL,Medial Meniscus,Lateral Meniscus,Medial OA,Lateral OA,P
 - Every training study has Sagittal, Coronal, and Axial series; 3-14 series per study
   (median 5); 11-320 slices per series (median 30).
 - Reports are multilingual source data and must not be modified.
+- Training DICOM audit (v06, 2026-10-01, all 819,078 files): every training series is
+  uncompressed Explicit VR Little Endian, single-frame, and has full
+  `ImagePositionPatient`/`ImageOrientationPatient` geometry; no header or decode errors.
+  The data page's mention of JPEG Lossless / JPEG 2000 therefore applies only to the test
+  set (or not at all); test-time decoding must still handle them.
+- Pixel spacing median 0.32 mm (1-99%: 0.14-0.70); field of view median 160 mm, 5.7% of
+  chosen series below 140 mm; slice gap median 3.5 mm; 28% of series are oblique by more
+  than 10 degrees, 3% by more than 20.
+- `Laterality` tag is present on 49% of series (values R/L/RIGHT/LEFT); `StationName` and
+  `InstitutionName` are stripped. `Manufacturer` + `ManufacturerModelName` +
+  `MagneticFieldStrength` give a scanner fingerprint for 94.7% of non-gold studies (45
+  groups, largest 12%). Label prevalence differs strongly between scanner groups.
 - Only 58 studies have gold labels, so local validation is noisy. Treat the public
   leaderboard and any gold-only CV as complementary, noisy signals.

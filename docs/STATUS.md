@@ -8,7 +8,7 @@ Last updated: 2026-10-01
 
 ## Current phase
 
-**Phase 2 - Own model leg (design).** v05 (unchanged jiweiliu v11 public stack, D-003)
+**Phase 2 - Own model leg (v06 audit done, all gates pass).** v05 (unchanged jiweiliu v11 public stack, D-003)
 scored **0.943** public on 2026-10-01, reproducing the source. The design for our own
 model leg is in `docs/research/v06-own-model-design.md` (revision 2 after Codex review:
 v06 DICOM audit, v07 cache, v08 model, v09 blend) and awaits user approval (D-004)
@@ -26,16 +26,16 @@ Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 ## Next steps
 
-1. User approval of design revision 2 (Codex findings and dispositions in its section 9);
-   then commit.
-2. Read the v05 hidden-test runtime from the Kaggle submissions page and record it in
-   `docs/experiments.md`.
-3. After approval: build `notebooks/v06-dicom-audit.ipynb` (CPU) and the public-corpus
-   trainer smoke test.
-4. Entry and team-merger deadline is 2026-10-15 (already satisfied by the v05
-   submission).
+1. Decide the two v07 cache questions raised by the audit (slice adjacency for 2.5D
+   triplets; laterality inference where the tag is missing), then build
+   `notebooks/v07-cache-320.ipynb` from the v06 slot selection.
+2. Public-corpus trainer smoke test (about 0.5 GPU h).
+3. Read the v05 hidden-test runtime from the Kaggle submissions page and record it.
 
 ## Open questions
+
+- Test-set DICOM transfer syntaxes: training is 100% uncompressed; the Kaggle image's
+  JPEG/JPEG 2000 decoders (Pillow, pylibjpeg) were not checked by v06.
 
 - Which public notebook version produced each 0.943 score is not shown by Kaggle; the
   reproduction run will tell.
