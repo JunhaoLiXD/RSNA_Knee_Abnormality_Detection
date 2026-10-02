@@ -11,8 +11,7 @@ Last updated: 2026-10-01
 **Phase 2 - Own model leg (v06 audit done, all gates pass).** v05 (unchanged jiweiliu v11 public stack, D-003)
 scored **0.943** public on 2026-10-01, reproducing the source. The design for our own
 model leg is in `docs/research/v06-own-model-design.md` (revision 2 after Codex review:
-v06 DICOM audit, v07 cache, v08 model, v09 blend) and awaits user approval (D-004)
-before any GPU time.
+v06 DICOM audit, v07 cache, v08 model, v09 blend), approved as D-005.
 Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 ## Best results
@@ -36,10 +35,7 @@ Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 - Test-set DICOM transfer syntaxes: training is 100% uncompressed; the Kaggle image's
   JPEG/JPEG 2000 decoders (Pillow, pylibjpeg) were not checked by v06.
-
-- Which public notebook version produced each 0.943 score is not shown by Kaggle; the
-  reproduction run will tell.
-- Full hidden-test runtime of the public stack is unknown (needs one submission).
+- v05 hidden-test runtime: shown only on the Kaggle submissions page; not recorded yet.
 - Whether bf16 autocast in the stack's A5 stage costs AUC on T4.
 - External knee MRI datasets: postponed by the user.
 
