@@ -25,19 +25,17 @@ Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 ## Next steps
 
-1. User to provide the billing inputs required before Gate S (design 5.1): v05
-   hidden-test runtime (Kaggle submissions page) and this week's GPU quota used.
-2. With user approval: push `notebooks/v08-convnext-tiny.ipynb` with `MODE = 'smoke'`
-   (GPU T4 x2, internet on; inputs: v06 and v07 outputs) for Gate S. Built 2026-10-02;
-   trainer tested locally on CPU (synthetic data, smoke and fold modes, metric and
-   alignment unit checks); not run on a GPU yet.
-3. After Gate S: recompute the budget (5.1), then fold 0 with both arms (Gate A0, Gate A).
+1. v08 `auto` run (D-008) pushed 2026-10-02: fold 0 with K_train 4 and 8, then folds 1-2
+   with the chosen K_train if Gate B passes. When it finishes: download receipts and the
+   decision file (use `--page-size 200` and a file pattern), record results in
+   `docs/experiments.md`, check memory probe, throughput, Gate A0/A/B.
+2. Then: folds 3-4 with the chosen K_train; v09 blend notebook (anchor plus our leg;
+   under 4 h of inference left after the anchor's 5+ h).
 
 ## Open questions
 
 - Test-set DICOM transfer syntaxes: training is 100% uncompressed; the Kaggle image's
   JPEG/JPEG 2000 decoders (Pillow, pylibjpeg) were not checked by v06.
-- v05 hidden-test runtime: shown only on the Kaggle submissions page; not recorded yet.
 - Whether bf16 autocast in the stack's A5 stage costs AUC on T4.
 - External knee MRI datasets: postponed by the user.
 

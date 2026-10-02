@@ -3,6 +3,24 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-008 - 2026-10-02 - Skip the separate Gate S run; v08 `auto` mode
+
+**Decision.** Do not run Gate S as a separate session. v08 runs in `MODE = 'auto'`:
+fold 0 with both arms (K_train 4 and 8), the Gate A0 and Gate B decisions computed in the
+notebook, then folds 1 and 2 in parallel with the chosen K_train if Gate B passes and time
+remains. Every arm starts with a memory probe that enables activation checkpointing and
+then halves the micro-batch on out-of-memory; all processes stop cleanly before an 11 h
+global deadline (Kaggle's session limit is 12 h).
+
+**Reason.** The user reported that this week's GPU quota cannot be used up, which removes
+the budget risk Gate S guarded; the remaining risks (out-of-memory, overrun) are handled
+inside the run. Running overnight avoids idle GPU time. User request 2026-10-02.
+
+**Consequences.** The 18 GPU-hour cap of design 5.1 is not binding this week. Gate S
+measurements (memory, throughput, data share) come from the fold-0 receipts. v05's
+hidden-test scoring took more than 5 h (user, 2026-10-02), so v09 has under 4 h of the 9 h
+limit left for our leg's inference.
+
 ## D-007 - 2026-10-02 - Gate S runs on our own v07 cache
 
 **Decision.** The Gate S smoke test runs on the v07 cache instead of the public Raptor
