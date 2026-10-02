@@ -3,6 +3,24 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-009 - 2026-10-02 - K_train 4, K_infer 16; remaining folds through a GPU queue
+
+**Decision.** Use `K_train = 4` and `K_infer = 16` for all folds of v08. Train folds 1-4 in
+`MODE = 'folds'`, a work queue that starts the next fold as soon as a GPU is free, with the
+final evaluation at `K_infer = 16` only.
+
+**Reason.** Fold 0 (v08 version 1): the K_train 8 arm hit its 6 h limit, so the A0 outcome
+table selects 4 (8 was also not better at K_infer 16: 0.869 vs 0.871). Gate A's rule had a
+gap: it required ACL, MCL and both menisci to be within 0.005 of their best value, but
+MCL peaked at K_infer 8 (0.796), so no setting qualified and the rule defined no fallback.
+K_infer 16 is within 0.001 of the best macro AUC (K24 0.872), its MCL deficit of 0.008 is
+inside the noise of about 90 positives, and it costs two thirds of K24 at inference, which
+matters because the anchor leaves under 4 h. In version 1 the slower arm blocked GPU 0 for
+about 2 h; the queue removes that idle time. User approved 2026-10-02.
+
+**Consequences.** Future gate rules must state a fallback when no option qualifies. Our
+leg's checkpoints are `v08_fold_<k>_k4_best.pt`, k = 0..4.
+
 ## D-008 - 2026-10-02 - Skip the separate Gate S run; v08 `auto` mode
 
 **Decision.** Do not run Gate S as a separate session. v08 runs in `MODE = 'auto'`:
