@@ -3,6 +3,24 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-006 - 2026-10-01 - Own model leg: design revision 3.3 approved
+
+**Decision.** Replace revision 2's sparse cache with revision 3.3 of
+`docs/research/v06-own-model-design.md`: per-slot JPEG cache of up to 32 slices over the
+whole series at 320 px; adjacent-slice triplets; covering training sampler with `K_train`
+4 or 8 chosen by a fold-0 ablation (Gate A0); smoke test on the final input shape
+(Gate S); inference coverage and token-count check (Gate A); an 18 GPU-hour cap up to the
+first v09 submission with per-session hard stops and a degradation order.
+
+**Reason.** The v06 audit (median 30 slices, 3.5 mm gap) and the decoded code of the
+public 0.945 leg showed that near-full coverage and true slice adjacency are compatible.
+Four further Codex reviews were verified and resolved (design section 9); one
+disagreement stands (no sparse-vs-triplet training ablation). User approved 2026-10-01.
+
+**Consequences.** v07 builds the cache from the v06 series choice and recomputes slice
+order with the same function; the v06 `slice_files` column is unused. The user records
+the v05 hidden-test runtime and the week's GPU quota before Gate S.
+
 ## D-005 - 2026-10-01 - Own model leg: design revision 2 approved
 
 **Decision.** Build our own model leg per `docs/research/v06-own-model-design.md`
