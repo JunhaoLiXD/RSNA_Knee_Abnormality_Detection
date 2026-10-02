@@ -3,6 +3,19 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-007 - 2026-10-02 - Gate S runs on our own v07 cache
+
+**Decision.** The Gate S smoke test runs on the v07 cache instead of the public Raptor
+corpus, as `MODE = 'smoke'` of the v08 training notebook.
+
+**Reason.** The v07 cache finished (4,407 studies, 0 errors) before the smoke test was
+built, so the original reason for the public corpus (unblocking work while the cache was
+pending) no longer applies. Running on our own cache measures the real input path,
+including JPEG decoding, and avoids a separate corpus reader. User approved 2026-10-02.
+
+**Consequences.** Gate S criteria, budget and later gates are unchanged; the extra
+JPEG-cost measurement planned for the first epoch of fold 0 is covered by Gate S.
+
 ## D-006 - 2026-10-01 - Own model leg: design revision 3.3 approved
 
 **Decision.** Replace revision 2's sparse cache with revision 3.3 of

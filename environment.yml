@@ -14,6 +14,8 @@ dependencies:
       - pydicom
       - nbformat
       - opencv-python-headless   # local tests of cache notebooks (v07+)
+      - torch   # CPU build for local tests of training code: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - timm
       - matplotlib
       - tqdm
       - requests

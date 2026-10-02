@@ -4,11 +4,11 @@
 > ending a session that changed project state. Keep it short; history belongs in
 > `experiments.md` and `decisions.md`.
 
-Last updated: 2026-10-01
+Last updated: 2026-10-02
 
 ## Current phase
 
-**Phase 2 - Own model leg (design rev. 3.3 approved as D-006; v07 cache built).** v05 (unchanged jiweiliu v11 public stack, D-003)
+**Phase 2 - Own model leg (v07 cache complete; v08 trainer built, Gate S next).** v05 (unchanged jiweiliu v11 public stack, D-003)
 scored **0.943** public on 2026-10-01, reproducing the source. The design for our own
 model leg is in `docs/research/v06-own-model-design.md` (revision 2 after Codex review:
 v06 DICOM audit, v07 cache, v08 model, v09 blend), approved as D-005.
@@ -25,14 +25,13 @@ Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 ## Next steps
 
-1. With user approval: run v07 in full (`DRY_RUN = False`; dry run passed 2026-10-01: projected 14.4 GB, 1.1 h CPU, orientation verified on previews).
-   (50 studies) to measure cache size, time, side-inference agreement and look at the
-   preview montages; then a full run with `DRY_RUN = False`. Built and validated
-   2026-10-01; tested locally on the synthetic 12-study tree (orientation rules unit-tested
-   for all planes and sides); not run on real data yet.
-2. User to read from Kaggle before Gate S: v05 hidden-test runtime (submissions page) and
-   this week's GPU quota used.
-3. Gate S smoke-test notebook (design section 4.5).
+1. User to provide the billing inputs required before Gate S (design 5.1): v05
+   hidden-test runtime (Kaggle submissions page) and this week's GPU quota used.
+2. With user approval: push `notebooks/v08-convnext-tiny.ipynb` with `MODE = 'smoke'`
+   (GPU T4 x2, internet on; inputs: v06 and v07 outputs) for Gate S. Built 2026-10-02;
+   trainer tested locally on CPU (synthetic data, smoke and fold modes, metric and
+   alignment unit checks); not run on a GPU yet.
+3. After Gate S: recompute the budget (5.1), then fold 0 with both arms (Gate A0, Gate A).
 
 ## Open questions
 

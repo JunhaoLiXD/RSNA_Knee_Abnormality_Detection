@@ -174,7 +174,8 @@ Pass thresholds for building the cache (pre-registered):
 bootstrap CI, but used only as a bug detector (macro AUC < 0.80 means investigate), never
 to choose between configurations.
 
-**Gate S - smoke test (before fold 0).** On the public Raptor corpus (resized to 320 px)
+**Gate S - smoke test (before fold 0).** On our own v07 cache (D-007; originally the
+public Raptor corpus)
 with the **final** model, input shape (5 slots x `K_train` centres x 320 px), micro-batch
 and accumulation, for both `K_train` = 4 and 8: run about 300 training steps and one full
 validation pass on one fold. Record peak GPU memory, training images/s, validation time,
