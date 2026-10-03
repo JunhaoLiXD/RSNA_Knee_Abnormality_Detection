@@ -3,6 +3,19 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-010 - 2026-10-03 - Submission notebooks are named vNN_submit
+
+**Decision.** Every notebook that is submitted to the leaderboard is named
+`notebooks/vNN-submit.ipynb` locally and `vNN_submit` on Kaggle (slug `vNN-submit`). The v09
+blend notebook is renamed accordingly (`v09-anchor-plus-v08` -> `v09-submit`).
+
+**Reason.** The user wants to see at a glance which version produced a leaderboard entry.
+User request 2026-10-03. The local name keeps the `vNN-` prefix that the validator requires.
+
+**Consequences.** The earlier Kaggle kernel `lingxd/v09-anchor-plus-v08` (version 1) served as
+a validation run only; submissions come from `lingxd/v09-submit`. v05 keeps its name (already
+submitted).
+
 ## D-009 - 2026-10-02 - K_train 4, K_infer 16; remaining folds through a GPU queue
 
 **Decision.** Use `K_train = 4` and `K_infer = 16` for all folds of v08. Train folds 1-4 in
