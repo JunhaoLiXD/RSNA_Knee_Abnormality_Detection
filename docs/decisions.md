@@ -3,6 +3,20 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-013 - 2026-10-04 - Codex reviews use GPT-6 Astra
+
+**Decision.** All Codex reviews of this repository use `gpt-6-astra` with reasoning effort
+`high`, set in a project-scoped, git-ignored `.codex/config.toml`; review commands also pass
+`--model gpt-6-astra` explicitly.
+
+**Reason.** User request 2026-10-04. The user-level default was `gpt-5.6-sol` with effort
+`low`, which the earlier reviews (D-004 to D-009) most likely ran with. A probe run in this
+repository confirmed that the project file takes effect (session record: model
+`gpt-6-astra`, effort `high`).
+
+**Consequences.** Other projects keep the user-level default. The `/codex:adversarial-review`
+command accepts `--model` but not an effort flag, so the effort depends on the project file.
+
 ## D-012 - 2026-10-04 - Merge the version history into STATUS.md
 
 **Decision.** `docs/version-history.md` is removed; its content (versions table, v05 anchor
