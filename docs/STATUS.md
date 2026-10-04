@@ -157,3 +157,6 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Kaggle access: `KAGGLE_API_TOKEN` user environment variable (never print it); Kaggle
   CLI plus the `nvidia-kaggle` and `kaggle@shepsci` Claude Code plugins.
 - Training and submission run on Kaggle GPUs only.
+- GPU quota: `kaggle quota` shows hours used and left. Windows of 30 h reset on Saturdays at
+  00:00 UTC; submission scoring reruns do not count (2026-10-04: 0.18 h used, 29.82 h left
+  until 2026-10-10).

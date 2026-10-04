@@ -20,8 +20,10 @@ help (v09 0.932, v10 leg alone 0.909). **Active: Priority 2, OOF-teacher targets
   0.945, gold (top 10 + 0.2%) about 0.956. Because so many teams sit on the same public
   stack, the realistic target is **public >= 0.946 with a model we trust on the private
   set**, which should hold a bronze through shake-up and has a chance at silver.
-- **Compute: 30 Kaggle GPU hours per week**, about 90 hours until the final deadline
-  (weeks starting 2026-10-01, 10-08, 10-15). No local GPU.
+- **Compute: 30 Kaggle GPU hours per quota window.** Windows reset on Saturdays at 00:00 UTC
+  (10-03, 10-10, 10-17); `kaggle quota` shows the usage. Submission scoring reruns do not count
+  (checked 2026-10-04: 0.18 h used after the v09 and v10 scoring runs, 29.82 h left until 10-10).
+  No local GPU.
 - **Dates:** entry and team-merger deadline 2026-10-15; final submission 2026-10-22.
 - **Submissions:** 5 per day; two final selections.
 - **External MRI datasets:** considered and deferred for this round (design v11 section 3.1;
@@ -176,14 +178,14 @@ show a capacity limit.
   about 1 TB of files; the host has not published an allow-list. Revisit only if the host
   allows a dataset and Priority 2 has been tried. Any registration is the user's to do.
 
-## GPU budget (30 h per week)
+## GPU budget (30 h per quota window)
 
-| Week | Used / planned GPU use |
+| Quota window (UTC) | Used / planned GPU use |
 |---|---|
-| 2026-10-01 to 10-07 | Used: v05 commit, v08 fold 0 and folds 1-4 (6.5 h + 7.6 h), v09/v10 commits; scoring time not counted here. Planned: v11 fold 0 (about 7.7 h), then folds 1-4 start if R1 passes |
-| 2026-10-08 to 10-14 | v11 folds 1-4 (9.8-15.4 h); v12 leg alone; v13 blend if gated in; second iteration starts by 10-09 if v13 helps (15-20 h); bf16 check |
-| 2026-10-15 to 10-21 | Finish the second iteration or a second own model if justified; final selection |
+| 2026-09-26 to 10-02 | Used: v05 commit, v06/v07 (CPU), v08 fold 0 and folds 1-4 (6.5 h + 7.6 h) |
+| 2026-10-03 to 10-09 | Used by 10-04: 0.18 h (v09/v10 commit runs). Planned: v11 fold 0 (about 7.7 h), v11 folds 1-4 if R1 passes (9.8-15.4 h), v12/v13 commits: 18-24 h of 29.82 h |
+| 2026-10-10 to 10-16 | Second iteration if v13 helps (15-20 h, start by 10-09/10-10); bf16 check |
+| 2026-10-17 to 10-23 | Finish the second iteration or a second own model if justified; final selection by 10-22 |
 
-Whether scoring reruns of submissions count against the weekly GPU quota is not
-verified; keep a few hours of margin each week. The current week's remaining quota is visible
-to the user only.
+Scoring reruns do not count against the quota (checked 2026-10-04 with `kaggle quota`); keep a
+few hours of margin per window for reruns of failed sessions.

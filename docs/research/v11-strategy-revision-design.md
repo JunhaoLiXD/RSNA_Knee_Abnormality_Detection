@@ -224,8 +224,10 @@ Final selection (two picks, by 2026-10-22), over the measured candidates v05, v1
 
 About 19-25 GPU h for the first iteration (up to 31 h with the rule-1 rerun; rev. 2.1 figures).
 Degradation if the quota is short: drop the training-subset loss in folds 1-4 (saves about 1 h
-per fold), then arm A instead of B for folds 1-4 (saves about 5.6 h), then stop. Current-week
-quota usage is not known to the agent (the user can read it).
+per fold), then arm A instead of B for folds 1-4 (saves about 5.6 h), then stop. Quota checked
+2026-10-04 with `kaggle quota`: 0.18 h used, 29.82 h left until the reset on 2026-10-10 00:00 UTC
+(scoring reruns are not counted), so fold 0 and folds 1-4 with either arm fit in the current
+window, and rule 3's quota condition (A 11.5 h, B 18.2 h) holds after fold 0.
 
 ## 5. Risks
 
@@ -277,3 +279,18 @@ review was requested.
 
 Also noted: the qualification threshold is the literal 0.871 pre-registered in 4.2; v08's exact
 fold-0 K16 value is 0.87088, so the threshold is 0.0001 stricter than v08.
+
+## 9. Codex review of the v11 implementation (2026-10-04, GPT-6 Astra, D-013)
+
+Scope: `notebooks/v11-oof-teacher.ipynb` (commit 9263b11) against sections 4.1, 4.2 and 8, run
+locally with `codex exec` in a read-only sandbox (`codex review --commit` does not accept review
+instructions). Verdict: needs-attention, two medium findings, both verified in the code.
+
+| # | Finding (severity) | Verified? | Disposition |
+|---|---|---|---|
+| 1 | The per-arm time limit is checked only between training batches; validation, training-subset and gold evaluation ignore it, so an arm whose last epoch ends just before the limit still finishes as `done`, and a hung evaluation is not stopped by the arm limit (medium) | Yes | **Partly accepted.** Not a bias: 4.2 defines complete as "trained all its epochs", and the overrun is bounded by one K16 evaluation plus gold (about 18 minutes; A at most about 6.3 h, B about 9.3 h, far below the 10.9 h stop). The hang risk is real: the parent now stops a process still running one hour after its limit (`killed_hang_guard`, incomplete). The semantics are stated in the notebook |
+| 2 | `collect()` reads a fixed receipt path and ignores the exit code, so a rerun in the same directory that crashes before writing its first receipt can pick up an earlier `done` receipt and pass Gate R1 (medium) | Yes (cannot occur in a fresh Kaggle batch run, which starts with an empty working directory; can occur in an interactive rerun) | **Accepted.** `launch()` deletes any receipt of the arm before starting, and a non-zero exit code marks the arm `failed` (reported status kept as `status_reported`) |
+
+Both fixes were tested locally: a stale `done` receipt with a crashing trainer gives `failed` and
+Gate R1 rule 1; a `done` receipt followed by exit code 3 gives `failed`; the hang guard and the
+deadline stop give incomplete statuses; the two-arm and fold-queue runs are unchanged.
