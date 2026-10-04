@@ -3,6 +3,19 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-012 - 2026-10-04 - Merge the version history into STATUS.md
+
+**Decision.** `docs/version-history.md` is removed; its content (versions table, v05 anchor
+summary, own-model settings ledger, per-fold results, lessons, open hypotheses) now lives
+in `docs/STATUS.md`, with the former "Best results" table folded into the versions table so
+nothing is duplicated. The D-011 rule now points to `docs/STATUS.md`: read it before any
+change to `IMPROVEMENT_PLAN.md` or any new strategy, and cite its versions and lessons.
+
+**Reason.** User request 2026-10-04: one file instead of two overlapping ones.
+
+**Consequences.** STATUS.md is longer than "short"; it is the single source for status and
+results. AGENTS.md, README.md and IMPROVEMENT_PLAN.md reference STATUS.md.
+
 ## D-011 - 2026-10-04 - Version history document; plan changes must cite it
 
 **Decision.** Keep `docs/version-history.md` as the single summary of every version's

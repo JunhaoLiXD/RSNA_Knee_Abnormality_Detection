@@ -22,10 +22,9 @@ best scores, and next steps live in [docs/STATUS.md](docs/STATUS.md).
 |-- IMPROVEMENT_PLAN.md      # prioritized directions after the v05 anchor, with reasons
 |-- environment.yml          # local conda env (analysis only; training runs on Kaggle)
 |-- docs/
-|   |-- STATUS.md            # current state and next steps (read first)
+|   |-- STATUS.md            # current state, versions, settings, lessons (read first)
 |   |-- competition.md       # verified task, metric, rules, and data facts
 |   |-- experiments.md       # append-only log of Kaggle runs and scores
-|   |-- version-history.md   # every version's settings, results, verdict; read before planning
 |   |-- decisions.md         # decision log
 |   `-- research/            # analyses of public notebooks and discussions
 |-- notebooks/               # active versioned notebooks: vNN-<name>.ipynb (from v05)
