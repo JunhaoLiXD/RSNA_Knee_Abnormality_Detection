@@ -3,6 +3,20 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-011 - 2026-10-04 - Version history document; plan changes must cite it
+
+**Decision.** Keep `docs/version-history.md` as the single summary of every version's
+settings, results and verdict, plus evidence-backed lessons. Every change to
+`IMPROVEMENT_PLAN.md` must read it first and cite the versions and lessons that support or
+contradict each direction. It is updated whenever a version gets a new result.
+
+**Reason.** After v09 (0.932) and v10 (0.909) scored below v05 (0.943), the user asked for one
+document of what was tried and what it gave, so that new plans build on measured results
+rather than on assumptions. User request 2026-10-04.
+
+**Consequences.** The session protocol (AGENTS.md) adds the update after each Kaggle run;
+the D-004 Codex review of plan changes also checks consistency with this document.
+
 ## D-010 - 2026-10-03 - Submission notebooks are named vNN_submit
 
 **Decision.** Every notebook that is submitted to the leaderboard is named

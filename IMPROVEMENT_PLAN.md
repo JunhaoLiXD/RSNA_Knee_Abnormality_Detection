@@ -6,6 +6,11 @@ the reason behind it. Written 2026-10-01 after the baseline survey
 Update this file when a direction is started, finished, or dropped; record results in
 `docs/experiments.md` and decisions in `docs/decisions.md`.
 
+**Before editing this file, read `docs/version-history.md` (D-011)** and cite the versions
+and lessons behind each change. Status 2026-10-04: Priority 0 done (v05 0.943); Priority 1
+tried as v08-v10 and failed to help (v09 0.932, v10 leg alone 0.909); the plan below is due
+for revision.
+
 ## Goal and constraints
 
 - **Goal: a medal.** On the 2026-10-01 public board (4,730 teams) bronze (top 10%) sits
