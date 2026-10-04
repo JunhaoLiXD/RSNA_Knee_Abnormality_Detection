@@ -34,8 +34,8 @@ Budget: 30 Kaggle GPU hours per week; goal: a medal.
 
 ## Open questions
 
-- Test-set DICOM transfer syntaxes: training is 100% uncompressed; the Kaggle image's
-  JPEG/JPEG 2000 decoders (Pillow, pylibjpeg) were not checked by v06.
+- Hidden-test DICOM transfer syntaxes are unknown (training and the sampled placeholder test
+  files are uncompressed); the pinned Kaggle image has Pillow 11.3.0 with JPEG 2000 (v10).
 - Whether bf16 autocast in the stack's A5 stage costs AUC on T4.
 - External knee MRI datasets: postponed by the user.
 
