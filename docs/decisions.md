@@ -3,6 +3,36 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-014 - 2026-10-04 - Strategy revision: OOF-teacher targets (v11), leg-alone gate
+
+**Decision.** Approve `docs/research/v11-strategy-revision-design.md` revision 2.1. The own
+model is retrained on `0.5 * soft target + 0.5 * v08 out-of-fold prediction` (v11). Fold 0
+runs two arms in one session: A (10 epochs, LR 5e-5 / 2e-4) and B (15 epochs, LR 1e-4 /
+3e-4), time limits 6 h and 9 h, global deadline 11 h; incomplete arms never enter Gate R1.
+Gate R1 filters complete arms, then qualified arms (fold-0 val macro AUC at K_infer 16 >=
+0.871), picks one arm by gold-58 (arm A within 0.005 of the best) and applies the rule table
+to that arm. Folds 1-4 follow only per R1; then v12_submit scores the leg alone, and a blend
+with the anchor is built only if the leg alone reaches 0.935 (w = 0.30) or 0.940 (w = 0.45).
+Every evaluation also scores 500 fixed training studies at K_infer 16 without augmentation,
+so training and validation loss are compared like-for-like. External data stays out of this
+round; a team merger before 2026-10-15 is the user's decision.
+
+**Reason.** v09 (0.932) and v10 (0.909) showed that the v08 leg is too weak to help the v05
+anchor (0.943; STATUS lessons 1-2). On gold-58 the v08 model and the 4-source soft target are
+complementary, and a pre-registered 50/50 mix scores 0.917, +0.027 over the target alone
+(paired bootstrap 95% CI +0.010 to +0.045); forum reports name OOF pseudo-labels as their main
+lever. The first Codex review (GPT-6 Astra, D-013) was verified and resolved (design section
+7). At approval the user accepted two clarifications (design section 8): the measured
+evaluation cost (about 17 minutes per K16 evaluation instead of 2, so arm A about 4.8 h, arm
+B about 7.6 h) and the pick-first order of Gate R1. User approved 2026-10-04.
+
+**Consequences.** Gold-58 becomes a selection set after R1 and is no longer an independent
+check; the leg-alone public score is the independent test. Fold-level validation of v11 is
+mildly optimistic (the teacher saw the student's validation labels). v08's OOF files are
+attached to v11 as a private Kaggle dataset and the training target is computed inside the
+notebook. The first iteration needs about 19-25 GPU h (up to 31 h with the R1 rerun).
+`IMPROVEMENT_PLAN.md` is revised accordingly.
+
 ## D-013 - 2026-10-04 - Codex reviews use GPT-6 Astra
 
 **Decision.** All Codex reviews of this repository use `gpt-6-astra` with reasoning effort

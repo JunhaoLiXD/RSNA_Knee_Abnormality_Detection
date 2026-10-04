@@ -10,9 +10,10 @@ Last updated: 2026-10-04
 
 ## Current phase
 
-**Phase 2 ended - the own-model leg is too weak** (v09 0.932 and v10 0.909, both below v05
-0.943). Next: strategy revision. Final selection until something beats it: **v05 (0.943)**.
-Budget: 30 Kaggle GPU hours per week; goal: a medal; deadline 2026-10-22.
+**Phase 3 - OOF-teacher retraining (v11)**, per `docs/research/v11-strategy-revision-design.md`
+revision 2.1 (D-014, approved 2026-10-04). Phase 2 ended with the own-model leg too weak (v09
+0.932 and v10 0.909, both below v05 0.943). Final selection until something beats it:
+**v05 (0.943)**. Budget: 30 Kaggle GPU hours per week; goal: a medal; deadline 2026-10-22.
 
 ## Versions and results
 
@@ -134,9 +135,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. Revise the strategy using this file: a design note on why v08 is weak and what to do in
-   the remaining time (deadline 2026-10-22), Codex review (D-004), then discuss.
-2. Keep v05 (0.943) as the final selection until something beats it.
+1. Build v11 (`notebooks/v11-oof-teacher.ipynb`): v08 trainer with targets
+   `0.5 * soft + 0.5 * v08 OOF`, fold-0 arms A and B, like-for-like train/val loss, Gate R1
+   (design 4.1-4.2). The v08 OOF files go to a private Kaggle dataset.
+2. Run v11 fold 0 (about 7.7 h), apply Gate R1; folds 1-4 only if R1 says so; then v12_submit
+   (leg alone) and the blend gate (design 4.4).
+3. Keep v05 (0.943) as the final selection until something beats it.
 
 ## Open questions
 
