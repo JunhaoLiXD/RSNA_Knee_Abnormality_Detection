@@ -33,6 +33,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v08 | 2026-10-02/03 | training | ConvNeXt-tiny 2.5D, 5 folds | CV 0.840; gold 0.897 (ens.) | - | trained; too weak (see v10) |
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
+| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, higher LR); Gate R1 | local CPU checks pass (synthetic DICOM) | - | built; fold-0 run pending (D-014) |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 
@@ -135,9 +136,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. Build v11 (`notebooks/v11-oof-teacher.ipynb`): v08 trainer with targets
+1. v11 is built (`notebooks/v11-oof-teacher.ipynb`; v08 OOF in the private dataset
+   `lingxd/rsna-knee-v08-oof`): v08 trainer with targets
    `0.5 * soft + 0.5 * v08 OOF`, fold-0 arms A and B, like-for-like train/val loss, Gate R1
-   (design 4.1-4.2). The v08 OOF files go to a private Kaggle dataset.
+   (design 4.1-4.2).
 2. Run v11 fold 0 (about 7.7 h), apply Gate R1; folds 1-4 only if R1 says so; then v12_submit
    (leg alone) and the blend gate (design 4.4).
 3. Keep v05 (0.943) as the final selection until something beats it.
