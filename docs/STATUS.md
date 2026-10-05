@@ -34,6 +34,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
 | v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 0-2 done (gold 0.911 / 0.910 / 0.911), folds 3-4 running (version 3) |
+| v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | local CPU checks pass (synthetic DICOM; OOF-check controls pass/fail as expected) | - | built; needs folds 3-4, weights dataset, commit run |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -202,7 +203,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    training-subset loss switched off (`TRAIN_PROBE_N = 0`, question of design 2.1 answered)
    about 6.4 h per session. Download each version's outputs before pushing the next one (the
    CLI serves only the latest version). The fold-0 B checkpoint is saved in `models/v11/`.
-2. Then v12_submit (leg alone) and the blend gate (design 4.4). Rough expectation from lesson 3
+2. Then v12_submit (leg alone; `notebooks/v12-submit.ipynb` built and checked locally 2026-10-05)
+   and the blend gate (design 4.4). Before its commit run: rebuild with the fold-4 OOF expectation
+   (v11 version 3), upload `lingxd/rsna-knee-v11-weights` (5 x 113 MB), user approval for each. Rough expectation from lesson 3
    (gold -> LB offset +0.012 for v08; +0.02 in a forum report): a 5-fold v11 B leg near gold 0.91
    would score about 0.92-0.93, below the 0.935 blend gate unless the offset is larger.
 3. Keep v05 (0.943) as the final selection until something beats it.
