@@ -33,7 +33,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v08 | 2026-10-02/03 | training | ConvNeXt-tiny 2.5D, 5 folds | CV 0.840; gold 0.897 (ens.) | - | trained; too weak (see v10) |
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
-| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 0-2 done (gold 0.911 / 0.910 / 0.911); folds 3-4: versions 3 and 4 failed at session start (Kaggle could not mount the v07 cache) |
+| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 0-2 done (gold 0.911 / 0.910 / 0.911); folds 3-4: versions 3-4 failed (v07 cache mount), v07 rerun, version 5 running |
 | v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | local CPU checks pass (synthetic DICOM; OOF-check controls pass/fail as expected) | - | built; needs folds 3-4, weights dataset, commit run |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
@@ -205,7 +205,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    2026-10-05): rerun v07 unchanged with its original image (`lingxd/v07-cache-320` version 3,
    CPU, about 1.1 h) to get a fresh output, verify it against the version-2 manifests and 7 sampled
    files (SHA-256 kept in the scratchpad), then rerun v11 folds 3-4. **Done:** version 3 is identical
-   to version 2 (manifests equal, 7/7 sampled files byte-equal); v11 folds 3-4 rerun is next. Creating a dataset from the
+   to version 2 (manifests equal, 7/7 sampled files byte-equal); v11 folds 3-4 rerun pushed as
+   version 5 (2026-10-05, user approved). Creating a dataset from the
    notebook output in the web UI was not used: the dialog listed only 50 of the files. Folds 0-2 checkpoints are saved in `models/v11/`. Gate R1 gave rule 3 with arm B and the quota condition holds
    (22.31 h left until 2026-10-10, 18.2 h needed). Run v11 folds 1-4 with arm B
    (`MODE = 'folds'`, `QUEUE_ARM = 'B'`), two sessions `[1, 2]` then `[3, 4]`; with the
