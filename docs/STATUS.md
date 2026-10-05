@@ -33,7 +33,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v08 | 2026-10-02/03 | training | ConvNeXt-tiny 2.5D, 5 folds | CV 0.840; gold 0.897 (ens.) | - | trained; too weak (see v10) |
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
-| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 1-2 running (version 2), folds 3-4 next |
+| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 0-2 done (gold 0.911 / 0.910 / 0.911), folds 3-4 next |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -131,6 +131,21 @@ Gate R1 (`v11_decision_r1_attempt1.json`): both complete and qualified; B picked
 0.895, beyond the 0.005 tie); rule 3 (gold in [0.905, 0.915)): train folds 1-4 with B if the
 quota covers 18.2 h; `kaggle quota` after the run: 22.31 h left until 2026-10-10.
 
+### v11 folds 1-2 (arm B, Kaggle version 2, 2026-10-05)
+
+| Fold | Val macro AUC (v08) | Gold-58 (v08) | Best epoch | Hours |
+|---|---:|---:|---:|---:|
+| 1 | 0.873 (0.837) | 0.910 (0.883) | 14 / 15 | 6.48 |
+| 2 | 0.862 (0.835) | 0.911 (0.885) | 10 / 15 | 6.37 |
+
+Gold 3-fold rank ensemble (folds 0-2): v11 B 0.912 vs v08 same folds 0.894 (paired bootstrap
++0.019, CI +0.009 to +0.030) and v08 5-fold 0.897 (+0.015, CI +0.005 to +0.027); teacher mix
+0.917 (-0.005, CI -0.023 to +0.013). Per label vs v08 3-fold: MCL 0.875 -> 0.948, Lateral
+Meniscus 0.795 -> 0.855, Fracture 0.907 -> 0.949; ACL 0.955 -> 0.940, PF OA 0.837 -> 0.829.
+Fold-to-fold gold Spearman 0.968 (v08 0.918): single folds already give 0.910-0.911, so the
+5-fold ensemble is expected to add little. Pooled OOF folds 0-2: 0.879 vs v08 0.846 (mildly
+optimistic, design 3.2).
+
 ## Lessons (evidence-backed)
 
 1. **The public stack is a high floor.** v05 = 0.943 with zero training; any added model must
@@ -180,8 +195,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **Running:** v11 folds 1-2 with arm B (Kaggle version 2, pushed 2026-10-04; user approved
-   rule 3). Gate R1 gave rule 3 with arm B and the quota condition holds
+1. **Folds 1-2 done** (version 2, gold 0.910 / 0.911); folds 3-4 are next (version 3, same
+   settings with `FOLDS_QUEUE = [3, 4]`). Folds 0-2 checkpoints are saved in `models/v11/`. Gate R1 gave rule 3 with arm B and the quota condition holds
    (22.31 h left until 2026-10-10, 18.2 h needed). Run v11 folds 1-4 with arm B
    (`MODE = 'folds'`, `QUEUE_ARM = 'B'`), two sessions `[1, 2]` then `[3, 4]`; with the
    training-subset loss switched off (`TRAIN_PROBE_N = 0`, question of design 2.1 answered)
