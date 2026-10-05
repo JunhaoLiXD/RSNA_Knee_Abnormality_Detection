@@ -201,7 +201,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    failed the same way. **Cause (version 4 log page, read in the browser):** Kaggle could not mount
    the v07 cache input: `ERRORED_MOUNTING_DATASET ... kaggle-script-versions/354547611/output =>
    /kaggle/input/notebooks/lingxd/v07-cache-320: retry budget exhausted (30 attempts) ... dataset
-   loading failed`. The output files themselves still download through the CLI. Fix pending. Folds 0-2 checkpoints are saved in `models/v11/`. Gate R1 gave rule 3 with arm B and the quota condition holds
+   loading failed`. The output files themselves still download through the CLI. Fix (user approved
+   2026-10-05): rerun v07 unchanged with its original image (`lingxd/v07-cache-320` version 3,
+   CPU, about 1.1 h) to get a fresh output, verify it against the version-2 manifests and 7 sampled
+   files (SHA-256 kept in the scratchpad), then rerun v11 folds 3-4. Creating a dataset from the
+   notebook output in the web UI was not used: the dialog listed only 50 of the files. Folds 0-2 checkpoints are saved in `models/v11/`. Gate R1 gave rule 3 with arm B and the quota condition holds
    (22.31 h left until 2026-10-10, 18.2 h needed). Run v11 folds 1-4 with arm B
    (`MODE = 'folds'`, `QUEUE_ARM = 'B'`), two sessions `[1, 2]` then `[3, 4]`; with the
    training-subset loss switched off (`TRAIN_PROBE_N = 0`, question of design 2.1 answered)
