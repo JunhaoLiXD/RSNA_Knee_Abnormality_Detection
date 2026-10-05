@@ -204,7 +204,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    loading failed`. The output files themselves still download through the CLI. Fix (user approved
    2026-10-05): rerun v07 unchanged with its original image (`lingxd/v07-cache-320` version 3,
    CPU, about 1.1 h) to get a fresh output, verify it against the version-2 manifests and 7 sampled
-   files (SHA-256 kept in the scratchpad), then rerun v11 folds 3-4. Creating a dataset from the
+   files (SHA-256 kept in the scratchpad), then rerun v11 folds 3-4. **Done:** version 3 is identical
+   to version 2 (manifests equal, 7/7 sampled files byte-equal); v11 folds 3-4 rerun is next. Creating a dataset from the
    notebook output in the web UI was not used: the dialog listed only 50 of the files. Folds 0-2 checkpoints are saved in `models/v11/`. Gate R1 gave rule 3 with arm B and the quota condition holds
    (22.31 h left until 2026-10-10, 18.2 h needed). Run v11 folds 1-4 with arm B
    (`MODE = 'folds'`, `QUEUE_ARM = 'B'`), two sessions `[1, 2]` then `[3, 4]`; with the
