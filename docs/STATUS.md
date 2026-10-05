@@ -33,7 +33,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v08 | 2026-10-02/03 | training | ConvNeXt-tiny 2.5D, 5 folds | CV 0.840; gold 0.897 (ens.) | - | trained; too weak (see v10) |
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
-| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, higher LR); Gate R1 | local CPU checks pass (synthetic DICOM); Codex implementation review resolved | - | fold-0 run pushed 2026-10-04 (`lingxd/v11-oof-teacher` version 1); results pending |
+| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 1-4 pending user decision |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 
@@ -101,6 +101,34 @@ Spearman on gold 0.92 (little ensemble diversity).
 | v09 | rank(0.55 anchor + 0.45 v08) | 5 folds, K_infer 16; reference check byte-equal | 0.932 | -0.011 |
 | v10 | v08 alone (mean of fold ranks) | same | 0.909 | -0.034 |
 
+### v11 fold 0 (OOF-teacher targets; Kaggle version 1, 2026-10-04)
+
+Both arms completed (A 5.13 h, B 7.49 h; session 7.5 GPU h; peak 6.6 GB; one K16 evaluation
+1,047 s = 685 s validation + 362 s training subset). Training targets reproduced locally
+(SHA-256 equal); both arms used the same 500-study training subset.
+
+| Metric (K_infer 16) | v08 fold 0 | v11 A | v11 B |
+|---|---:|---:|---:|
+| Fold-0 val macro AUC (soft >= 0.5; v11 mildly optimistic, design 3.2) | 0.871 | 0.884 | 0.898 |
+| Gold-58 macro AUC | 0.896 | 0.895 | **0.911** (CI 0.881-0.931) |
+| Best epoch / epochs | 9 / 10 | 9 / 10 | 13 / 15 |
+
+Paired bootstrap on gold (2,000 resamples): B - A +0.016 (95% CI +0.006 to +0.026); B - v08
+fold 0 +0.015 (+0.004 to +0.027); A - v08 fold 0 -0.000 (-0.010 to +0.009); B - teacher mix
+(0.917) -0.006 (-0.025 to +0.012). Largest per-label gold gains of B over v08 fold 0: MCL
+0.887 -> 0.952, Medial OA 0.947 -> 0.983; ACL 0.952 -> 0.940.
+
+Like-for-like loss (same checkpoint, no augmentation, K16): fold-0 validation targets have lower
+entropy than the training subset (0.424 vs 0.451; prevalence 0.237 vs 0.279), so raw validation
+loss is below training loss; the comparison uses excess loss (loss minus target entropy). A ends
+with validation 0.034 vs training 0.028 (AUC gap +0.003): close, still improving. B ends with
+0.032 vs 0.019 (training-subset AUC 0.923 vs validation 0.898); B's validation AUC is flat from
+epoch 9 (0.8975) to 14 (0.8977).
+
+Gate R1 (`v11_decision_r1_attempt1.json`): both complete and qualified; B picked (gold 0.911 vs
+0.895, beyond the 0.005 tie); rule 3 (gold in [0.905, 0.915)): train folds 1-4 with B if the
+quota covers 18.2 h; `kaggle quota` after the run: 22.31 h left until 2026-10-10.
+
 ## Lessons (evidence-backed)
 
 1. **The public stack is a high floor.** v05 = 0.943 with zero training; any added model must
@@ -122,13 +150,25 @@ Spearman on gold 0.92 (little ensemble diversity).
    driven by prevalence and scanner mix.
 8. **Process costs:** a full own-model cycle (audit, cache, 5 folds, two submissions) took
    about 3 days and roughly 14 GPU hours (v08 runs 6.5 h + 7.6 h) plus about 6 h of scoring.
+9. **OOF-teacher targets alone did not move gold** (v11 A 0.895 vs v08 fold 0 0.896, paired CI
+   -0.010 to +0.009) although fold-0 validation rose +0.013. That validation gain matches the
+   teacher leakage of design 3.2: for teacher experiments, trust gold, not fold validation.
+10. **v08-style training was under-optimised; more optimisation is the measured lever.** v11 B
+   (15 epochs, 2x LR) beats A by +0.016 on gold (CI +0.006 to +0.026). A's training-subset and
+   validation excess loss stay close; B opens a gap and its validation AUC is flat after epoch
+   9 of 15, so more epochs at this recipe will not help. B changes epochs and LR together and
+   uses teacher targets, so the gain is not attributed to one factor.
+11. **Compare excess loss, not raw loss, across sets with different prevalence**: fold-0
+   validation loss is below training loss only because its targets have lower entropy.
+12. **The timing model holds:** estimated 4.8 / 7.6 h vs measured 5.13 / 7.49 h (v11 fold 0).
 
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
-- Too few training tokens per study (K_train 4 x 5 slots = 20) and only 10 epochs.
-- Low backbone LR (5e-5) with a small effective batch; untested alternatives.
+- Too few training tokens per study (K_train 4 x 5 slots = 20) and only 10 epochs; and low
+  backbone LR (5e-5): **partly tested** by v11 B (15 epochs, 2x LR: gold +0.016 over A), see
+  lessons 10. K_train 8 did not help in v08 (lesson 6).
 - Soft targets include the weakest table (lixin, 0.835 on gold); untested single-source runs.
 - 140 mm / 320 px geometry versus forum reports of 224-288 px working well; resolution was
   not ablated after design revision 3.
@@ -136,13 +176,15 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. v11 is built (`notebooks/v11-oof-teacher.ipynb`; v08 OOF in the private dataset
-   `lingxd/rsna-knee-v08-oof`): v08 trainer with targets
-   `0.5 * soft + 0.5 * v08 OOF`, fold-0 arms A and B, like-for-like train/val loss, Gate R1
-   (design 4.1-4.2).
-2. v11 fold 0 is running (version 1, about 7.7 h; pushed 2026-10-04). When it finishes: download
-   receipts and `v11_decision_r1_attempt1.json`, record in `experiments.md`, apply Gate R1; folds 1-4 only if R1 says so; then v12_submit
-   (leg alone) and the blend gate (design 4.4).
+1. **Decision pending (user):** Gate R1 gave rule 3 with arm B and the quota condition holds
+   (22.31 h left until 2026-10-10, 18.2 h needed). Run v11 folds 1-4 with arm B
+   (`MODE = 'folds'`, `QUEUE_ARM = 'B'`), two sessions `[1, 2]` then `[3, 4]`; with the
+   training-subset loss switched off (`TRAIN_PROBE_N = 0`, question of design 2.1 answered)
+   about 6.4 h per session. Download each version's outputs before pushing the next one (the
+   CLI serves only the latest version). The fold-0 B checkpoint is saved in `models/v11/`.
+2. Then v12_submit (leg alone) and the blend gate (design 4.4). Rough expectation from lesson 3
+   (gold -> LB offset +0.012 for v08; +0.02 in a forum report): a 5-fold v11 B leg near gold 0.91
+   would score about 0.92-0.93, below the 0.935 blend gate unless the offset is larger.
 3. Keep v05 (0.943) as the final selection until something beats it.
 
 ## Open questions
