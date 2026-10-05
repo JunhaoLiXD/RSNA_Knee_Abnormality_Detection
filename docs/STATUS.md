@@ -36,6 +36,8 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 1-2 running (version 2), folds 3-4 next |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
+| ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
+| ref | 2026-10-05 | leaderboard | 5,184 teams; #1 0.963; #10 0.959; #100 0.951; silver line 0.945; >= 0.944 is inside bronze; 0.943 block ranks 370-1,375; we are #1,278 | - | - | reference |
 
 ### Public-stack anchor (v05)
 
@@ -137,7 +139,9 @@ quota covers 18.2 h; `kaggle quota` after the run: 22.31 h left until 2026-10-10
    is not "free diversity"; blend weight must reflect relative strength.
 3. **Local metrics map to the public LB roughly as gold 0.897 -> LB 0.909.** A forum report
    puts a 0.950-LB single model at about 0.930 on the same gold set, so the gold-58 gap
-   (about 0.03) was a usable early warning that we did not act on.
+   (about 0.03) was a usable early warning that we did not act on. The mapping is model-
+   dependent: another participant reports gold about 0.89 -> LB 0.940 (EffNet/ResNet) and gold
+   0.915 -> LB 0.926 (CoAtNet) (2026-10-05 note), so treat it as one data point.
 4. **The model did not exceed its labels on gold** (0.897 vs the 4-source target's 0.892,
    inside the CI). Label quality and how the model learns beyond it are the bottleneck
    candidates, consistent with the forum.
