@@ -4,14 +4,17 @@ Directions for improving on the v05 public-stack anchor, in priority order, each
 the reason behind it. Written 2026-10-01 after the baseline survey
 (`docs/research/baseline-selection.md`, `docs/research/discussion-key-findings.md`);
 revised 2026-10-04 after v09/v10 per `docs/research/v11-strategy-revision-design.md`
-revision 2.1 (D-014). Update this file when a direction is started, finished, or dropped;
+revision 2.1 (D-014), and 2026-10-06 after v12 per `docs/research/v13-strategy-revision-design.md`
+revision 3.1 (D-015). Update this file when a direction is started, finished, or dropped;
 record results in `docs/experiments.md` and decisions in `docs/decisions.md`.
 
 **Before editing this file, read `docs/STATUS.md` (D-011, D-012)** and cite the versions
 and lessons behind each change. "STATUS L<n>" below is lesson n of that file.
 
-Status 2026-10-04: Priority 0 done (v05 0.943). Priority 1 tried as v08-v10 and did not
-help (v09 0.932, v10 leg alone 0.909). **Active: Priority 2, OOF-teacher targets (v11).**
+Status 2026-10-06: Priority 0 done (v05 0.943). Priority 1 tried as v08-v10 and did not
+help (v09 0.932, v10 leg alone 0.909). Priority 2 done: the v11 leg scores 0.931 alone (v12),
+below the 0.935 blend gate. **Active: Priority 2b, round-2 teacher and an MRI-pretrained second
+model (v13, D-015).**
 
 ## Goal and constraints
 
@@ -62,7 +65,12 @@ quality.
 
 The v06/v07 data path and the v08 trainer are reused by Priority 2.
 
-## Priority 2 - OOF-teacher targets for our model (v11) - active (D-014)
+## Priority 2 - OOF-teacher targets for our model (v11) - done (D-014)
+
+**Result.** Gate R1 picked arm B (15 epochs, 2x LR; gold 0.911 vs arm A 0.895); the 5-fold leg
+reached gold 0.913 and pooled OOF 0.875, and scored **0.931** alone on the public LB (v12), +0.022
+over v10 but below the 0.935 gate, so no blend (STATUS v11, v12, L10, L13, L15). Teacher targets
+alone did not move gold (L9); more optimisation did (L10). The plan below is kept as a record.
 
 Item 1 of the original Priority 2 (combine several public label tables into one soft target)
 was done in v06: the mean of four tables, which itself scores 0.892 on gold (STATUS settings
@@ -119,6 +127,47 @@ then arm A instead of B, then stop.
 **Done when.** v12's leg-alone public score is recorded and the blend decision of item 4 is
 applied; v05 stays the final pick until something beats it on the public LB.
 
+## Priority 2b - Round-2 teacher (N) and an MRI-pretrained second model (M), v13 - active (D-015)
+
+**What.** Design `docs/research/v13-strategy-revision-design.md` revision 3.1:
+
+1. **Step S** (about 0.5 GPU h): smoke test of the arm-M configurations (MRI-CORE ViT-B at 224 px,
+   fallback ImageNet EfficientNet-B3) with key, gradient, loss and reload checks; admission by the
+   budget formula (about <= 6.65 h per fold with the current quota).
+2. **Step F0**: fold 0, arm N (v11-B recipe, target `0.5 soft + 0.5 v11 OOF`) and arm M (same
+   target), one session within the 8.80 h left before 2026-10-10.
+3. **Gate F0**: base = N if it beats v11 fold 0 on gold by >= +0.003 (exploratory); candidate C adds
+   M if the deployed rank mean beats base by >= +0.003; C = v11 fold 0 alone means stop.
+4. **Step D**: `v14_submit` = C's fold-0 models alone; continue only if the public LB >= 0.933 (a
+   resource-allocation threshold).
+5. **Folds 1-4**, inference-time gate for blends that include M (measured v09 duration), then
+   `v15_submit` leg alone and `v16_submit` blend under the v11 4.4 gate; pre-registered terminal
+   states if components cannot finish by 2026-10-20.
+
+**Why.**
+- The round-2 target scores 0.9235 on gold vs 0.9168 for the v08-teacher target (+0.0067, CI
+  +0.0009 to +0.0130; design 2.3); it needs no API or new data and tests the under-learning
+  explanation (STATUS L10).
+- The v11 leg is redundant with the anchor (STATUS L15, L16): a second model must bring a
+  different pretraining domain or family; the anchor has ImageNet-DINOv2, RadImageNet ResNet-50
+  and CoAtNet, while MRI-CORE is MRI-pretrained (Apache 2.0, knee included;
+  `external-pretrained-2026-10-06.md`).
+- Folds of one model agree (STATUS L13), so a fold-0 leg-alone submission is an affordable early
+  check before 13-28 GPU h of further folds.
+
+**Evidence against, and how it is handled.**
+- A better target need not give a better student (STATUS L9): step D measures it after one fold.
+- Gold is small and reused (STATUS L3, L13): gold gates are exploratory screens; the public LB
+  (steps D and P) is the external check.
+- MRI-CORE adaptation risks: frozen configuration and correctness checks in step S; EfficientNet-B3
+  fallback.
+- The anchor proxy on gold is not a gate (its verdict depends on the proxy weights, STATUS L16).
+
+**Cost.** Step S + F0 about 8.4 GPU h before 2026-10-10; folds 1-4 about 15 h (N-only or v11+M) or
+about 31 h over two windows (N+M); commit runs under 0.1 h each.
+**Done when.** v15's leg-alone score is recorded and the blend gate applied, or a gate stops the
+work; v05 stays pick 1 until something beats it.
+
 ## Priority 3 - Anchor robustness and runtime
 
 **What.**
@@ -147,7 +196,7 @@ applied; v05 stays the final pick until something beats it on the public LB.
 
 **Cost.** Under 1 GPU hour for the bf16 check; the rest is submissions.
 
-## Priority 4 - A second own model (only if time allows)
+## Priority 4 - A second own model - now arm M of Priority 2b
 
 **What.** A second model that differs from the first in backbone family or input
 geometry (e.g. a ViT/DINOv2 fine-tune, or a different crop and resolution), added to our
@@ -163,6 +212,10 @@ show a capacity limit.
 
 **Cost.** 10-15 GPU hours for 5 folds.
 
+**Update 2026-10-06.** Moved into Priority 2b as arm M with an MRI-pretrained backbone (STATUS L16;
+the d4 comparison above is not evidence for own-model ensembles, since both notebooks include the
+anchor, Codex review of design v13).
+
 ## Not planned, and why
 
 - **Retuning the public stack's weights on the public board:** about 1,000 teams already
@@ -177,15 +230,22 @@ show a capacity limit.
   no-derivative clauses; fastMRI+ covers our weak findings but is a single coronal plane in
   about 1 TB of files; the host has not published an allow-list. Revisit only if the host
   allows a dataset and Priority 2 has been tried. Any registration is the user's to do.
+  Rechecked 2026-10-06 (`external-pretrained-2026-10-06.md`): still no host answer (topic
+  743416); KneeCoT ruled out by the host. MRI-pretrained public weights (MRI-CORE) are used
+  instead (Priority 2b).
+- **Distilling or fine-tuning the anchor's public members:** their training-set OOF is weaker than
+  ours (0.851 vs 0.875 against the soft target) and copying them would raise the correlation with
+  the anchor (STATUS L15, L16).
+- **Own LLM report labels** (design v13 option L): not pursued, user decision 2026-10-06.
 
 ## GPU budget (30 h per quota window)
 
 | Quota window (UTC) | Used / planned GPU use |
 |---|---|
 | 2026-09-26 to 10-02 | Used: v05 commit, v06/v07 (CPU), v08 fold 0 and folds 1-4 (6.5 h + 7.6 h) |
-| 2026-10-03 to 10-09 | Used by 10-04: 0.18 h (v09/v10 commit runs). Planned: v11 fold 0 (about 7.7 h), v11 folds 1-4 if R1 passes (9.8-15.4 h), v12/v13 commits: 18-24 h of 29.82 h |
-| 2026-10-10 to 10-16 | Second iteration if v13 helps (15-20 h, start by 10-09/10-10); bf16 check |
-| 2026-10-17 to 10-23 | Finish the second iteration or a second own model if justified; final selection by 10-22 |
+| 2026-10-03 to 10-09 | Used: v11 fold 0 (7.5 h), folds 1-2 (6.5 h), folds 3-4 (7.0 h), v12 commit; 8.80 h left on 10-06. Planned: v13 step S (0.5 h) and fold 0 (<= 7.9 h) |
+| 2026-10-10 to 10-16 | v13 folds 1-4 if Gate F0 and step D pass (about 15 h, or about 23 h for N+M); v15/v16 commits; possible F0 rerun |
+| 2026-10-17 to 10-23 | Remaining N+M sessions (about 8-16 h); training ends by 10-20; final selection by 10-22 |
 
 Scoring reruns do not count against the quota (checked 2026-10-04 with `kaggle quota`); keep a
 few hours of margin per window for reruns of failed sessions.

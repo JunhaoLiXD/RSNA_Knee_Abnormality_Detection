@@ -3,6 +3,30 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-015 - 2026-10-06 - Strategy after v12: round-2 teacher (N) and an MRI-pretrained second model (M)
+
+**Decision.** Approve `docs/research/v13-strategy-revision-design.md` revision 3.1. Fold 0 runs two
+arms with the v11-B schedule and the target `0.5 soft + 0.5 v11 OOF`: N (ConvNeXt-tiny) and M
+(MRI-CORE ViT-B at 224 px, frozen configuration; ImageNet EfficientNet-B3 as fallback), after a
+smoke test (step S) with key, gradient, loss and reload checks and a single budget formula for
+admission and stop. Gate F0 builds the deployed candidate step by step on gold (exploratory
+screens); a fold-0 leg-alone submission (`v14_submit`) must reach 0.933 on the public LB before
+folds 1-4; blends that include M need a measured runtime gate; pre-registered terminal states.
+The gold proxy of the anchor (`scripts/anchor_proxy_gold.py`, three frozen variants) is reported
+but never blocks a submission. Own LLM labels (option L) are not pursued (user decision);
+external datasets stay out (no host clearance).
+
+**Reason.** v12 scored 0.931 alone, below the 0.935 blend gate (D-014). The round-2 target scores
+0.9235 on gold vs 0.9168 (CI +0.0009 to +0.0130). The anchor's public members are not stronger
+than v11 on gold, so the leg must add a different pretraining domain or family (STATUS L15, L16).
+Three Codex reviews (GPT-6 Astra) were verified and resolved (design sections 8-10); no standing
+points. User approved 2026-10-06, including the MRI-CORE weight download.
+
+**Consequences.** New versions: v13 (training: smoke, fold0_arms, folds), v14_submit (fold-0
+diagnostic), v15_submit (5-fold leg alone), v16_submit (blend). Gold is used for selection a
+fourth time; the public LB is the external check. Remote steps (dataset uploads, pushes,
+submissions) still need approval each time.
+
 ## D-014 - 2026-10-04 - Strategy revision: OOF-teacher targets (v11), leg-alone gate
 
 **Decision.** Approve `docs/research/v11-strategy-revision-design.md` revision 2.1. The own

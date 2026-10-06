@@ -12,8 +12,8 @@ Last updated: 2026-10-06
 
 **Phase 4 - strategy revision after v12** (2026-10-06). Phase 3 (OOF-teacher retraining, D-014)
 ended: v11 leg alone scored 0.931 (v12), +0.022 over v10 but below the 0.935 blend gate.
-Proposal under review: `docs/research/v13-strategy-revision-design.md` revision 2 (round-2
-teacher N, MRI-pretrained second model M, fold-0 LB diagnostic; Codex re-review pending, D-004). Final selection until something beats it:
+Plan approved (D-015, 2026-10-06): `docs/research/v13-strategy-revision-design.md` revision 3.1
+(round-2 teacher N, MRI-pretrained second model M, fold-0 LB diagnostic). Next: build v13. Final selection until something beats it:
 **v05 (0.943)**, with v12 as the own-only candidate for pick 2. Budget: 30 Kaggle GPU hours per
 window; goal: a medal; deadline 2026-10-22.
 
