@@ -12,8 +12,10 @@ Last updated: 2026-10-06
 
 **Phase 4 - strategy revision after v12** (2026-10-06). Phase 3 (OOF-teacher retraining, D-014)
 ended: v11 leg alone scored 0.931 (v12), +0.022 over v10 but below the 0.935 blend gate.
-Plan approved (D-015, 2026-10-06): `docs/research/v13-strategy-revision-design.md` revision 3.1
-(round-2 teacher N, MRI-pretrained second model M, fold-0 LB diagnostic). Next: build v13. Final selection until something beats it:
+Plan approved (D-015, 2026-10-06): `docs/research/v13-strategy-revision-design.md` revision 3.2
+(round-2 teacher N, MRI-pretrained second model M, fold-0 LB diagnostic). v13 built and tested
+locally; datasets `lingxd/rsna-knee-v11-oof` and `lingxd/rsna-knee-mri-core` uploaded; step S
+(smoke) pushed as `lingxd/v13-round2-mri` version 1 on 2026-10-06. Final selection until something beats it:
 **v05 (0.943)**, with v12 as the own-only candidate for pick 2. Budget: 30 Kaggle GPU hours per
 window; goal: a medal; deadline 2026-10-22.
 
@@ -37,6 +39,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
 | v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; **5 folds done**: pooled OOF 0.875, gold 5-fold 0.913 (v08 0.897); v12 next |
 | v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | commit run: reference check byte-equal, OOF check pass (max diff 1e-6), 3/3 coverage | 0.931 | +0.022 over v10 but below the 0.935 blend gate: no blend |
+| v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | local CPU tests pass (synthetic DICOM; strict MRI-CORE load, gate cases) | - | step S (smoke) pushed (version 1) |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
