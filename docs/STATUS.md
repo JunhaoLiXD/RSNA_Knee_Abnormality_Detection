@@ -6,14 +6,16 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-04
+Last updated: 2026-10-06
 
 ## Current phase
 
-**Phase 3 - OOF-teacher retraining (v11)**, per `docs/research/v11-strategy-revision-design.md`
-revision 2.1 (D-014, approved 2026-10-04). Phase 2 ended with the own-model leg too weak (v09
-0.932 and v10 0.909, both below v05 0.943). Final selection until something beats it:
-**v05 (0.943)**. Budget: 30 Kaggle GPU hours per week; goal: a medal; deadline 2026-10-22.
+**Phase 4 - strategy revision after v12** (2026-10-06). Phase 3 (OOF-teacher retraining, D-014)
+ended: v11 leg alone scored 0.931 (v12), +0.022 over v10 but below the 0.935 blend gate.
+Proposal under review: `docs/research/v13-strategy-revision-design.md` (own LLM labels, second
+architecture; Codex review pending, D-004). Final selection until something beats it:
+**v05 (0.943)**, with v12 as the own-only candidate for pick 2. Budget: 30 Kaggle GPU hours per
+window; goal: a medal; deadline 2026-10-22.
 
 ## Versions and results
 
