@@ -26,16 +26,16 @@ All five files use the official label order and the same gold truth as ours (che
 | CoAtNet resgated / global96 / d4 (gold-selected) | 0.912 / 0.931 / 0.930 |
 | Our v08 5-fold / v11 5-fold | 0.897 / 0.913 |
 
-The anchor's 0.943 does not come from one strong member: its public DINOv2 and RadImageNet
-members are weaker than v11 on gold (pilkwang's DINOv2 baseline scored 0.891 on the public LB),
-and the CoAtNet members are at v11's level once their gold selection is discounted. Its
-strength is the combination of different families.
+The anchor's public DINOv2 and RadImageNet members are weaker than v11 on gold (pilkwang's
+DINOv2 baseline scored 0.891 on the public LB), and the CoAtNet members are probably near v11's
+level once their gold selection is discounted. Hypothesis (no member ablation): the anchor's
+strength comes from combining different families.
 
 ## 3. Proxy anchor and what our legs add
 
-Proxy = rank blend with pre-registered weights DINOv2 0.5, RadImageNet E9 0.5, CoAtNet
-resgated 1.0, global96 1.5, d4 1.5 (CoAtNet-heavy). Proxy gold 0.930. Paired bootstrap
-(2,000 resamples of the 58 studies) of the gain from adding a leg in rank space:
+Proxy = rank blend of the public members. Main variant (CoAtNet-heavy): DINOv2 0.5,
+RadImageNet E9 0.5, CoAtNet resgated 1.0, global96 1.5, d4 1.5; proxy gold 0.930. Paired
+bootstrap (2,000 resamples of the 58 studies) of the gain from adding a leg in rank space:
 
 | Leg | w 0.10 | w 0.20 | w 0.30 | w 0.45 |
 |---|---:|---:|---:|---:|
@@ -43,15 +43,19 @@ resgated 1.0, global96 1.5, d4 1.5 (CoAtNet-heavy). Proxy gold 0.930. Paired boo
 | v11 5-fold (gold 0.913) | -0.000 | +0.001 | -0.001 | -0.002 (CI -0.008 to +0.004) |
 
 The v08 row reproduces v09 on the public LB (w 0.45: -0.011). This is one calibration point and
-the proxy weights were chosen with it in view, so the proxy is a screening tool, not a forecast.
-It agrees with STATUS L15: the v11 leg neither hurts nor helps the anchor.
+the proxy weights were chosen with it in view. Two further frozen variants (Codex re-review,
+2026-10-06) change the verdict on v11 at w 0.30: equal weights for the five members +0.0028,
+CoAtNet members only -0.0012. The proxy omits anchor parts without public predictions (A5,
+Raptor, other CoAt readers) and the anchor's per-label weights. It is therefore a diagnostic,
+reported for all three variants, and never a veto.
 
 ## 4. Use for our work
 
 - **Not as a teacher.** The members with training-set OOF are weaker than our own v11 OOF
   (pooled AUC against the soft target 0.851 vs 0.875); the strong CoAtNet members only publish
   gold predictions; distilling the anchor would also raise correlation with it.
-- **As a screen before costly submissions:** a candidate leg should show a non-negative proxy
-  gain on gold before a blend submission (design v13 revision 2).
+- **As a diagnostic before costly submissions:** report a candidate leg's proxy gain on gold for
+  the three frozen variants (`scripts/anchor_proxy_gold.py`); no variant can block a submission
+  (design v13 revision 3).
 - **For diversity:** the anchor's families are ImageNet-DINOv2, RadImageNet ResNet-50 and
   CoAtNet; a second own model should come from a different family or pretraining domain.

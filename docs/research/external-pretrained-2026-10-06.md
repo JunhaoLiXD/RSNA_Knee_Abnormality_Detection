@@ -22,7 +22,7 @@ verified by running anything.
 
 | Model | What | Knee in pretraining | Weights and licence | Fit for our 2.5D pipeline |
 |---|---|---|---|---|
-| **MRI-CORE** (Duke; arXiv 2506.12186) | 2D ViT-B (SAM image-encoder init), DINOv2 self-supervised on more than 6 M slices from 110 k MRI volumes, 18 body locations | Yes (knee listed among the regions; counts not given) | Public, `github.com/mazurowski-lab/mri_foundation`, **CC BY 4.0** (per the paper) | Good conceptually (2D slices); costly: ViT-B at nominal 1024 px, single channel; at our 320 px it is several times the compute of ConvNeXt-tiny (to be measured) |
+| **MRI-CORE** (Duke; arXiv 2506.12186) | 2D ViT-B (SAM image-encoder init), DINOv2 self-supervised on more than 6 M slices from 110 k MRI volumes, 18 body locations | Yes (knee listed among the regions; counts not given) | Public, `github.com/mazurowski-lab/mri_foundation`; the repository releases code and models under **Apache 2.0** (the paper page states CC BY 4.0); weights `MRI_CORE_vitb.pth` on Google Drive | Good conceptually (2D slices); costly: ViT-B at nominal 1024 px, single channel; at our 320 px it is several times the compute of ConvNeXt-tiny (to be measured) |
 | **MARS** (HKUST; Nature Biomedical Engineering 2026) | 3D Swin encoder with anatomy/sequence disentanglement, 336 k volumes from 64 datasets | Yes; reports ACL and meniscal tear classification | Code `github.com/zqiuak/MARS`, weights on Google Drive; licence not stated | Poor: 3D volumes per series, a new input pipeline |
 | RadImageNet (ResNet-50, DenseNet-121, Inception) | Supervised on 1.35 M radiology images including MSK MRI | Yes | Public mirrors on Kaggle (for example `shigechan/radimagenet-resnet50-official`); the anchor already uses ResNet-50 heads | Good (2D CNN); ResNet-50 overlaps with the anchor, DenseNet-121 does not |
 | KneePreM (arXiv 2609.31461) | 3D U-Net MAE on 19,011 OAI series | Knee only | No public weights found | - |
@@ -46,7 +46,7 @@ verified by running anything.
   pipeline and large downloads; MRNet covers mainly ACL and meniscus and its agreement is
   read as forbidding derivatives. The expected gain is unknown and the disqualification risk
   is real. Revisit only if the host answers topic 743416 with a yes.
-- **MRI-pretrained backbones: feasible and within the rules** (public, CC BY 4.0 for
+- **MRI-pretrained backbones: feasible and within the rules** (public, Apache 2.0 for
   MRI-CORE). They replace the ImageNet initialisation inside our existing trainer, so no new
   data pipeline is needed. Candidate uses: arm M of the v13 design (second model) with an
   MRI-pretrained backbone instead of an ImageNet EfficientNet, which also differs from the

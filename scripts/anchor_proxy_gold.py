@@ -3,8 +3,8 @@
 The anchor (v05) cannot be scored on training data, but several of its members published
 predictions: out-of-fold predictions on all training studies (pilkwang DINOv2 x20, antoinegg1
 RadImageNet heads) and held-out gold predictions (mattiaangeli CoAtNet packages, selected on
-gold, so optimistic). This script rank-blends them into a fixed proxy (weights pre-registered in
-design v13 revision 2, section 2.4) and reports what a candidate leg adds to it on gold.
+gold, so optimistic). This script rank-blends them into three fixed proxy variants (pre-registered in
+design v13 revision 3; a diagnostic, never a veto) and reports what a candidate leg adds to it on gold.
 
 Usage:
     python scripts/anchor_proxy_gold.py --leg name=path_or_glob [--leg ...] [--weights 0.1,0.2,0.3,0.45]
@@ -28,8 +28,13 @@ ROOT = Path(__file__).resolve().parents[1]
 EXT = ROOT / 'external' / 'datasets'
 LABELS = ['ACL', 'MCL', 'Medial Meniscus', 'Lateral Meniscus', 'Medial OA', 'Lateral OA',
           'PF OA', 'Effusion', 'Synovitis', "Baker's", 'Contusion', 'Fracture']
-# Pre-registered proxy weights (rank space). CoAtNet-heavy, as the anchor's strongest members.
-PROXY_WEIGHTS = {'dino': 0.5, 'rad': 0.5, 'coat_rg': 1.0, 'coat_g96': 1.5, 'coat_d4': 1.5}
+# Pre-registered proxy variants (rank space; design v13 revision 3). The proxy is a diagnostic,
+# reported for all variants; no variant has a veto over a submission.
+PROXY_VARIANTS = {
+    'coat_heavy': {'dino': 0.5, 'rad': 0.5, 'coat_rg': 1.0, 'coat_g96': 1.5, 'coat_d4': 1.5},
+    'equal5': {'dino': 1.0, 'rad': 1.0, 'coat_rg': 1.0, 'coat_g96': 1.0, 'coat_d4': 1.0},
+    'coat_only': {'coat_rg': 1.0, 'coat_g96': 1.0, 'coat_d4': 1.0},
+}
 MEMBER_FILES = {
     'dino': ('npz_oof', 'pilkwang__rsna-knee-weights/oof.npz'),
     'rad': ('csv', 'antoinegg1__rsna-knee-e9-radimagenet-heads-v15/v52_oof.csv'),
@@ -75,9 +80,9 @@ def load_leg(spec, gold):
     return rank(sum(rank(p) for p in parts)), len(files)
 
 
-def proxy(gold):
+def proxies(gold):
     members = {k: load_member(kind, rel, gold) for k, (kind, rel) in MEMBER_FILES.items()}
-    return rank(sum(w * rank(members[k]) for k, w in PROXY_WEIGHTS.items())), members
+    return {v: rank(sum(w * rank(members[k]) for k, w in wts.items())) for v, wts in PROXY_VARIANTS.items()}, members
 
 
 def paired(y, a, b, n=2000, seed=0):
@@ -96,18 +101,19 @@ def main():
     ap.add_argument('--weights', default='0.1,0.2,0.3,0.45')
     args = ap.parse_args()
     gold, y = load_gold()
-    anchor, members = proxy(gold)
+    anchors, members = proxies(gold)
     print('members on gold: ' + ', '.join(f'{k} {macro(y, v):.3f}' for k, v in members.items()))
-    print(f'proxy anchor on gold: {macro(y, anchor):.4f}')
+    print('proxy anchors on gold: ' + ', '.join(f'{v} {macro(y, a):.4f}' for v, a in anchors.items()))
     for spec in args.leg:
         name, path = spec.split('=', 1)
         leg, n = load_leg(path, gold)
         print(f'{name} ({n} file(s)): alone {macro(y, leg):.4f}')
-        for w in (float(x) for x in args.weights.split(',')):
-            blend = rank((1 - w) * anchor + w * leg)
-            lo, hi, p0 = paired(y, anchor, blend)
-            print(f'  w={w:.2f}: blend {macro(y, blend):.4f}, gain {macro(y, blend) - macro(y, anchor):+.4f} '
-                  f'(95% CI {lo:+.4f} to {hi:+.4f}, P(gain <= 0) {p0:.3f})')
+        for variant, anchor in anchors.items():
+            for w in (float(x) for x in args.weights.split(',')):
+                blend = rank((1 - w) * anchor + w * leg)
+                lo, hi, p0 = paired(y, anchor, blend)
+                print(f'  {variant:10s} w={w:.2f}: gain {macro(y, blend) - macro(y, anchor):+.4f} '
+                      f'(95% CI {lo:+.4f} to {hi:+.4f}, P(gain <= 0) {p0:.3f})')
 
 
 if __name__ == '__main__':

@@ -215,10 +215,12 @@ fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. 
    the break-even standalone score is 0.935 (w 0.30) / 0.937 (w 0.45), and reaching 0.944 needs
    about 0.939. The pre-registered 0.935 gate matches the break-even. These figures are a
    sensitivity analysis under one fitted parameter, not measured requirements (Codex, design v13).
-16. **The anchor's strength is diversity, not one strong member** (`anchor-components-2026-10-06.md`):
-   its public DINOv2 and RadImageNet members score 0.840 / 0.854 on gold (OOF), below v11's 0.913;
-   a gold proxy of the anchor reproduces v09 (v08 at w 0.45: -0.010 on gold vs -0.011 on LB) and
-   shows the v11 leg adding about 0 at w 0.10-0.45.
+16. **The anchor's public members are not stronger than v11 on gold** (`anchor-components-2026-10-06.md`):
+   DINOv2 and RadImageNet members score 0.840 / 0.854 (OOF) vs v11's 0.913; the CoAtNet members are
+   gold-selected (0.912-0.931). Hypothesis, no member ablation: the anchor's strength comes from
+   combining families. A gold proxy of the anchor matches v09 (v08 at w 0.45: -0.010 vs -0.011 on
+   LB) but its verdict on v11 depends on the proxy weights (-0.001 / +0.003 / -0.001 at w 0.30 for
+   three frozen variants): a diagnostic, not a gate.
 
 ## Open hypotheses for why v08 is weak (untested)
 
