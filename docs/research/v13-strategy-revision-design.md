@@ -1,7 +1,7 @@
 # Design note: strategy revision after v12 (v13 onward)
 
-Date: 2026-10-06. Status: **revision 3.1 after three Codex reviews (sections 8-10); for user
-discussion and approval**. No GPU time is spent before approval. Grounded in `docs/STATUS.md`
+Date: 2026-10-06. Status: **revision 3.2, approved as revision 3.1 by the user 2026-10-06 (D-015)**;
+revision 3.2 corrects the arm-M architecture after inspecting the released weights (section 11). No GPU time is spent before approval. Grounded in `docs/STATUS.md`
 (D-011, D-012): versions and lessons are cited as "STATUS v<NN>" and "STATUS L<n>". The blend
 gate and final-selection rule of `v11-strategy-revision-design.md` revision 2.1, section 4.4,
 stay in force. Supporting notes: `anchor-components-2026-10-06.md` (STATUS L16),
@@ -111,19 +111,17 @@ micro-steps on fold 0, one K16 validation pass, and the checks below.
 
 | Item | MRI-CORE (M) | EfficientNet-B3 (M') |
 |---|---|---|
-| Weights | `MRI_CORE_vitb.pth` (Apache 2.0) as a private Kaggle dataset (user approval for download and upload) | `timm` `efficientnet_b3.ra2_in1k` (internet on) |
-| Architecture | SAM ViT-B image encoder vendored from `segment_anything` (Apache 2.0): embed 768, depth 12, heads 12, patch 16, window 14, global attention at blocks 2/5/8/11, no relative positions (as the MRI-CORE builder); absolute position embedding resized bilinearly from 64x64 to 14x14 at load | timm default |
+| Weights | `MRI_CORE_vitb.pth` (Apache 2.0; SHA-256 `0ca90aeb...`): the DINOv2 teacher (`teacher.backbone.*`), as a private Kaggle dataset (user approval for the upload) | `timm` `efficientnet_b3.ra2_in1k` (internet on) |
+| Architecture | plain ViT-B/16 as in the checkpoint: timm `vit_base_patch16_224` (embed 768, depth 12, heads 12, global attention, no LayerScale), CLS token, native 14x14 position embedding (1 + 196 tokens, no resizing); keys remapped `backbone.blocks.<chunk>.<i>.*` -> `blocks.<i>.*`, `mask_token` and `dino_head` dropped, loaded with `strict=True` | timm default |
 | Input | v07 triplets (c-1, c, c+1) resized 320 -> 224; each channel min-max scaled to [0, 1] per slice (MRI-CORE preprocessing), no ImageNet statistics | v07 triplets at 320 px, ImageNet mean/std (as v11) |
-| Features | encoder neck output 256 x 14 x 14, global average pooled -> 256-d token, then the v11 head (slot embedding, gated attention, 12 logits) | timm pooled features -> v11 head |
-| Trainable | blocks 8-11, neck, head (patch embedding, position embedding, blocks 0-7 frozen) | all; BN layers in eval mode, affine parameters trainable |
+| Features | CLS token after the final norm (768-d), then the v11 head (slot embedding, gated attention, 12 logits) | timm pooled features -> v11 head |
+| Trainable | blocks 8-11, final norm, head (patch embedding, CLS token, position embedding, blocks 0-7 frozen) | all; BN layers in eval mode, affine parameters trainable |
 | LR backbone / head | 5e-5 / 3e-4 | 1e-4 / 3e-4 |
 | Schedule | as v11 B: AdamW wd 0.05, cosine, 15 epochs, warm-up 1, K_train 4, K_infer 16, micro-batch 2 x accum 4, fp16 | same |
 
-**Correctness checks (both):** after loading, the encoder (or backbone) has **no missing keys**;
-unexpected keys must be on an explicit whitelist (MRI-CORE: prompt-encoder and mask-decoder keys).
-For MRI-CORE the position embedding is resized by our own code (bilinear, 64x64 -> 14x14) and
-written under the model's own key, and the loaded tensor must equal that expected resized tensor
-(max difference < 1e-6); the upstream loader is not used. Further: finite, non-zero gradient norms
+**Correctness checks (both):** after loading, the backbone has **no missing and no unexpected
+keys** (MRI-CORE: `strict=True` after the documented remapping; every loaded tensor, including the
+position embedding, equals the checkpoint tensor); the upstream loader is not used. Further: finite, non-zero gradient norms
 in each trainable group; mean loss of the last 50 micro-steps below the first 50; save, reload and
 predict two studies with max difference < 1e-5.
 
@@ -289,3 +287,16 @@ the Gate F0 state machine (all branches reachable and terminating) confirmed. Ea
 | 3 | The 6 h anchor "upper bound" is unsupported (v05 > 5 h is a lower bound) (medium) | Yes | **Accepted**: the gate uses the measured v09 scoring duration or counts as failed; a failed gate keeps C on the own-only path (4.6) |
 
 Standing points: none.
+
+## 11. Revision 3.2: arm-M architecture corrected from the released weights (2026-10-06)
+
+Revisions 2-3.1 described MRI-CORE in SAM's image-encoder layout (windowed attention, neck,
+position embedding resized from 64x64), following the repository's builder. The downloaded
+checkpoint (`MRI_CORE_vitb.pth`, 436 MB) holds the **DINOv2 teacher**: `teacher.backbone.*` with a
+CLS token, a mask token, a (1, 197, 768) position embedding (224 px, patch 16), twelve blocks in
+DINOv2's chunked naming without LayerScale or relative positions, a final norm, and a DINO head.
+It maps one-to-one onto timm's plain `vit_base_patch16_224`. Arm M therefore uses that plain
+ViT-B/16 at its native 224 px with the CLS token, loaded strictly; no position-embedding resizing
+and no missing-key exemption remain. Input scaling stays per-slice [0, 1] as the repository
+documents (it publishes no pretraining transforms). Everything else in 4.2 is unchanged; the
+step-S checks and admission rule apply as written.
