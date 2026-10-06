@@ -33,7 +33,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v08 | 2026-10-02/03 | training | ConvNeXt-tiny 2.5D, 5 folds | CV 0.840; gold 0.897 (ens.) | - | trained; too weak (see v10) |
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
-| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; folds 0-2 done (gold 0.911 / 0.910 / 0.911); folds 3-4: versions 3-4 failed (v07 cache mount), v07 rerun, version 5 running |
+| v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; **5 folds done**: pooled OOF 0.875, gold 5-fold 0.913 (v08 0.897); v12 next |
 | v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | local CPU checks pass (synthetic DICOM; OOF-check controls pass/fail as expected) | - | built; needs folds 3-4, weights dataset, commit run |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
@@ -147,6 +147,24 @@ Fold-to-fold gold Spearman 0.968 (v08 0.918): single folds already give 0.910-0.
 5-fold ensemble is expected to add little. Pooled OOF folds 0-2: 0.879 vs v08 0.846 (mildly
 optimistic, design 3.2).
 
+### v11 folds 3-4 and the 5-fold leg (arm B, Kaggle version 5, 2026-10-05)
+
+| Fold | Val macro AUC (v08) | Gold-58 (v08) | Best epoch | Hours |
+|---|---:|---:|---:|---:|
+| 3 | 0.868 (0.830) | 0.911 (0.892) | 13 / 15 | 6.75 |
+| 4 | 0.870 (0.839) | 0.911 (0.892) | 13 / 15 | 6.97 |
+
+Versions 3 and 4 had failed at session start because Kaggle could not mount the v07 cache output
+(`ERRORED_MOUNTING_DATASET`, read on the version-4 log page); v07 was rerun unchanged with its
+original image (version 3, byte-identical, see `experiments.md`) and version 5 ran normally.
+
+5-fold leg: pooled OOF 0.875 (v08 0.840; mildly optimistic). Gold rank ensemble **0.913** (CI
+0.881-0.938) vs v08 0.897: +0.016 (paired CI +0.006 to +0.027); vs teacher mix 0.917: -0.004 (CI
+-0.022 to +0.014); vs soft target 0.892: +0.021 (CI -0.005 to +0.048). Single folds all 0.910-0.911;
+fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. Per label vs v08
+5-fold: MCL +0.052, Lateral Meniscus +0.048, Fracture +0.031, Lateral OA +0.022; ACL -0.007, PF OA
+-0.008, Contusion -0.006. All five checkpoints are in `models/v11/` (git-ignored).
+
 ## Lessons (evidence-backed)
 
 1. **The public stack is a high floor.** v05 = 0.943 with zero training; any added model must
@@ -181,6 +199,13 @@ optimistic, design 3.2).
 11. **Compare excess loss, not raw loss, across sets with different prevalence**: fold-0
    validation loss is below training loss only because its targets have lower entropy.
 12. **The timing model holds:** estimated 4.8 / 7.6 h vs measured 5.13 / 7.49 h (v11 fold 0).
+13. **The v11 B gain is consistent across folds** (every fold 0.910-0.911 on gold vs v08's
+   0.883-0.896); the 5-fold ensemble adds little because the folds agree (Spearman 0.97).
+14. **Large notebook outputs used as inputs can become unmountable on Kaggle** (v11 versions 3-4:
+   `ERRORED_MOUNTING_DATASET`, empty log, no GPU charged; the exact message is only on the version's
+   log page in the browser). Rerunning the source notebook with its pinned image reproduced the
+   cache byte-for-byte and fixed it. Keep manifests of large outputs locally so a rerun can be
+   verified.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -196,29 +221,16 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **Folds 1-2 done** (version 2, gold 0.910 / 0.911); folds 3-4: version 3 (pushed
-   2026-10-05) failed at session start (empty log, no GPU charged); the unchanged rerun (version 4)
-   failed the same way. **Cause (version 4 log page, read in the browser):** Kaggle could not mount
-   the v07 cache input: `ERRORED_MOUNTING_DATASET ... kaggle-script-versions/354547611/output =>
-   /kaggle/input/notebooks/lingxd/v07-cache-320: retry budget exhausted (30 attempts) ... dataset
-   loading failed`. The output files themselves still download through the CLI. Fix (user approved
-   2026-10-05): rerun v07 unchanged with its original image (`lingxd/v07-cache-320` version 3,
-   CPU, about 1.1 h) to get a fresh output, verify it against the version-2 manifests and 7 sampled
-   files (SHA-256 kept in the scratchpad), then rerun v11 folds 3-4. **Done:** version 3 is identical
-   to version 2 (manifests equal, 7/7 sampled files byte-equal); v11 folds 3-4 rerun pushed as
-   version 5 (2026-10-05, user approved). Creating a dataset from the
-   notebook output in the web UI was not used: the dialog listed only 50 of the files. Folds 0-2 checkpoints are saved in `models/v11/`. Gate R1 gave rule 3 with arm B and the quota condition holds
-   (22.31 h left until 2026-10-10, 18.2 h needed). Run v11 folds 1-4 with arm B
-   (`MODE = 'folds'`, `QUEUE_ARM = 'B'`), two sessions `[1, 2]` then `[3, 4]`; with the
-   training-subset loss switched off (`TRAIN_PROBE_N = 0`, question of design 2.1 answered)
-   about 6.4 h per session. Download each version's outputs before pushing the next one (the
-   CLI serves only the latest version). The fold-0 B checkpoint is saved in `models/v11/`.
-2. Then v12_submit (leg alone; `notebooks/v12-submit.ipynb` built and checked locally 2026-10-05)
-   and the blend gate (design 4.4). Before its commit run: rebuild with the fold-4 OOF expectation
-   (v11 version 3), upload `lingxd/rsna-knee-v11-weights` (5 x 113 MB), user approval for each. Rough expectation from lesson 3
-   (gold -> LB offset +0.012 for v08; +0.02 in a forum report): a 5-fold v11 B leg near gold 0.91
-   would score about 0.92-0.93, below the 0.935 blend gate unless the offset is larger.
-3. Keep v05 (0.943) as the final selection until something beats it.
+1. **v11 is complete** (arm B, 5 folds; gold 5-fold 0.913, pooled OOF 0.875); checkpoints in
+   `models/v11/`. Quota after the last run: 8.83 h left until the reset on 2026-10-10.
+2. **v12_submit** (leg alone, `notebooks/v12-submit.ipynb`): rebuild with the fold-4 OOF
+   expectation, upload `lingxd/rsna-knee-v11-weights` (5 x 113 MB), commit run on Kaggle (check the
+   reference check, the OOF check and coverage in the receipt), then submit. Each remote step needs
+   user approval. The public score decides the blend (design 4.4: >= 0.940 w 0.45; [0.935, 0.940)
+   w 0.30; below 0.935 no blend).
+3. Expectation (rough): with v08's gold -> LB offset (+0.012, lesson 3) a gold of 0.913 maps to
+   about 0.925; the offset varies by model (forum), so only the leg-alone score decides.
+4. Keep v05 (0.943) as the final selection until something beats it.
 
 ## Open questions
 
