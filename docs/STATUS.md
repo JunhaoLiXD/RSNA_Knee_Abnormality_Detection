@@ -211,9 +211,14 @@ fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. 
 15. **A better own leg is still not enough for the anchor.** v12 (v11 leg alone) scores 0.931,
    +0.022 over v10 (gold +0.016; gold -> LB offset +0.018 vs +0.012 for v08). A binormal blend
    model calibrated on v09 (anchor 0.943, leg 0.909, w 0.45 -> 0.932) implies a noise correlation
-   of 0.94 between our leg and the anchor; under it a 0.931 leg blends to 0.940-0.943 at any weight,
+   of 0.94 between our leg and the anchor; under it a 0.931 leg blends to 0.940-0.943 at weights up to 0.45,
    the break-even standalone score is 0.935 (w 0.30) / 0.937 (w 0.45), and reaching 0.944 needs
-   about 0.939. The pre-registered 0.935 gate matches the break-even.
+   about 0.939. The pre-registered 0.935 gate matches the break-even. These figures are a
+   sensitivity analysis under one fitted parameter, not measured requirements (Codex, design v13).
+16. **The anchor's strength is diversity, not one strong member** (`anchor-components-2026-10-06.md`):
+   its public DINOv2 and RadImageNet members score 0.840 / 0.854 on gold (OOF), below v11's 0.913;
+   a gold proxy of the anchor reproduces v09 (v08 at w 0.45: -0.010 on gold vs -0.011 on LB) and
+   shows the v11 leg adding about 0 at w 0.10-0.45.
 
 ## Open hypotheses for why v08 is weak (untested)
 
