@@ -34,7 +34,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
 | v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; **5 folds done**: pooled OOF 0.875, gold 5-fold 0.913 (v08 0.897); v12 next |
-| v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | commit run: reference check byte-equal, OOF check pass (max diff 1e-6), 3/3 coverage | pending | submitted 2026-10-06 (ref 56870482), scoring |
+| v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | commit run: reference check byte-equal, OOF check pass (max diff 1e-6), 3/3 coverage | 0.931 | +0.022 over v10 but below the 0.935 blend gate: no blend |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -206,6 +206,12 @@ fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. 
    log page in the browser). Rerunning the source notebook with its pinned image reproduced the
    cache byte-for-byte and fixed it. Keep manifests of large outputs locally so a rerun can be
    verified.
+15. **A better own leg is still not enough for the anchor.** v12 (v11 leg alone) scores 0.931,
+   +0.022 over v10 (gold +0.016; gold -> LB offset +0.018 vs +0.012 for v08). A binormal blend
+   model calibrated on v09 (anchor 0.943, leg 0.909, w 0.45 -> 0.932) implies a noise correlation
+   of 0.94 between our leg and the anchor; under it a 0.931 leg blends to 0.940-0.943 at any weight,
+   the break-even standalone score is 0.935 (w 0.30) / 0.937 (w 0.45), and reaching 0.944 needs
+   about 0.939. The pre-registered 0.935 gate matches the break-even.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -221,18 +227,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **v11 is complete** (arm B, 5 folds; gold 5-fold 0.913, pooled OOF 0.875); checkpoints in
-   `models/v11/`. Quota after the last run: 8.83 h left until the reset on 2026-10-10.
-2. **v12_submit** (leg alone, `notebooks/v12-submit.ipynb`): fold-4 OOF expectation added;
-   `lingxd/rsna-knee-v11-weights` uploaded (5 x 113 MB, ready); commit run pushed 2026-10-06
-   (`lingxd/v12-submit` version 1): reference check byte-equal, OOF check pass (max diff 1e-6),
-   3/3 coverage, submission format checked. **Submitted** 2026-10-06 04:45 UTC (ref 56870482);
-   scoring takes about 1 h. Each remote step needs
-   user approval. The public score decides the blend (design 4.4: >= 0.940 w 0.45; [0.935, 0.940)
-   w 0.30; below 0.935 no blend).
-3. Expectation (rough): with v08's gold -> LB offset (+0.012, lesson 3) a gold of 0.913 maps to
-   about 0.925; the offset varies by model (forum), so only the leg-alone score decides.
-4. Keep v05 (0.943) as the final selection until something beats it.
+1. **v12 scored 0.931** (leg alone): below the 0.935 gate, so no v13 blend (design 4.4). v05 (0.943)
+   stays pick 1; by the design 4.4 selection rule v12 is the own-only candidate for pick 2.
+2. **Strategy revision needed** (D-004: design note + Codex review before GPU spend). A leg must reach
+   about 0.936-0.939 alone to help the anchor (lesson 15). Budget: 8.83 GPU h until 2026-10-10, then
+   30 h per window; deadline 2026-10-22; team-merger deadline 2026-10-15.
+3. Keep v05 (0.943) as the final selection until something beats it.
 
 ## Open questions
 
