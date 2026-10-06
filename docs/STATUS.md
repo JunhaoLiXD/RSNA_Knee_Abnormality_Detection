@@ -34,7 +34,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v09 | 2026-10-03 | submit | v05 + v08 leg, rank blend w = 0.45 | pipeline checks pass | 0.932 | **worse than v05 (-0.011)**; leg dropped |
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
 | v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; **5 folds done**: pooled OOF 0.875, gold 5-fold 0.913 (v08 0.897); v12 next |
-| v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | local CPU checks pass (synthetic DICOM; OOF-check controls pass/fail as expected) | - | weights dataset uploaded; commit run pushed (version 1) |
+| v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | commit run: reference check byte-equal, OOF check pass (max diff 1e-6), 3/3 coverage | pending | ready to submit |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -225,8 +225,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    `models/v11/`. Quota after the last run: 8.83 h left until the reset on 2026-10-10.
 2. **v12_submit** (leg alone, `notebooks/v12-submit.ipynb`): fold-4 OOF expectation added;
    `lingxd/rsna-knee-v11-weights` uploaded (5 x 113 MB, ready); commit run pushed 2026-10-06
-   (`lingxd/v12-submit` version 1). Next: check the reference check, the OOF check and coverage in
-   the receipt, then submit. Each remote step needs
+   (`lingxd/v12-submit` version 1): reference check byte-equal, OOF check pass (max diff 1e-6),
+   3/3 coverage, submission format checked. Next: submit (user approval), about 1 h of scoring. Each remote step needs
    user approval. The public score decides the blend (design 4.4: >= 0.940 w 0.45; [0.935, 0.940)
    w 0.30; below 0.935 no blend).
 3. Expectation (rough): with v08's gold -> LB offset (+0.012, lesson 3) a gold of 0.913 maps to
