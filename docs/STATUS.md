@@ -44,7 +44,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; **5 folds done**: pooled OOF 0.875, gold 5-fold 0.913 (v08 0.897); v12 next |
 | v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | commit run: reference check byte-equal, OOF check pass (max diff 1e-6), 3/3 coverage | 0.931 | +0.022 over v10 but below the 0.935 blend gate: no blend |
 | v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | F0: N gold 0.920 (+0.009 over v11 fold 0, CI +0.003 to +0.017); M gold 0.881 (below 0.900 floor) | - | Gate F0: C = N-only; step D (v14 fold-0 leg alone) next |
-| v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | - | awaiting weights upload and commit run; continue to N folds 1-4 only if LB >= 0.933 |
+| v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | - | dataset `lingxd/rsna-knee-v13-weights` uploaded; commit run pushed as `lingxd/v14-submit` version 1 (2026-10-07); continue to N folds 1-4 only if LB >= 0.933 |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -244,8 +244,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **Step D (v14_submit)**: upload `lingxd/rsna-knee-v13-weights` (v13 N fold 0), commit-run
-   `lingxd/v14-submit`, check the receipts (reference check, OOF check against the v13 N fold-0 OOF),
+1. **Step D (v14_submit)**: `lingxd/rsna-knee-v13-weights` uploaded and `lingxd/v14-submit` version 1
+   pushed (2026-10-07); next: check the receipts (reference check, OOF check against the v13 N fold-0 OOF),
    submit. Each remote step needs the user's approval. Quota: 2.22 GPU h until 2026-10-10 00:00 UTC
    (the commit run needs under 0.1 h).
 2. If LB(v14) >= 0.933: N folds 1-4 in the 2026-10-10 window (two sessions, FOLDS_JOBS
