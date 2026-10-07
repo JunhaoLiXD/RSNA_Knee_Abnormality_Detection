@@ -250,12 +250,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **v14 scored 0.934** (step D passed). Next: v13 `folds` mode for arm N in the 2026-10-10 window
-   (quota resets 2026-10-10 00:00 UTC; 2.21 h left until then, too little for a fold): session 1
-   `FOLDS_JOBS = [('N', 1), ('N', 2)]`, session 2 `[('N', 3), ('N', 4)]`, about 7 h each (fold 0
-   took 6.29 h). Set `QUOTA_AT_LAUNCH_H` from `kaggle quota` right before each push; download each
-   version's outputs before pushing the next (the CLI only serves the latest version). Each push
-   needs the user's approval.
+1. **v14 scored 0.934** (step D passed). N folds 1-4 now train on the local RTX 3080 Ti (D-016):
+   `kaggle-gpu` env, `scripts/local_v13.py fold <k>`, one fold at a time. Setup verified 2026-10-07:
+   v07 cache downloaded to `results/v07/full3/` (4407 files, sizes and hashes match), training
+   targets equal to the Kaggle F0 run, and the Kaggle fold-0 N checkpoint re-inferred locally gives
+   gold 0.9200 (identical) with max abs diff 1.9e-4 (gold) / 3.8e-4 (100 validation studies). The
+   Kaggle fallback (folds mode, two sessions after the 2026-10-10 reset) stays configured.
 2. Then upload the 5 N checkpoints (`lingxd/rsna-knee-v13-weights` version 2), `v15_submit` = 5-fold
    N leg alone (v14 notebook with five specs), and `v16_submit` = anchor + leg only if v15 >= 0.935
    (w 0.30; w 0.45 if >= 0.940) and per design 4.6. Final selection per design 4.4 (candidates v05,

@@ -22,7 +22,8 @@ teacher). Current phase, every version's settings and results, lessons, and next
 .
 |-- README.md
 |-- IMPROVEMENT_PLAN.md      # prioritized directions after the v05 anchor, with reasons
-|-- environment.yml          # local conda env (analysis only; training runs on Kaggle)
+|-- environment.yml          # local conda env for analysis and CPU tests
+|-- environment-gpu.yml      # local GPU training env (RTX 3080 Ti, D-016)
 |-- docs/
 |   |-- STATUS.md            # current state, versions, settings, lessons (read first)
 |   |-- competition.md       # verified task, metric, rules, and data facts
@@ -33,6 +34,7 @@ teacher). Current phase, every version's settings and results, lessons, and next
 |-- scripts/
 |   |-- validate_notebooks.py           # static notebook checks
 |   |-- anchor_proxy_gold.py            # gold-58 proxy of the public anchor (diagnostic)
+|   |-- local_v13.py                    # runs v13 notebook folds on the local GPU (D-016)
 |   `-- inspect_kaggle_train_images.py  # read-only DICOM layout audit (runs on Kaggle)
 |-- archive/legacy/          # abandoned V01-V04 notebooks and original README
 |-- data/                    # official CSVs (not tracked)

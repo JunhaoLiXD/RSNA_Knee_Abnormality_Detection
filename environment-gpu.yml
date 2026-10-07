@@ -1,0 +1,19 @@
+# Local GPU training environment (D-016): RTX 3080 Ti, versions aligned with the Kaggle image of
+# the v13 F0 run (Python 3.13, torch 2.11.0+cu128, timm 1.0.29, OpenCV 4.13).
+# Create with:  conda env create -f environment-gpu.yml
+# (on this machine conda needs E:\Anaconda\Library\bin on PATH, i.e. an activated base shell)
+name: kaggle-gpu
+channels:
+  - defaults
+dependencies:
+  - python=3.13
+  - pip
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu128
+      - torch==2.11.0+cu128
+      - torchvision==0.26.0+cu128
+      - timm==1.0.29
+      - opencv-python-headless==4.13.0.92
+      - numpy==2.5.2
+      - pandas==3.0.6
+      - scikit-learn==1.9.1

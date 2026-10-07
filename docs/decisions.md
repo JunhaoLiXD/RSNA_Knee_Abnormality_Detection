@@ -3,6 +3,33 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-016 - 2026-10-07 - Local GPU training (RTX 3080 Ti) for v13 arm-N folds 1-4
+
+**Decision.** Train v13 arm N folds 1-4 on the local RTX 3080 Ti (12 GB) instead of waiting for the
+Kaggle quota reset (2026-10-10). New conda env `kaggle-gpu` (`environment-gpu.yml`: Python 3.13,
+torch 2.11.0+cu128, timm 1.0.29, OpenCV 4.13, as in the Kaggle F0 image). The notebook stays the
+only source of truth: `scripts/local_v13.py` executes its code cells with the Kaggle paths mapped
+to `results/v13/local_input/` (copies of the v06 and v11-OOF inputs, a junction to the v07 cache
+downloaded to `results/v07/full3/`) and one fold per invocation. Local differences: one GPU, no
+quota (the budget logic sees an 11 h session), data-loader workers. Before training, the Kaggle
+fold-0 N checkpoint is re-inferred locally on gold and 100 fold-0 validation studies and must
+match the Kaggle predictions (max abs diff <= 0.01). Fold 0 stays the Kaggle-trained model.
+Submissions and their inference still run on Kaggle.
+
+**Reason.** Step D passed (v14 0.934 >= 0.933); 2.21 Kaggle GPU h are left until 2026-10-10, too
+little for a fold, and the team-merger deadline is 2026-10-15. Local runs save about two days and
+about 14 Kaggle GPU h. The machine has an i7-12700K (12 cores), 32 GB RAM and 301 GB free on E:;
+F0 peaked at 6.6 GB GPU memory on the T4. This changes where training runs, not the strategy
+(D-015's pre-registered folds 1-4), so no new Codex direction review. User decision 2026-10-07
+(revises the earlier choice not to use the local GPU).
+
+**Consequences.** AGENTS.md "No local GPU training" is replaced by this rule. Local receipts record
+the device and software versions (`v13_local_run_<tag>.json`); checkpoints go to
+`models/v13/v13/fold<k>_N/` as before. The 5-fold N leg mixes one Kaggle-trained and four
+locally trained folds; v15's OOF check re-runs reference studies on Kaggle against the local OOF,
+which also tests cross-platform inference. Results are not bit-identical to a Kaggle run (GPU
+kernels differ); per-fold gold and validation AUCs are compared with the v11 and v13 F0 ranges.
+
 ## D-015 - 2026-10-06 - Strategy after v12: round-2 teacher (N) and an MRI-pretrained second model (M)
 
 **Decision.** Approve `docs/research/v13-strategy-revision-design.md` revision 3.1. Fold 0 runs two

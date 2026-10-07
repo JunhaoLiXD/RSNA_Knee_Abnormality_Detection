@@ -1,4 +1,4 @@
-# Local analysis environment (no GPU training; training runs on Kaggle).
+# Local analysis environment (CPU; GPU training uses environment-gpu.yml, D-016).
 # Create with:  conda env create -f environment.yml
 name: kaggle
 channels:
