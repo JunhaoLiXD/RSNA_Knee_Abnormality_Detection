@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-06
+Last updated: 2026-10-07
 
 ## Current phase
 
@@ -18,8 +18,8 @@ locally; datasets `lingxd/rsna-knee-v11-oof` and `lingxd/rsna-knee-mri-core` upl
 (smoke) ran as `lingxd/v13-round2-mri` version 1 on 2026-10-06: arm M (MRI-CORE) admitted (projected
 5.07 h per fold, all checks pass); F0 ran as version 2 (2026-10-06/07): arm N (round-2 teacher)
 gold 0.920 vs v11 fold 0 0.911 (+0.009, CI +0.003 to +0.017), arm M (MRI-CORE) gold 0.881 below
-the 0.900 floor. Gate F0: candidate N-only; next is step D, `v14_submit` = N fold 0 alone,
-continue to folds 1-4 only if its public LB >= 0.933. Final selection until something beats it:
+the 0.900 floor. Gate F0: candidate N-only. Step D: `v14_submit` (N fold 0 alone) scored **0.934**
+on 2026-10-07 (>= 0.933), so N folds 1-4 run in the 2026-10-10 window. Final selection until something beats it:
 **v05 (0.943)**, with v12 as the own-only candidate for pick 2. Budget: 30 Kaggle GPU hours per
 window; goal: a medal; deadline 2026-10-22.
 
@@ -43,8 +43,8 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v10 | 2026-10-04 | submit (diagnostic) | v08 leg alone | pipeline checks pass | 0.909 | leg works on test but is weak |
 | v11 | 2026-10-04 | training | v08 trainer on `0.5 * soft + 0.5 * v08 OOF`; fold-0 arms A (10 ep) / B (15 ep, 2x LR) | fold 0: val A 0.884 / B 0.898; gold A 0.895 / B 0.911 | - | Gate R1 rule 3, arm B; **5 folds done**: pooled OOF 0.875, gold 5-fold 0.913 (v08 0.897); v12 next |
 | v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | commit run: reference check byte-equal, OOF check pass (max diff 1e-6), 3/3 coverage | 0.931 | +0.022 over v10 but below the 0.935 blend gate: no blend |
-| v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | F0: N gold 0.920 (+0.009 over v11 fold 0, CI +0.003 to +0.017); M gold 0.881 (below 0.900 floor) | - | Gate F0: C = N-only; step D (v14 fold-0 leg alone) next |
-| v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | - | commit run `lingxd/v14-submit` version 1 (2026-10-07): reference and OOF checks pass (OOF diff 0.0), 3/3 coverage; submitted 2026-10-07 (ref 56898848), score pending; continue to N folds 1-4 only if LB >= 0.933 |
+| v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | F0: N gold 0.920 (+0.009 over v11 fold 0, CI +0.003 to +0.017); M gold 0.881 (below 0.900 floor) | - | Gate F0: C = N-only; step D passed (v14 0.934); folds 1-4 next |
+| v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | 0.934 | one fold beats v12's 5-fold v11 leg (0.931); passes the 0.933 step-D threshold: N folds 1-4 (commit run: reference and OOF checks pass, OOF diff 0.0) |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -229,6 +229,12 @@ fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. 
    combining families. A gold proxy of the anchor matches v09 (v08 at w 0.45: -0.010 vs -0.011 on
    LB) but its verdict on v11 depends on the proxy weights (-0.001 / +0.003 / -0.001 at w 0.30 for
    three frozen variants): a diagnostic, not a gate.
+17. **The round-2 teacher transfers to the public LB.** One fold-0 N model scores 0.934 (v14), above
+   v12's 5-fold v11 leg (0.931); on gold N fold 0 is 0.920 vs v11 5-fold 0.913 (gold -> LB offset
+   +0.014 vs +0.018 for v12), so a better target did give a better student this time (contrast L9).
+   Limits: the margin over the 0.933 threshold is 0.001; the LB gain of fold ensembling is unmeasured
+   (on gold it was +0.002 for v11, L13); under L15 a 5-fold N leg near 0.936 would only break even
+   in the blend, and 0.944 needs about 0.939.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -244,17 +250,17 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **Step D (v14_submit)**: commit run `lingxd/v14-submit` version 1 passed all checks (2026-10-07:
-   reference check byte-equal, OOF check diff 0.0 against the v13 N fold-0 OOF, 3/3 coverage). Submitted
-   2026-10-07 (ref 56898848); next: read the score when the user reports it. Quota: 2.21 GPU h until 2026-10-10
-   00:00 UTC.
-2. If LB(v14) >= 0.933: N folds 1-4 in the 2026-10-10 window (two sessions, FOLDS_JOBS
-   `[('N', 1), ('N', 2)]` then `[('N', 3), ('N', 4)]`), then v15 (5-fold N leg alone) and v16 (blend)
-   per design 4.6. If LB(v14) < 0.933: own-model work stops; picks v05 and v12.
-3. Diagnostic only (no veto, design 4.6): on the gold proxy anchors, N fold 0 at w 0.30 gains +0.0019
-   (coat_heavy, CI -0.0024 to +0.0062), +0.0049 (equal5), +0.0005 (coat_only); v11 fold 0 gains
-   -0.0013 / +0.0022 / -0.0020. Rank-mean of N and M on gold is 0.9035, below N alone (0.920).
-4. Keep v05 (0.943) as the final selection until something beats it. Team-merger deadline
+1. **v14 scored 0.934** (step D passed). Next: v13 `folds` mode for arm N in the 2026-10-10 window
+   (quota resets 2026-10-10 00:00 UTC; 2.21 h left until then, too little for a fold): session 1
+   `FOLDS_JOBS = [('N', 1), ('N', 2)]`, session 2 `[('N', 3), ('N', 4)]`, about 7 h each (fold 0
+   took 6.29 h). Set `QUOTA_AT_LAUNCH_H` from `kaggle quota` right before each push; download each
+   version's outputs before pushing the next (the CLI only serves the latest version). Each push
+   needs the user's approval.
+2. Then upload the 5 N checkpoints (`lingxd/rsna-knee-v13-weights` version 2), `v15_submit` = 5-fold
+   N leg alone (v14 notebook with five specs), and `v16_submit` = anchor + leg only if v15 >= 0.935
+   (w 0.30; w 0.45 if >= 0.940) and per design 4.6. Final selection per design 4.4 (candidates v05,
+   v12, v14, v15, v16).
+3. Keep v05 (0.943) as the final selection until something beats it. Team-merger deadline
    2026-10-15; final deadline 2026-10-22.
 
 ## Open questions

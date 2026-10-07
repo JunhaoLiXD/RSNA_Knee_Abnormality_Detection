@@ -14,7 +14,8 @@ and lessons behind each change. "STATUS L<n>" below is lesson n of that file.
 Status 2026-10-06: Priority 0 done (v05 0.943). Priority 1 tried as v08-v10 and did not
 help (v09 0.932, v10 leg alone 0.909). Priority 2 done: the v11 leg scores 0.931 alone (v12),
 below the 0.935 blend gate. **Active: Priority 2b, round-2 teacher and an MRI-pretrained second
-model (v13, D-015).**
+model (v13, D-015).** Status 2026-10-07: Gate F0 kept N only (MRI-CORE arm M gold 0.881, below
+the floor); step D passed (v14, N fold 0 alone, 0.934 >= 0.933, STATUS L17); N folds 1-4 next.
 
 ## Goal and constraints
 
