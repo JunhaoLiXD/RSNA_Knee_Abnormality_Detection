@@ -8,16 +8,18 @@ the data-loader worker count.
 Run in the conda env `kaggle-gpu` (environment-gpu.yml):
   python scripts/local_v13.py prepare            # input tree + checks of the v07 cache download
   python scripts/local_v13.py check              # re-infer the Kaggle fold-0 N checkpoint locally
-  python scripts/local_v13.py fold 1 --workers 8 # train arm N on fold 1
+  python scripts/local_v13.py fold 1 --workers 6 # train arm N on fold 1 (watchdog: --stall-min 15)
 """
 import argparse
 import hashlib
 import importlib
 import json
+import os
 import platform
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -147,19 +149,45 @@ def fold(args):
         print(f'local overrides: FOLDS_JOBS {ns["FOLDS_JOBS"]}, workers {args.workers}', flush=True)
 
     record = {'started': time.strftime('%Y-%m-%d %H:%M:%S'), 'fold': k, 'arm': arm, 'workers': args.workers, **env_record()}
-    run_cells(work_root, override)
+    state = {'done': False, 'killed': None}
+    threading.Thread(target=watchdog, args=(work_root / 'v13' / f'v13_log_{tag}.txt', args.stall_min * 60, state),
+                     daemon=True).start()
+    try:
+        run_cells(work_root, override)
+    finally:
+        state['done'] = True
     receipt = json.loads((out / f'v13_receipt_fold{k}_{arm}.json').read_text())
-    record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), status=receipt['status'],
+    record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), status=receipt['status'], killed=state['killed'],
                   train_targets_sha256_lf=targets_sha256_lf(work_root / 'v13' / 'v13_train_targets.csv'))
     record['targets_equal_kaggle_f0'] = record['train_targets_sha256_lf'] == kaggle_f0_targets_sha256()
     (work_root / 'v13' / f'v13_local_run_{tag}.json').write_text(json.dumps(record, indent=2))
+    print(json.dumps({key: receipt.get(key) for key in ('status', 'best_epoch', 'val_macro_k16', 'gold_macro_k16',
+                                                        'gold_ci', 'train_images_per_s', 'total_seconds')}, default=float))
+    if receipt['status'] != 'done' or state['killed']:
+        raise SystemExit(f'{tag} did not complete (status {receipt["status"]}, killed {state["killed"]}); '
+                         f'checkpoints left in {out}')
     dest = REPO / 'models' / 'v13' / 'v13' / tag
     dest.mkdir(parents=True, exist_ok=True)
     for p in out.glob('*.pt'):
         shutil.move(str(p), dest / p.name)
-    print(json.dumps({key: receipt.get(key) for key in ('status', 'best_epoch', 'val_macro_k16', 'gold_macro_k16',
-                                                        'gold_ci', 'train_images_per_s', 'total_seconds')}, default=float))
     print('targets equal to the Kaggle F0 run:', record['targets_equal_kaggle_f0'], '| checkpoints moved to', dest)
+
+
+def watchdog(log_path, stall_s, state):
+    """Kill the trainer (a child of this process) and its loader workers if its log stops growing.
+    On Windows a failed loader worker can leave the trainer blocked instead of exiting (v13 fold 2,
+    2026-10-07: WinError 1450 when the commit limit was reached)."""
+    while not state['done']:
+        time.sleep(60)
+        if state['done'] or not log_path.exists() or time.time() - log_path.stat().st_mtime < stall_s:
+            continue
+        query = f"(Get-CimInstance Win32_Process -Filter \"ParentProcessId={os.getpid()} and Name='python.exe'\").ProcessId"
+        pids = subprocess.run(['powershell', '-NoProfile', '-Command', query], capture_output=True, text=True).stdout.split()
+        for pid in pids:
+            subprocess.run(['taskkill', '/T', '/F', '/PID', pid], capture_output=True)
+        state['killed'] = f'log stalled for {stall_s / 60:.0f} min; killed {pids}'
+        print(f'watchdog: {state["killed"]}', flush=True)
+        return
 
 
 # ---------------------------------------------------------------------------------- check
@@ -214,6 +242,7 @@ if __name__ == '__main__':
     c.add_argument('--tolerance', type=float, default=0.01)
     f = sub.add_parser('fold')
     f.add_argument('fold', type=int, choices=[1, 2, 3, 4])
-    f.add_argument('--workers', type=int, default=8)
+    f.add_argument('--workers', type=int, default=6)   # 8 reached the Windows commit limit (fold 2, 2026-10-07)
+    f.add_argument('--stall-min', type=float, default=15.0)
     a = ap.parse_args()
     {'prepare': prepare, 'check': check, 'fold': fold}[a.cmd](a)
