@@ -11,8 +11,10 @@ share state through `docs/`.
 ## Status
 
 The project restarted on 2026-09-30 from strong public Kaggle code. The earlier in-house
-V01-V04 line (best public LB 0.664) is archived in `archive/legacy/`. Current phase,
-best scores, and next steps live in [docs/STATUS.md](docs/STATUS.md).
+V01-V04 line (best public LB 0.664) is archived in `archive/legacy/`. Best public LB so far:
+0.943 (v05, public-stack anchor); best own model 0.934 (v14, one fold of the v13 round-2
+teacher). Current phase, every version's settings and results, lessons, and next steps live in
+[docs/STATUS.md](docs/STATUS.md).
 
 ## Layout
 
@@ -30,10 +32,11 @@ best scores, and next steps live in [docs/STATUS.md](docs/STATUS.md).
 |-- notebooks/               # active versioned notebooks: vNN-<name>.ipynb (from v05)
 |-- scripts/
 |   |-- validate_notebooks.py           # static notebook checks
+|   |-- anchor_proxy_gold.py            # gold-58 proxy of the public anchor (diagnostic)
 |   `-- inspect_kaggle_train_images.py  # read-only DICOM layout audit (runs on Kaggle)
 |-- archive/legacy/          # abandoned V01-V04 notebooks and original README
 |-- data/                    # official CSVs (not tracked)
-|-- external/                # pulled third-party code (not tracked)
+|-- external/                # pulled third-party notebooks, datasets, pretrained weights (not tracked)
 |-- models/                  # checkpoints by version (not tracked)
 `-- results/                 # retained run outputs by version (not tracked)
 ```
