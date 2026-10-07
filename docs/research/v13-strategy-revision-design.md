@@ -170,6 +170,10 @@ the 0.935 gate. Cost: a commit run under 0.1 GPU h, about 1 h of scoring, one su
 
 ### 4.6 Steps F1-4 and P (5-fold leg, blend)
 
+> Naming note (D-017, 2026-10-07): the 5-fold leg alone called `v15_submit` here is published as
+> `v13_submit` (a model submitted alone keeps its version), and the blend called `v16_submit` as
+> `v15_submit` (new version v15). The rules below are unchanged.
+
 - **Inference gate before folds 1-4:** if C contains M, the test runtime of the final blend
   `anchor + (N or v11) leg + M leg` must be <= 8.0 h of the 9 h limit, where the anchor-plus-
   ConvNeXt-leg part is the **measured** scoring duration of the v09 submission (start to finish,

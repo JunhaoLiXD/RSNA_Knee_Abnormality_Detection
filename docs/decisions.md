@@ -3,6 +3,25 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-017 - 2026-10-07 - Submission numbering: a model submitted alone keeps its version
+
+**Decision.** A submission that uses only the models of one trained version keeps that version's
+number: `notebooks/vNN-submit.ipynb`, Kaggle `vNN_submit`, with the training version's NN (a fold
+subset is another Kaggle version of the same notebook, recorded in `experiments.md`). Only a
+submission that blends models of different versions, or adds the public anchor, takes the next
+free number; it is a version defined as an ensemble. D-010's `vNN_submit` naming stays.
+Applied to the v13 plan (design rev 3.2 names in brackets): the 5-fold N leg alone is
+`v13_submit` [`v15_submit`]; anchor + v13 leg is `v15_submit` [`v16_submit`], the new version
+v15. Final-selection candidates: v05, v12, v14, v13_submit, v15_submit. Earlier names stay: v09
+(blend), v10, v12 and v14 (legs alone, numbered under the old practice).
+
+**Reason.** User request 2026-10-07: version numbers should mark new models or new combinations,
+not every leaderboard upload of an existing model.
+
+**Consequences.** A version can now have a training notebook and a submission notebook; their
+outputs share the `vNN_` prefix and go to separate run folders under `results/vNN/`. The v13
+design, D-015 and D-016 keep their wording; STATUS and IMPROVEMENT_PLAN use the new names.
+
 ## D-016 - 2026-10-07 - Local GPU training (RTX 3080 Ti) for v13 arm-N folds 1-4
 
 **Decision.** Train v13 arm N folds 1-4 on the local RTX 3080 Ti (12 GB) instead of waiting for the

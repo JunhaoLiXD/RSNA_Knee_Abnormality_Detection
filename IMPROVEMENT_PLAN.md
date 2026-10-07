@@ -142,7 +142,8 @@ applied; v05 stays the final pick until something beats it on the public LB.
 4. **Step D**: `v14_submit` = C's fold-0 models alone; continue only if the public LB >= 0.933 (a
    resource-allocation threshold).
 5. **Folds 1-4**, inference-time gate for blends that include M (measured v09 duration), then
-   `v15_submit` leg alone and `v16_submit` blend under the v11 4.4 gate; pre-registered terminal
+   `v13_submit` leg alone and `v15_submit` blend under the v11 4.4 gate (design names `v15_submit` /
+   `v16_submit`, renamed by D-017); pre-registered terminal
    states if components cannot finish by 2026-10-20.
 
 **Why.**
@@ -166,7 +167,7 @@ applied; v05 stays the final pick until something beats it on the public LB.
 
 **Cost.** Step S + F0 about 8.4 GPU h before 2026-10-10; folds 1-4 about 15 h (N-only or v11+M) or
 about 31 h over two windows (N+M); commit runs under 0.1 h each.
-**Done when.** v15's leg-alone score is recorded and the blend gate applied, or a gate stops the
+**Done when.** v13_submit's leg-alone score is recorded and the blend gate applied, or a gate stops the
 work; v05 stays pick 1 until something beats it.
 
 ## Priority 3 - Anchor robustness and runtime
@@ -245,7 +246,7 @@ anchor, Codex review of design v13).
 |---|---|
 | 2026-09-26 to 10-02 | Used: v05 commit, v06/v07 (CPU), v08 fold 0 and folds 1-4 (6.5 h + 7.6 h) |
 | 2026-10-03 to 10-09 | Used: v11 fold 0 (7.5 h), folds 1-2 (6.5 h), folds 3-4 (7.0 h), v12 commit; 8.80 h left on 10-06. Planned: v13 step S (0.5 h) and fold 0 (<= 7.9 h) |
-| 2026-10-10 to 10-16 | v13 folds 1-4 if Gate F0 and step D pass (about 15 h, or about 23 h for N+M); v15/v16 commits; possible F0 rerun |
+| 2026-10-10 to 10-16 | v13 folds 1-4 if Gate F0 and step D pass (about 15 h, or about 23 h for N+M); v13_submit / v15_submit commits; possible F0 rerun |
 | 2026-10-17 to 10-23 | Remaining N+M sessions (about 8-16 h); training ends by 10-20; final selection by 10-22 |
 
 Scoring reruns do not count against the quota (checked 2026-10-04 with `kaggle quota`); keep a

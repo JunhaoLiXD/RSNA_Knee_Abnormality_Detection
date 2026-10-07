@@ -256,10 +256,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    targets equal to the Kaggle F0 run, and the Kaggle fold-0 N checkpoint re-inferred locally gives
    gold 0.9200 (identical) with max abs diff 1.9e-4 (gold) / 3.8e-4 (100 validation studies). The
    Kaggle fallback (folds mode, two sessions after the 2026-10-10 reset) stays configured.
-2. Then upload the 5 N checkpoints (`lingxd/rsna-knee-v13-weights` version 2), `v15_submit` = 5-fold
-   N leg alone (v14 notebook with five specs), and `v16_submit` = anchor + leg only if v15 >= 0.935
-   (w 0.30; w 0.45 if >= 0.940) and per design 4.6. Final selection per design 4.4 (candidates v05,
-   v12, v14, v15, v16).
+2. Then upload the 5 N checkpoints (`lingxd/rsna-knee-v13-weights` version 2), `v13_submit` = 5-fold
+   N leg alone (v14 notebook with five specs; design name `v15_submit`, renamed by D-017), and
+   `v15_submit` = anchor + v13 leg (new version v15; design name `v16_submit`) only if v13_submit
+   >= 0.935 (w 0.30; w 0.45 if >= 0.940) and per design 4.6. Final selection per design 4.4
+   (candidates v05, v12, v14, v13_submit, v15_submit).
 3. Keep v05 (0.943) as the final selection until something beats it. Team-merger deadline
    2026-10-15; final deadline 2026-10-22.
 
