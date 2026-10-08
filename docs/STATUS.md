@@ -14,7 +14,7 @@ Last updated: 2026-10-08
 teacher) trained on five folds (fold 0 on Kaggle, folds 1-4 on the local RTX 3080 Ti, D-016).
 Leg alone: fold 0 0.934 (v14), 5 folds 0.936 (v13_submit). Blends with the v05 anchor (D-018):
 **v15 (w 0.30) 0.944**, the first own submission above v05; v16 (w 0.45) 0.943. Final selection
-now: **v17 (0.950) + v15 (0.944)**. The leaderboard moved: on 2026-10-08 bronze needs 0.947 (top 10%, rank 549
+now: **v19 (0.950) + v15 (0.944)**. The leaderboard moved: on 2026-10-08 bronze needs 0.947 (top 10%, rank 549
 of 5,493) and silver 0.950; our 0.944 is rank 844. New public notebooks ranked above the 0.946
 ones of 2026-10-05 (titles claim 0.949 to 0.95+; scores not yet verified), so the v05 anchor is
 likely no longer the strongest public base (D-001). Deadline 2026-10-22; team merger 2026-10-15.
@@ -44,7 +44,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v15 / v16 | 2026-10-08 | submit (blends, D-018) | v05 anchor (cells unchanged from v09) + v13 arm-N 5-fold leg, rank blend at w 0.30 (v15) / 0.45 (v16) | built; local tests of the leg and blend cells pass (fallback keeps the anchor; blend formula) | **0.944** / 0.943 | v15 is the first own submission above v05; final picks v05 + v15 (D-018). Leaderboard moved: on 2026-10-08 bronze needs 0.947 (rank 549 of 5,493), we are rank 844 |
 | v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | commit run passes (weights hash verified, fusion applied); submitted 2026-10-08 (ref 56958475) | **0.950** | reproduces the source; new anchor and best score (about rank 401 of 5,493 on the 2026-10-08 board, inside bronze) |
 | v18 | 2026-10-08 | audit (gold diagnostic) | the v17 components (CoAtNet-384 inference cell with its data root pointed at a gold-58 tree; ConvNeXt reader infer.py) on the 58 gold studies, for blend analysis with our v13 N leg | built; gold-tree cell tested locally with the real CSVs; run 2026-10-08 (188 s) | gold: CoAtNet 0.923, reader 0.915, v17 0.925, N 0.920 | N-CoAtNet gold noise corr 0.81 (reader 0.79); fusion design v19/v20 under Codex review |
-| v19 / v20 | 2026-10-08 | submit (blends, design v19-fusion rev 2) | v17 anchor (cells unchanged) + v13 arm-N 5-fold leg, outer rank blend at w 0.15 (v19) / 0.25 (v20); absolute leg deadline, byte-equal reference, OOF over 5 folds at 1e-3 | built; local tests of the leg and blend cells pass (fallback, blend formula, deadline kill) | - | commit runs pass all three gates (base = v17 byte for byte; reference byte-equal on the v17 image; OOF 5 folds <= 5.5e-5; blend recomputed); v19 submitted 2026-10-08 (ref 56970366); v20 scheduled after 00:00 UTC 2026-10-09 (user-approved) |
+| v19 / v20 | 2026-10-08 | submit (blends, design v19-fusion rev 2) | v17 anchor (cells unchanged) + v13 arm-N 5-fold leg, outer rank blend at w 0.15 (v19) / 0.25 (v20); absolute leg deadline, byte-equal reference, OOF over 5 folds at 1e-3 | built; local tests of the leg and blend cells pass (fallback, blend formula, deadline kill) | - | commit runs pass all three gates (base = v17 byte for byte; reference byte-equal on the v17 image; OOF 5 folds <= 5.5e-5; blend recomputed); **v19 0.950** (= v17; tie keeps v19 per the decision rule); v20 scheduled after 00:00 UTC 2026-10-09 (user-approved) |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -275,7 +275,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    blend only if the evidence changes (e.g. a measured low correlation).
 3. Own-model work needs a leg near 0.943-0.945 alone to move a stronger anchor (L18): a design note
    and Codex review (D-004) before any further training.
-4. Final selection until something beats it: **v17 (0.950, OAI-based, D-019) + v15 (0.944, non-OAI)**. Team-merger deadline 2026-10-15; final
+4. Final selection until something beats it: **v19 (0.950, OAI-based anchor + our leg) + v15 (0.944, non-OAI)**. Team-merger deadline 2026-10-15; final
    deadline 2026-10-22.
 
 ## Open questions
