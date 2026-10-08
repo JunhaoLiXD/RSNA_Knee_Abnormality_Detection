@@ -258,13 +258,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **Refresh the public landscape** (`docs/research/public-landscape-2026-10-08.md`): verify the
-   public scores of the new top notebooks (browser API, memory note), their licences and whether
-   they run with public inputs only; pull the best into `external/kernels/`. On 2026-10-08 the CLI
-   ranks, above the 2026-10-05 leaders: matterhorn3838 (V2 Velciraptor DINOsaur Speed, D4),
-   "Apex Grandmaster Stack" (several forks, one titled LB 0.95+), "0949 Anatomical Mirror",
-   goodpjw2008 "0.949 CoAtNet + Stack Blend", prvsiyan "The bee's knees - final RSNA push".
-2. If a reproducible public notebook beats 0.944, it becomes the new anchor (new version, D-001)
+1. **Public landscape refreshed** (`docs/research/public-landscape-2026-10-08.md`): every public
+   notebook at 0.949-0.950 (twelve, verified scores) is built on one CoAtNet-384 checkpoint
+   (`nartaa/rsna-knee-publication-swa-weights-20261007`) trained with 2,399 **OAI** knees; whether
+   OAI-derived models are allowed is unresolved (host principles exclude institution-gated data;
+   topic 743416 unanswered). Without OAI, our v15 0.944 is at the public frontier. **User decision
+   needed**: stay non-OAI, adopt the OAI-based base (new version), hedge, or ask the host first.
+2. If an allowed public notebook beats 0.944, it becomes the new anchor (new version, D-001)
    and a final pick. Under the recalibrated blend model (L18) the 0.936 N leg adds at most about
    +0.0004 to a 0.947-0.950 anchor (best w 0.0-0.17); w 0.30 would cost 0.001-0.0013. Test a
    blend only if the evidence changes (e.g. a measured low correlation).
