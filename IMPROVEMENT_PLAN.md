@@ -5,7 +5,8 @@ the reason behind it. Written 2026-10-01 after the baseline survey
 (`docs/research/baseline-selection.md`, `docs/research/discussion-key-findings.md`);
 revised 2026-10-04 after v09/v10 per `docs/research/v11-strategy-revision-design.md`
 revision 2.1 (D-014), and 2026-10-06 after v12 per `docs/research/v13-strategy-revision-design.md`
-revision 3.1 (D-015). Update this file when a direction is started, finished, or dropped;
+revision 3.1 (D-015), and 2026-10-08 after the anchor swap (D-019) and the v19/v20 fusion design.
+Update this file when a direction is started, finished, or dropped;
 record results in `docs/experiments.md` and decisions in `docs/decisions.md`.
 
 **Before editing this file, read `docs/STATUS.md` (D-011, D-012)** and cite the versions
@@ -16,6 +17,10 @@ help (v09 0.932, v10 leg alone 0.909). Priority 2 done: the v11 leg scores 0.931
 below the 0.935 blend gate. **Active: Priority 2b, round-2 teacher and an MRI-pretrained second
 model (v13, D-015).** Status 2026-10-07: Gate F0 kept N only (MRI-CORE arm M gold 0.881, below
 the floor); step D passed (v14, N fold 0 alone, 0.934 >= 0.933, STATUS L17); N folds 1-4 next.
+Status 2026-10-08: Priority 2b done (5-fold N leg 0.936 alone; v15 blend 0.944, STATUS L18).
+**Active: Priority 5**, the OAI-based public anchor (v17 0.950, D-019) with our leg blended in (v19
+0.950 at w 0.15; v20 at w 0.25 pending). Next: a design note for a stronger own model (Priority 6,
+proposed, not yet reviewed).
 
 ## Goal and constraints
 
@@ -27,7 +32,10 @@ the floor); step D passed (v14, N fold 0 alone, 0.934 >= 0.933, STATUS L17); N f
 - **Compute: 30 Kaggle GPU hours per quota window.** Windows reset on Saturdays at 00:00 UTC
   (10-03, 10-10, 10-17); `kaggle quota` shows the usage. Submission scoring reruns do not count
   (checked 2026-10-04: 0.18 h used after the v09 and v10 scoring runs, 29.82 h left until 10-10).
-  No local GPU.
+  Since 2026-10-07 also a local RTX 3080 Ti for training (D-016; about 2.5 h per ConvNeXt-tiny fold,
+  STATUS L19); submissions and their inference stay on Kaggle.
+- **Board on 2026-10-08:** 5,537 teams; bronze and silver cut ranks (553, 276) both sit inside the
+  0.950 tie block, so ranks inside the block are decided by unrounded scores (STATUS L22).
 - **Dates:** entry and team-merger deadline 2026-10-15; final submission 2026-10-22.
 - **Submissions:** 5 per day; two final selections.
 - **External MRI datasets:** considered and deferred for this round (design v11 section 3.1;
@@ -128,7 +136,7 @@ then arm A instead of B, then stop.
 **Done when.** v12's leg-alone public score is recorded and the blend decision of item 4 is
 applied; v05 stays the final pick until something beats it on the public LB.
 
-## Priority 2b - Round-2 teacher (N) and an MRI-pretrained second model (M), v13 - active (D-015)
+## Priority 2b - Round-2 teacher (N) and an MRI-pretrained second model (M), v13 - done (D-015)
 
 **What.** Design `docs/research/v13-strategy-revision-design.md` revision 3.1:
 
@@ -170,6 +178,34 @@ about 31 h over two windows (N+M); commit runs under 0.1 h each.
 **Done when.** v13_submit's leg-alone score is recorded and the blend gate applied, or a gate stops the
 work; v05 stays pick 1 until something beats it.
 
+**Result (2026-10-08).** Arm M dropped at Gate F0 (gold 0.881). Arm N: 5 folds (fold 0 on Kaggle,
+folds 1-4 locally, D-016), gold 0.920 vs v11 0.913 (+0.007, CI +0.002 to +0.013); public 0.934 for fold
+0 alone (v14) and **0.936** for 5 folds (v13_submit). Both pre-registered blends with v05 were submitted
+at once (D-018): w 0.30 **0.944** (v15), w 0.45 0.943 (v16) (STATUS L17, L18).
+
+## Priority 5 - OAI-based public anchor plus our leg (v17-v20) - active (D-019)
+
+**What.** v17 = the public 0.950 notebook (CoAtNet-384 SWA trained with OAI + ConvNeXt reader)
+unchanged; v18 = gold-58 diagnostic of its components; v19 / v20 = v17 output + our 5-fold N leg,
+outer rank blend at w 0.15 / 0.25 (`docs/research/v19-fusion-design.md` revision 2, Codex-reviewed).
+
+**Why.** All public notebooks at 0.949-0.950 share this checkpoint; without it the frontier is our
+0.944 (STATUS L20). On gold our leg is about as different from the CoAtNet as the reader that adds
++0.001 on the LB (STATUS L21).
+
+**Result so far.** v17 0.950; v19 0.950 (tie, kept per the decision rule); v20 scheduled for
+2026-10-09. Rank 247 of 5,537 on 2026-10-08.
+
+**Risk.** The OAI rule question is unresolved (topic 743416); the user accepted it (D-019). v15
+(0.944, non-OAI) stays the second final pick as a hedge.
+
+## Priority 6 - A stronger own model - proposed (needs a design note and Codex review)
+
+The fusion lever is nearly used up (STATUS L21): a 0.936 leg ties when added to a 0.950 base. Ideas to
+compare in a design note, not yet evaluated: our OOF-teacher target on a CoAtNet / 384 px recipe, or
+fine-tuning the public CoAtNet-384 checkpoint with our targets; local GPU (D-016). Gold-58 cannot rank
+models of different families (STATUS L20), so the plan must budget LB checks.
+
 ## Priority 3 - Anchor robustness and runtime
 
 **What.**
@@ -178,7 +214,8 @@ work; v05 stays pick 1 until something beats it.
 2. Check the stack's A5 stage, which uses bf16 autocast on T4 GPUs that have no native
    bf16: compare its predictions under bf16 and fp16 on a few training studies; if the
    rankings differ materially, run it in fp16.
-3. **Final selection** (two picks by 2026-10-22, over the measured candidates v05, v12, v13;
+3. **Final selection** (superseded on 2026-10-08: picks are v19 + v15, see STATUS and D-018/D-019;
+   original text kept below) (two picks by 2026-10-22, over the measured candidates v05, v12, v13;
    replaces "pre-declared blend weight plus a conservative variant"): pick 1 is the highest
    public LB; pick 2 is the highest of the other kind (anchor-based v05/v13 versus own-only
    v12), so one pick contains the anchor and one does not when both exist; a blend stays a
@@ -234,7 +271,8 @@ anchor, Codex review of design v13).
   allows a dataset and Priority 2 has been tried. Any registration is the user's to do.
   Rechecked 2026-10-06 (`external-pretrained-2026-10-06.md`): still no host answer (topic
   743416); KneeCoT ruled out by the host. MRI-pretrained public weights (MRI-CORE) are used
-  instead (Priority 2b).
+  instead (Priority 2b). Since 2026-10-08 public weights trained with OAI are used as the anchor
+  (D-019, Priority 5); training on OAI ourselves is still not planned (access is institution-gated).
 - **Distilling or fine-tuning the anchor's public members:** their training-set OOF is weaker than
   ours (0.851 vs 0.875 against the soft target) and copying them would raise the correlation with
   the anchor (STATUS L15, L16).
@@ -246,8 +284,9 @@ anchor, Codex review of design v13).
 |---|---|
 | 2026-09-26 to 10-02 | Used: v05 commit, v06/v07 (CPU), v08 fold 0 and folds 1-4 (6.5 h + 7.6 h) |
 | 2026-10-03 to 10-09 | Used: v11 fold 0 (7.5 h), folds 1-2 (6.5 h), folds 3-4 (7.0 h), v12 commit; 8.80 h left on 10-06. Planned: v13 step S (0.5 h) and fold 0 (<= 7.9 h) |
-| 2026-10-10 to 10-16 | v13 folds 1-4 if Gate F0 and step D pass (about 15 h, or about 23 h for N+M); v13_submit / v15_submit commits; possible F0 rerun |
-| 2026-10-17 to 10-23 | Remaining N+M sessions (about 8-16 h); training ends by 10-20; final selection by 10-22 |
+| 2026-10-03 to 10-09 (actual) | ... plus v13 step S and F0 (about 6.6 h), v14/v13/v15/v16/v17/v19/v20 commits and v18 (under 0.2 h each); v13 folds 1-4 ran locally instead (D-016); 1.80 h left on 10-08 |
+| 2026-10-10 to 10-16 | Commit runs for Priority 5/6 submissions; Priority 6 training mostly local, Kaggle GPU for anything the local GPU cannot run |
+| 2026-10-17 to 10-23 | Priority 6 if approved; final selection by 10-22 |
 
 Scoring reruns do not count against the quota (checked 2026-10-04 with `kaggle quota`); keep a
 few hours of margin per window for reruns of failed sessions.

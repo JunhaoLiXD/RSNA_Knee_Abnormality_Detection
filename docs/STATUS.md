@@ -6,18 +6,19 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-08
+Last updated: 2026-10-08 (end of session)
 
 ## Current phase
 
-**Phase 4 - strategy revision after v12, executed** (2026-10-06 to 10-08). v13 arm N (round-2
-teacher) trained on five folds (fold 0 on Kaggle, folds 1-4 on the local RTX 3080 Ti, D-016).
-Leg alone: fold 0 0.934 (v14), 5 folds 0.936 (v13_submit). Blends with the v05 anchor (D-018):
-**v15 (w 0.30) 0.944**, the first own submission above v05; v16 (w 0.45) 0.943. Final selection
-now: **v19 (0.950) + v15 (0.944)**. The leaderboard moved: on 2026-10-08 bronze needs 0.947 (top 10%, rank 549
-of 5,493) and silver 0.950; our 0.944 is rank 844. New public notebooks ranked above the 0.946
-ones of 2026-10-05 (titles claim 0.949 to 0.95+; scores not yet verified), so the v05 anchor is
-likely no longer the strongest public base (D-001). Deadline 2026-10-22; team merger 2026-10-15.
+**Phase 5 - OAI-based public anchor plus our leg** (2026-10-08). Phase 4 (v13 round-2 teacher)
+finished: our 5-fold arm-N leg scores 0.936 alone (v13_submit) and 0.944 blended into the old v05
+stack (v15). All public notebooks at 0.949-0.950 share one CoAtNet-384 checkpoint trained with OAI
+data; the user adopted it despite the unresolved rule risk (D-019). v17 (public 0.950 notebook
+unchanged) reproduced **0.950**; v19 (v17 + our leg at w 0.15) also **0.950** (tie at 3 decimals;
+ranking uses unrounded scores). v20 (w 0.25) was scheduled to be submitted right after 00:00 UTC
+2026-10-09. Leaderboard 2026-10-08 ~23:00 UTC: **rank 247 of 5,537**, inside silver (cut rank 276)
+but the 0.950 block spans ranks 176-554 and is growing. Final selection now: **v19 (0.950) + v15
+(0.944, non-OAI)**. Deadline 2026-10-22; entry and team-merger deadline 2026-10-15.
 
 ## Versions and results
 
@@ -31,7 +32,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v02 | 2026-08 | legacy model | v01 + calibrated soft labels | OOF collapsed to base rate | - | archived |
 | v03 | 2026-08-09 | legacy model | v02 + hierarchical label priors, 5 folds | gold 0.632 | 0.664 | archived; best legacy result |
 | v04 | 2026-08 | legacy model | DINOv2-small, laterality norm, attention head | never trained | - | archived |
-| v05 | 2026-10-01 | submit | Public stack anchor: jiweiliu v11 unchanged | - | **0.943** | **current best; only safe final pick** |
+| v05 | 2026-10-01 | submit | Public stack anchor: jiweiliu v11 unchanged | - | 0.943 | superseded by v17/v19 (OAI-based); base of the non-OAI pick v15 |
 | v06 | 2026-10-01 | data (CPU) | DICOM audit, slot selection, targets, folds | all gates pass | - | done |
 | v07 | 2026-10-02 | data (CPU) | 320 px JPEG cache, 4,407 studies | 0 errors, 14.56 GB | - | done |
 | v08 | 2026-10-02/03 | training | ConvNeXt-tiny 2.5D, 5 folds | CV 0.840; gold 0.897 (ens.) | - | trained; too weak (see v10) |
@@ -42,13 +43,26 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | F0: N gold 0.920 (+0.009 over v11 fold 0, CI +0.003 to +0.017); M gold 0.881 (below 0.900 floor) | - | Gate F0: C = N-only; step D passed (v14 0.934); folds 1-4 on the local GPU (D-016): fold 1 val 0.872 / gold 0.917 (v11 fold 1 0.910); fold 2 (rerun after a Windows commit-limit failure) val 0.863 / gold 0.915 (v11 0.911); fold 3 val 0.868 / gold 0.918; fold 4 val 0.871 / gold 0.916. **5 folds done: gold 5-fold 0.920 vs v11 0.913 (+0.007, CI +0.002 to +0.013)**; pooled OOF 0.873 (v11 0.875); v13_submit commit run (2026-10-08): reference and OOF checks pass (local-trained folds match on Kaggle to 5.5e-5); submitted 2026-10-08 (ref 56934683): **public LB 0.936** |
 | v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | 0.934 | one fold beats v12's 5-fold v11 leg (0.931); passes the 0.933 step-D threshold: N folds 1-4 (commit run: reference and OOF checks pass, OOF diff 0.0) |
 | v15 / v16 | 2026-10-08 | submit (blends, D-018) | v05 anchor (cells unchanged from v09) + v13 arm-N 5-fold leg, rank blend at w 0.30 (v15) / 0.45 (v16) | built; local tests of the leg and blend cells pass (fallback keeps the anchor; blend formula) | **0.944** / 0.943 | v15 is the first own submission above v05; final picks v05 + v15 (D-018). Leaderboard moved: on 2026-10-08 bronze needs 0.947 (rank 549 of 5,493), we are rank 844 |
-| v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | commit run passes (weights hash verified, fusion applied); submitted 2026-10-08 (ref 56958475) | **0.950** | reproduces the source; new anchor and best score (about rank 401 of 5,493 on the 2026-10-08 board, inside bronze) |
+| v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | commit run passes (weights hash verified, fusion applied); submitted 2026-10-08 (ref 56958475) | **0.950** | reproduces the source; new anchor (rank 247 of 5,537 on 2026-10-08 together with v19) |
 | v18 | 2026-10-08 | audit (gold diagnostic) | the v17 components (CoAtNet-384 inference cell with its data root pointed at a gold-58 tree; ConvNeXt reader infer.py) on the 58 gold studies, for blend analysis with our v13 N leg | built; gold-tree cell tested locally with the real CSVs; run 2026-10-08 (188 s) | gold: CoAtNet 0.923, reader 0.915, v17 0.925, N 0.920 | N-CoAtNet gold noise corr 0.81 (reader 0.79); fusion design v19/v20 under Codex review |
 | v19 / v20 | 2026-10-08 | submit (blends, design v19-fusion rev 2) | v17 anchor (cells unchanged) + v13 arm-N 5-fold leg, outer rank blend at w 0.15 (v19) / 0.25 (v20); absolute leg deadline, byte-equal reference, OOF over 5 folds at 1e-3 | built; local tests of the leg and blend cells pass (fallback, blend formula, deadline kill) | - | commit runs pass all three gates (base = v17 byte for byte; reference byte-equal on the v17 image; OOF 5 folds <= 5.5e-5; blend recomputed); **v19 0.950** (= v17; tie keeps v19 per the decision rule); v20 scheduled after 00:00 UTC 2026-10-09 (user-approved) |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
 | ref | 2026-10-05 | leaderboard | 5,184 teams; #1 0.963; #10 0.959; #100 0.951; silver line 0.945; >= 0.944 is inside bronze; 0.943 block ranks 370-1,375; we are #1,278 | - | - | reference |
+| ref | 2026-10-08 | public notebooks | twelve at 0.949-0.950, all on the OAI-trained CoAtNet-384 SWA (nartaa); 0.950 = + goodpjw2008 ConvNeXt reader (`public-landscape-2026-10-08.md`) | - | 0.950 | reference |
+| ref | 2026-10-08 | leaderboard | 5,537 teams (~23:00 UTC); #1 0.964; 0.950 block ranks 176-554; silver cut rank 276 and bronze cut rank 553 both at 0.950; we are #247 | - | - | reference |
+
+### OAI-based anchor (v17; base of v19/v20)
+
+| Item | Value |
+|---|---|
+| Source | `sujanmajhisuzan/rsna-knee-apex-grandmaster-stack` v1 (Apache 2.0), unchanged |
+| Members | nartaa CoAtNet-384 SWA (`coatnet_rmlp_2_rw_384`, 96 slices, 94 windows, native 320 crop, mirror TTA; trained with 2,399 OAI knees; public 0.949 alone) + goodpjw2008 2.5D ConvNeXt-tiny reader (3 folds; 0.929 alone), per-finding rank weights 0.03-0.35 |
+| Docker image | `gcr.io/kaggle-private-byod/python@sha256:2757e0c...` (Python 3.13, OpenCV 4.14) |
+| Runtime | 73 s commit run on 3 studies; author reports about 26 min turnaround for the CoAtNet entry |
+| Gold-58 (v18) | CoAtNet 0.923, reader 0.915, v17 0.925 (gold under-rates the CoAtNet: LB offset +0.026 vs +0.016 for our N) |
+| Known gap | the reader's `pylibjpeg-libjpeg` wheel does not install on this image (cp311/cp312 only) |
 
 ### Public-stack anchor (v05)
 
@@ -175,6 +189,27 @@ fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. 
 5-fold: MCL +0.052, Lateral Meniscus +0.048, Fracture +0.031, Lateral OA +0.022; ACL -0.007, PF OA
 -0.008, Contusion -0.006. All five checkpoints are in `models/v11/` (git-ignored).
 
+### v13 arm N (round-2 teacher; the leg in v13_submit, v15/v16, v19/v20)
+
+| Setting | Value |
+|---|---|
+| Recipe | v11-B (ConvNeXt-tiny `fb_in22k_ft_in1k`, 320 px triplets, K_train 4, K_infer 16, 15 epochs, LR 1e-4 / 3e-4, gated per-finding attention) |
+| Target | `0.5 * 4-source soft + 0.5 * v11 OOF` (gold excluded) |
+| Where trained | fold 0 on Kaggle (v13 version 2, 6.29 h); folds 1-4 locally on the RTX 3080 Ti (D-016, `scripts/local_v13.py`, 6 loader workers, 2.2-2.6 h per fold) |
+| Checkpoints | `models/v13/v13/fold<k>_N/v13_fold_<k>_N_best.pt`; Kaggle dataset `lingxd/rsna-knee-v13-weights` version 2 |
+
+| Fold | Val macro AUC (v11) | Gold-58 (v11) | Best epoch |
+|---|---:|---:|---:|
+| 0 | 0.899 (0.898) | 0.920 (0.911) | 9 |
+| 1 | 0.872 (0.873) | 0.917 (0.910) | 11 |
+| 2 | 0.863 (0.862) | 0.915 (0.911) | 12 |
+| 3 | 0.868 (0.868) | 0.918 (0.911) | 14 |
+| 4 | 0.871 (0.870) | 0.916 (0.911) | 13 |
+| 5-fold | pooled OOF 0.873 (0.875) | rank ensemble 0.920 (0.913; +0.007, CI +0.002 to +0.013) | - |
+
+Public LB: fold 0 alone 0.934 (v14), 5 folds 0.936 (v13_submit). Arm M (MRI-CORE ViT-B/16) reached
+gold 0.881 at fold 0 and was dropped (Gate F0).
+
 ## Lessons (evidence-backed)
 
 1. **The public stack is a high floor.** v05 = 0.943 with zero training; any added model must
@@ -246,6 +281,18 @@ fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. 
    about 11.8 GB (GPU allocations are charged to host commit under WDDM). 8 workers hit the 47 GB
    limit; 6 workers run at 170 img/s (2.5 h per fold, vs about 6.5 h on a Kaggle T4 pair). A
    blocked trainer needs a log-stall watchdog. Locally trained folds reproduce on Kaggle to 5.5e-5.
+20. **The public frontier moved to one OAI-trained model.** All twelve public notebooks at
+   0.949-0.950 (2026-10-08) load the same CoAtNet-384 checkpoint; its author reports 0.942 without
+   OAI and +0.005 from 2,399 OAI knees. Without OAI the public frontier equals our 0.944 (v15).
+   Gold-to-LB offsets differ by model (CoAtNet +0.026, N +0.016, reader +0.014), so gold-58 does not
+   rank models of different families (`public-landscape-2026-10-08.md`, v18).
+21. **Our leg is about as different from the CoAtNet as the public reader** (gold noise correlation
+   N-CoAtNet 0.809, reader-CoAtNet 0.786, N-v17 0.827; LB-consistent reader-CoAtNet 0.80-0.88). Added
+   to v17 at w 0.15 it ties at 0.950 (v19): no measurable public gain and no loss. The single-number
+   binormal model cannot identify the correlation of a per-finding fusion (Codex, v19 design).
+22. **Kaggle ranks on unrounded scores** (display 3 decimals): on 2026-10-08 we ranked 72nd of 379
+   teams at 0.950, ahead of 282 earlier submitters. A change in our rank after a new submission shows
+   whether it beats our best in the hidden digits.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -261,36 +308,41 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **Public landscape refreshed** (`docs/research/public-landscape-2026-10-08.md`): every public
-   notebook at 0.949-0.950 (twelve, verified scores) is built on one CoAtNet-384 checkpoint
-   (`nartaa/rsna-knee-publication-swa-weights-20261007`) trained with 2,399 **OAI** knees; whether
-   OAI-derived models are allowed is unresolved (host principles exclude institution-gated data;
-   topic 743416 unanswered). Without OAI, our v15 0.944 is at the public frontier. **User decision
-   (D-019): adopt the OAI-based base**, rule risk accepted. v17 = sujanmajhisuzan Apex Grandmaster
-   Stack (version 1, Apache 2.0, public 0.950) unchanged plus provenance, configuration and final
-   check cells; built and validated, commit run needs approval.
-2. If an allowed public notebook beats 0.944, it becomes the new anchor (new version, D-001)
-   and a final pick. Under the recalibrated blend model (L18) the 0.936 N leg adds at most about
-   +0.0004 to a 0.947-0.950 anchor (best w 0.0-0.17); w 0.30 would cost 0.001-0.0013. Test a
-   blend only if the evidence changes (e.g. a measured low correlation).
-3. Own-model work needs a leg near 0.943-0.945 alone to move a stronger anchor (L18): a design note
-   and Codex review (D-004) before any further training.
-4. Final selection until something beats it: **v19 (0.950, OAI-based anchor + our leg) + v15 (0.944, non-OAI)**. Leaderboard 2026-10-08 ~23:00 UTC: rank 247 of 5,537 (0.950 block spans ranks 176-554; silver cut rank 276, bronze 553, both at 0.950); ranking uses unrounded scores (`competition.md`). Team-merger deadline 2026-10-15; final
-   deadline 2026-10-22.
+1. **v20** (v17 + N at w 0.25): a background timer in the 2026-10-08 session was to submit it right
+   after 00:00 UTC 2026-10-09 (user-approved). Check `kaggle competitions submissions`: if it is not
+   there, submit `lingxd/v20-submit` version 1 (commit run already passed all gates, `results/v20/run1/`).
+   Record the ref and score in `experiments.md`.
+2. **Decision rule** (`v19-fusion-design.md`): v20 replaces v19 as the anchor-family pick only with a
+   public score >= v19 + 0.002 (i.e. >= 0.952). Also compare our leaderboard rank before and after
+   v20 is scored (L22): a better rank means v20 beats our best in the hidden digits.
+3. **Next direction (needs a design note and Codex review, D-004):** blending our 0.936 leg into the
+   0.950 base is at a tie (L21); the remaining lever is a stronger own model. Candidates to compare in
+   a design note: train our OOF-teacher target on a CoAtNet / 384 px recipe, or fine-tune the public
+   CoAtNet-384 checkpoint with our targets (D-019 already accepts OAI-derived weights), using the
+   local RTX 3080 Ti (D-016, about 2.5 h per ConvNeXt fold; CoAtNet-384 will be slower). Gold-58 cannot
+   rank families (L20), so plan LB checks.
+4. **Team merger** (deadline 2026-10-15): the user's decision; not discussed yet.
+5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
+   ruling (topic 743416) could still change the picture; check it before 2026-10-22.
 
 ## Open questions
 
-- Hidden-test DICOM transfer syntaxes are unknown (training and the sampled placeholder test
-  files are uncompressed); the pinned Kaggle image has Pillow 11.3.0 with JPEG 2000 (v10).
-- Whether bf16 autocast in the stack's A5 stage costs AUC on T4.
-- External knee MRI datasets: postponed by the user.
+- Is the OAI-trained CoAtNet allowed? No host answer (topic 743416); D-019 accepted the risk.
+- Hidden-test DICOM transfer syntaxes are unknown (all training and placeholder test files are
+  uncompressed); the v17 image has PIL 12.3 with JPEG 2000 but no pylibjpeg/gdcm, and the reader's
+  pylibjpeg-libjpeg wheel does not install there.
+- Whether bf16 autocast in the old stack's A5 stage costs AUC on T4 (v05/v15 only).
 
 ## Environment
 
-- Local Python: conda env `kaggle` (Python 3.11) on PATH; recipe in `environment.yml`.
-- Kaggle access: `KAGGLE_API_TOKEN` user environment variable (never print it); Kaggle
-  CLI plus the `nvidia-kaggle` and `kaggle@shepsci` Claude Code plugins.
-- Training and submission run on Kaggle GPUs only.
-- GPU quota: `kaggle quota` shows hours used and left. Windows of 30 h reset on Saturdays at
-  00:00 UTC; submission scoring reruns do not count (2026-10-04: 0.18 h used, 29.82 h left
-  until 2026-10-10).
+- Local analysis: conda env `kaggle` (Python 3.11, CPU torch) on PATH; recipe `environment.yml`.
+- Local GPU training (D-016): RTX 3080 Ti 12 GB, i7-12700K, 32 GB RAM; conda env `kaggle-gpu`
+  (`E:\Anaconda\envs\kaggle-gpu`, Python 3.13, torch 2.11.0+cu128, timm 1.0.29; recipe
+  `environment-gpu.yml`; conda needs `E:\Anaconda\Library\bin` on PATH). Runner `scripts/local_v13.py`;
+  6 loader workers at most (L19). The v07 cache is at `results/v07/full3/`.
+- Kaggle access: `KAGGLE_API_TOKEN` user environment variable (never print it); Kaggle CLI plus the
+  `nvidia-kaggle` and `kaggle@shepsci` Claude Code plugins. The built-in browser is not signed in to
+  Kaggle (the public `ListKernels` API works without sign-in).
+- GPU quota: `kaggle quota`; 30 h windows reset on Saturdays at 00:00 UTC; scoring reruns do not
+  count. 1.80 h left on 2026-10-08 until the 2026-10-10 reset.
+- Submissions: 5 per day, reset at 00:00 UTC.

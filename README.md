@@ -12,8 +12,9 @@ share state through `docs/`.
 
 The project restarted on 2026-09-30 from strong public Kaggle code. The earlier in-house
 V01-V04 line (best public LB 0.664) is archived in `archive/legacy/`. Best public LB so far:
-0.943 (v05, public-stack anchor); best own model 0.934 (v14, one fold of the v13 round-2
-teacher). Current phase, every version's settings and results, lessons, and next steps live in
+0.950 (v17, a public CoAtNet-384 + ConvNeXt notebook, and v19, the same plus our own leg); best own
+model alone 0.936 (v13_submit, 5-fold round-2 teacher); best without OAI-derived weights 0.944 (v15).
+Current phase, every version's settings and results, lessons, and next steps live in
 [docs/STATUS.md](docs/STATUS.md).
 
 ## Layout
