@@ -14,7 +14,7 @@ Last updated: 2026-10-08
 teacher) trained on five folds (fold 0 on Kaggle, folds 1-4 on the local RTX 3080 Ti, D-016).
 Leg alone: fold 0 0.934 (v14), 5 folds 0.936 (v13_submit). Blends with the v05 anchor (D-018):
 **v15 (w 0.30) 0.944**, the first own submission above v05; v16 (w 0.45) 0.943. Final selection
-now: **v05 + v15**. The leaderboard moved: on 2026-10-08 bronze needs 0.947 (top 10%, rank 549
+now: **v17 (0.950) + v15 (0.944)**. The leaderboard moved: on 2026-10-08 bronze needs 0.947 (top 10%, rank 549
 of 5,493) and silver 0.950; our 0.944 is rank 844. New public notebooks ranked above the 0.946
 ones of 2026-10-05 (titles claim 0.949 to 0.95+; scores not yet verified), so the v05 anchor is
 likely no longer the strongest public base (D-001). Deadline 2026-10-22; team merger 2026-10-15.
@@ -42,8 +42,8 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | F0: N gold 0.920 (+0.009 over v11 fold 0, CI +0.003 to +0.017); M gold 0.881 (below 0.900 floor) | - | Gate F0: C = N-only; step D passed (v14 0.934); folds 1-4 on the local GPU (D-016): fold 1 val 0.872 / gold 0.917 (v11 fold 1 0.910); fold 2 (rerun after a Windows commit-limit failure) val 0.863 / gold 0.915 (v11 0.911); fold 3 val 0.868 / gold 0.918; fold 4 val 0.871 / gold 0.916. **5 folds done: gold 5-fold 0.920 vs v11 0.913 (+0.007, CI +0.002 to +0.013)**; pooled OOF 0.873 (v11 0.875); v13_submit commit run (2026-10-08): reference and OOF checks pass (local-trained folds match on Kaggle to 5.5e-5); submitted 2026-10-08 (ref 56934683): **public LB 0.936** |
 | v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | 0.934 | one fold beats v12's 5-fold v11 leg (0.931); passes the 0.933 step-D threshold: N folds 1-4 (commit run: reference and OOF checks pass, OOF diff 0.0) |
 | v15 / v16 | 2026-10-08 | submit (blends, D-018) | v05 anchor (cells unchanged from v09) + v13 arm-N 5-fold leg, rank blend at w 0.30 (v15) / 0.45 (v16) | built; local tests of the leg and blend cells pass (fallback keeps the anchor; blend formula) | **0.944** / 0.943 | v15 is the first own submission above v05; final picks v05 + v15 (D-018). Leaderboard moved: on 2026-10-08 bronze needs 0.947 (rank 549 of 5,493), we are rank 844 |
-| v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | built; added cells tested locally; commit run passes (weights hash verified, fusion applied); submitted 2026-10-08 (ref 56958475) | - | expected 0.950 (source score) |
-| v18 | 2026-10-08 | audit (gold diagnostic) | the v17 components (CoAtNet-384 inference cell with its data root pointed at a gold-58 tree; ConvNeXt reader infer.py) on the 58 gold studies, for blend analysis with our v13 N leg | built; gold-tree cell tested locally with the real CSVs | - | commit run needs approval |
+| v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | commit run passes (weights hash verified, fusion applied); submitted 2026-10-08 (ref 56958475) | **0.950** | reproduces the source; new anchor and best score (about rank 401 of 5,493 on the 2026-10-08 board, inside bronze) |
+| v18 | 2026-10-08 | audit (gold diagnostic) | the v17 components (CoAtNet-384 inference cell with its data root pointed at a gold-58 tree; ConvNeXt reader infer.py) on the 58 gold studies, for blend analysis with our v13 N leg | built; gold-tree cell tested locally with the real CSVs; commit run `lingxd/v18-gold-diagnostic` version 1 pushed (2026-10-08) | - | gold predictions pending |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -274,7 +274,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    blend only if the evidence changes (e.g. a measured low correlation).
 3. Own-model work needs a leg near 0.943-0.945 alone to move a stronger anchor (L18): a design note
    and Codex review (D-004) before any further training.
-4. Final selection until something beats it: **v05 + v15**. Team-merger deadline 2026-10-15; final
+4. Final selection until something beats it: **v17 (0.950, OAI-based, D-019) + v15 (0.944, non-OAI)**. Team-merger deadline 2026-10-15; final
    deadline 2026-10-22.
 
 ## Open questions
