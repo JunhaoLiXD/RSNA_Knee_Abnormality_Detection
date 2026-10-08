@@ -6,22 +6,18 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-07
+Last updated: 2026-10-08
 
 ## Current phase
 
-**Phase 4 - strategy revision after v12** (2026-10-06). Phase 3 (OOF-teacher retraining, D-014)
-ended: v11 leg alone scored 0.931 (v12), +0.022 over v10 but below the 0.935 blend gate.
-Plan approved (D-015, 2026-10-06): `docs/research/v13-strategy-revision-design.md` revision 3.2
-(round-2 teacher N, MRI-pretrained second model M, fold-0 LB diagnostic). v13 built and tested
-locally; datasets `lingxd/rsna-knee-v11-oof` and `lingxd/rsna-knee-mri-core` uploaded; step S
-(smoke) ran as `lingxd/v13-round2-mri` version 1 on 2026-10-06: arm M (MRI-CORE) admitted (projected
-5.07 h per fold, all checks pass); F0 ran as version 2 (2026-10-06/07): arm N (round-2 teacher)
-gold 0.920 vs v11 fold 0 0.911 (+0.009, CI +0.003 to +0.017), arm M (MRI-CORE) gold 0.881 below
-the 0.900 floor. Gate F0: candidate N-only. Step D: `v14_submit` (N fold 0 alone) scored **0.934**
-on 2026-10-07 (>= 0.933), so N folds 1-4 run in the 2026-10-10 window. Final selection until something beats it:
-**v05 (0.943)**, with v12 as the own-only candidate for pick 2. Budget: 30 Kaggle GPU hours per
-window; goal: a medal; deadline 2026-10-22.
+**Phase 4 - strategy revision after v12, executed** (2026-10-06 to 10-08). v13 arm N (round-2
+teacher) trained on five folds (fold 0 on Kaggle, folds 1-4 on the local RTX 3080 Ti, D-016).
+Leg alone: fold 0 0.934 (v14), 5 folds 0.936 (v13_submit). Blends with the v05 anchor (D-018):
+**v15 (w 0.30) 0.944**, the first own submission above v05; v16 (w 0.45) 0.943. Final selection
+now: **v05 + v15**. The leaderboard moved: on 2026-10-08 bronze needs 0.947 (top 10%, rank 549
+of 5,493) and silver 0.950; our 0.944 is rank 844. New public notebooks ranked above the 0.946
+ones of 2026-10-05 (titles claim 0.949 to 0.95+; scores not yet verified), so the v05 anchor is
+likely no longer the strongest public base (D-001). Deadline 2026-10-22; team merger 2026-10-15.
 
 ## Versions and results
 
@@ -45,7 +41,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v12 | 2026-10-05 | submit (gate) | v11 arm-B 5-fold leg alone (v10 leg code); weights metadata check; end-to-end OOF check | commit run: reference check byte-equal, OOF check pass (max diff 1e-6), 3/3 coverage | 0.931 | +0.022 over v10 but below the 0.935 blend gate: no blend |
 | v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | F0: N gold 0.920 (+0.009 over v11 fold 0, CI +0.003 to +0.017); M gold 0.881 (below 0.900 floor) | - | Gate F0: C = N-only; step D passed (v14 0.934); folds 1-4 on the local GPU (D-016): fold 1 val 0.872 / gold 0.917 (v11 fold 1 0.910); fold 2 (rerun after a Windows commit-limit failure) val 0.863 / gold 0.915 (v11 0.911); fold 3 val 0.868 / gold 0.918; fold 4 val 0.871 / gold 0.916. **5 folds done: gold 5-fold 0.920 vs v11 0.913 (+0.007, CI +0.002 to +0.013)**; pooled OOF 0.873 (v11 0.875); v13_submit commit run (2026-10-08): reference and OOF checks pass (local-trained folds match on Kaggle to 5.5e-5); submitted 2026-10-08 (ref 56934683): **public LB 0.936** |
 | v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | 0.934 | one fold beats v12's 5-fold v11 leg (0.931); passes the 0.933 step-D threshold: N folds 1-4 (commit run: reference and OOF checks pass, OOF diff 0.0) |
-| v15 / v16 | 2026-10-08 | submit (blends, D-018) | v05 anchor (cells unchanged from v09) + v13 arm-N 5-fold leg, rank blend at w 0.30 (v15) / 0.45 (v16) | built; local tests of the leg and blend cells pass (fallback keeps the anchor; blend formula) | - | commit runs pass (anchor byte-identical to v05, leg identical to v13_submit); submitted 2026-10-08 (refs 56936378 / 56936381), scores pending |
+| v15 / v16 | 2026-10-08 | submit (blends, D-018) | v05 anchor (cells unchanged from v09) + v13 arm-N 5-fold leg, rank blend at w 0.30 (v15) / 0.45 (v16) | built; local tests of the leg and blend cells pass (fallback keeps the anchor; blend formula) | **0.944** / 0.943 | v15 is the first own submission above v05; final picks v05 + v15 (D-018). Leaderboard moved: on 2026-10-08 bronze needs 0.947 (rank 549 of 5,493), we are rank 844 |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -236,6 +232,17 @@ fold-to-fold gold Spearman 0.969 (v08 0.921), so the ensemble adds about 0.002. 
    Limits: the margin over the 0.933 threshold is 0.001; the LB gain of fold ensembling is unmeasured
    (on gold it was +0.002 for v11, L13); under L15 a 5-fold N leg near 0.936 would only break even
    in the blend, and 0.944 needs about 0.939.
+18. **Fold ensembling shows on the LB, not on gold; the N leg blends a little better than v08 did.**
+   v13 N: fold 0 alone 0.934 (v14), 5 folds 0.936 (v13_submit), while gold stayed 0.920 (fold
+   Spearman 0.978): gold-58 cannot resolve gains of +0.002. Blends with the v05 anchor: w 0.30
+   0.944 (v15), w 0.45 0.943 (v16). Recalibrated binormal model: noise correlation 0.913-0.947
+   (median 0.929) vs 0.924-0.963 implied by v09, blend gain at w 0.30 about +0.0007. To reach 0.946
+   on top of a 0.943 anchor a leg needs about 0.941-0.945 alone (0.943 at the median).
+19. **Local GPU training on Windows is bounded by the commit limit, not GPU memory** (v13 fold 2,
+   2026-10-07): each spawned loader worker commits about 2.4 GB (torch/CUDA DLLs) and the trainer
+   about 11.8 GB (GPU allocations are charged to host commit under WDDM). 8 workers hit the 47 GB
+   limit; 6 workers run at 170 img/s (2.5 h per fold, vs about 6.5 h on a Kaggle T4 pair). A
+   blocked trainer needs a log-stall watchdog. Locally trained folds reproduce on Kaggle to 5.5e-5.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -251,19 +258,20 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **v14 scored 0.934** (step D passed). N folds 1-4 now train on the local RTX 3080 Ti (D-016):
-   `kaggle-gpu` env, `scripts/local_v13.py fold <k>`, one fold at a time. Setup verified 2026-10-07:
-   v07 cache downloaded to `results/v07/full3/` (4407 files, sizes and hashes match), training
-   targets equal to the Kaggle F0 run, and the Kaggle fold-0 N checkpoint re-inferred locally gives
-   gold 0.9200 (identical) with max abs diff 1.9e-4 (gold) / 3.8e-4 (100 validation studies). The
-   Kaggle fallback (folds mode, two sessions after the 2026-10-10 reset) stays configured.
-2. Then upload the 5 N checkpoints (`lingxd/rsna-knee-v13-weights` version 2), `v13_submit` = 5-fold
-   N leg alone (v14 notebook with five specs; design name `v15_submit`, renamed by D-017), and
-   `v15_submit` = anchor + v13 leg (new version v15; design name `v16_submit`) only if v13_submit
-   >= 0.935 (w 0.30; w 0.45 if >= 0.940) and per design 4.6. Final selection per design 4.4
-   (candidates v05, v12, v14, v13_submit, v15_submit).
-3. Keep v05 (0.943) as the final selection until something beats it. Team-merger deadline
-   2026-10-15; final deadline 2026-10-22.
+1. **Refresh the public landscape** (`docs/research/public-landscape-2026-10-08.md`): verify the
+   public scores of the new top notebooks (browser API, memory note), their licences and whether
+   they run with public inputs only; pull the best into `external/kernels/`. On 2026-10-08 the CLI
+   ranks, above the 2026-10-05 leaders: matterhorn3838 (V2 Velciraptor DINOsaur Speed, D4),
+   "Apex Grandmaster Stack" (several forks, one titled LB 0.95+), "0949 Anatomical Mirror",
+   goodpjw2008 "0.949 CoAtNet + Stack Blend", prvsiyan "The bee's knees - final RSNA push".
+2. If a reproducible public notebook beats 0.944, it becomes the new anchor (new version, D-001)
+   and a final pick. Under the recalibrated blend model (L18) the 0.936 N leg adds at most about
+   +0.0004 to a 0.947-0.950 anchor (best w 0.0-0.17); w 0.30 would cost 0.001-0.0013. Test a
+   blend only if the evidence changes (e.g. a measured low correlation).
+3. Own-model work needs a leg near 0.943-0.945 alone to move a stronger anchor (L18): a design note
+   and Codex review (D-004) before any further training.
+4. Final selection until something beats it: **v05 + v15**. Team-merger deadline 2026-10-15; final
+   deadline 2026-10-22.
 
 ## Open questions
 
