@@ -39,6 +39,10 @@ StudyInstanceUID,ACL,MCL,Medial Meniscus,Lateral Meniscus,Medial OA,Lateral OA,P
   attached as Kaggle Datasets or Models.
 - Freely and publicly available external data is allowed, including pretrained models.
 - Up to 5 submissions per day.
+- Scores are shown with 3 decimals (leaderboard, its download, and the submissions API all return 3
+  decimals), but ranking uses the unrounded score: on 2026-10-08 our team ranked 72nd of 379 teams
+  displayed at 0.950, ahead of 282 teams whose last submission was earlier than ours, which a
+  rounded score with time tie-breaks would not produce. Daily quota resets at 00:00 UTC.
 - The local `data/test.csv` has only 3 placeholder studies; the hidden test set (about
   1,300 studies per the data page) replaces it on rerun. The `Report` column is absent at
   test time.

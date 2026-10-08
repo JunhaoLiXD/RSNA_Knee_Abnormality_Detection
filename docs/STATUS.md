@@ -275,7 +275,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    blend only if the evidence changes (e.g. a measured low correlation).
 3. Own-model work needs a leg near 0.943-0.945 alone to move a stronger anchor (L18): a design note
    and Codex review (D-004) before any further training.
-4. Final selection until something beats it: **v19 (0.950, OAI-based anchor + our leg) + v15 (0.944, non-OAI)**. Team-merger deadline 2026-10-15; final
+4. Final selection until something beats it: **v19 (0.950, OAI-based anchor + our leg) + v15 (0.944, non-OAI)**. Leaderboard 2026-10-08 ~23:00 UTC: rank 247 of 5,537 (0.950 block spans ranks 176-554; silver cut rank 276, bronze 553, both at 0.950); ranking uses unrounded scores (`competition.md`). Team-merger deadline 2026-10-15; final
    deadline 2026-10-22.
 
 ## Open questions
