@@ -3,6 +3,28 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-018 - 2026-10-08 - Submit both pre-registered blends before the leg-alone score
+
+**Decision.** Build and submit both pre-registered blends of the v05 anchor and the v13 arm-N 5-fold
+leg now, while `v13_submit` (leg alone) is still being scored: `v15_submit` at w = 0.30 and
+`v16_submit` at w = 0.45 (D-017: each blend is its own ensemble version). No other weights. Final
+selection: v05 stays pick 1; pick 2 is the blend with the higher public score if it is at least
+v05's, otherwise the next candidate per design 4.4. Differences of 0.001 are treated as noise.
+The anchor cells are copied unchanged from v09; each commit run must reproduce v09's anchor
+output on the placeholder studies (byte-identical), otherwise the run is not submitted.
+
+**Reason.** User proposal 2026-10-08. The design gate (blend only if the leg alone reaches 0.935)
+saved resources and guarded against public-LB fishing. Resources are no longer binding (a blend
+commit run took 0.07 h for v09; 2.18 GPU h and four submissions left today), and fishing is
+limited by keeping the two pre-registered weights. The second final pick must be the candidate
+most likely to beat v05 on the private set, which is a blend, not the leg alone. Two blend scores
+plus the leg score also measure how this leg combines with the anchor on the public LB, the
+evidence needed to decide whether more leg work is worthwhile (STATUS L15, L17).
+
+**Consequences.** Design 4.6's order (leg-alone gate, then one blend) is replaced for v13 by
+submitting both blends at once; the gate thresholds become reporting labels. Version numbers:
+v15 (w 0.30), v16 (w 0.45). Two submissions and two commit runs are used.
+
 ## D-017 - 2026-10-07 - Submission numbering: a model submitted alone keeps its version
 
 **Decision.** A submission that uses only the models of one trained version keeps that version's
