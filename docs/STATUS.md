@@ -42,6 +42,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v13 | 2026-10-06 | training | Round-2 teacher (arm N, ConvNeXt-tiny) and MRI-CORE ViT-B/16 (arm M; EfficientNet-B3 fallback E), target `0.5 soft + 0.5 v11 OOF` | F0: N gold 0.920 (+0.009 over v11 fold 0, CI +0.003 to +0.017); M gold 0.881 (below 0.900 floor) | - | Gate F0: C = N-only; step D passed (v14 0.934); folds 1-4 on the local GPU (D-016): fold 1 val 0.872 / gold 0.917 (v11 fold 1 0.910); fold 2 (rerun after a Windows commit-limit failure) val 0.863 / gold 0.915 (v11 0.911); fold 3 val 0.868 / gold 0.918; fold 4 val 0.871 / gold 0.916. **5 folds done: gold 5-fold 0.920 vs v11 0.913 (+0.007, CI +0.002 to +0.013)**; pooled OOF 0.873 (v11 0.875); v13_submit commit run (2026-10-08): reference and OOF checks pass (local-trained folds match on Kaggle to 5.5e-5); submitted 2026-10-08 (ref 56934683): **public LB 0.936** |
 | v14 | 2026-10-06 | submit (step D) | v13 arm-N fold-0 leg alone (v12 notebook generalised to a list of (version, arm, fold) models; fold-to-model OOF check) | built; local CPU tests pass (single-model rank, OOF controls, two-model mapping, wrong-checkpoint rejection) | 0.934 | one fold beats v12's 5-fold v11 leg (0.931); passes the 0.933 step-D threshold: N folds 1-4 (commit run: reference and OOF checks pass, OOF diff 0.0) |
 | v15 / v16 | 2026-10-08 | submit (blends, D-018) | v05 anchor (cells unchanged from v09) + v13 arm-N 5-fold leg, rank blend at w 0.30 (v15) / 0.45 (v16) | built; local tests of the leg and blend cells pass (fallback keeps the anchor; blend formula) | **0.944** / 0.943 | v15 is the first own submission above v05; final picks v05 + v15 (D-018). Leaderboard moved: on 2026-10-08 bronze needs 0.947 (rank 549 of 5,493), we are rank 844 |
+| v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | built; added cells tested locally | - | expected 0.950 (source score) |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -263,7 +264,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    (`nartaa/rsna-knee-publication-swa-weights-20261007`) trained with 2,399 **OAI** knees; whether
    OAI-derived models are allowed is unresolved (host principles exclude institution-gated data;
    topic 743416 unanswered). Without OAI, our v15 0.944 is at the public frontier. **User decision
-   needed**: stay non-OAI, adopt the OAI-based base (new version), hedge, or ask the host first.
+   (D-019): adopt the OAI-based base**, rule risk accepted. v17 = sujanmajhisuzan Apex Grandmaster
+   Stack (version 1, Apache 2.0, public 0.950) unchanged plus provenance, configuration and final
+   check cells; built and validated, commit run needs approval.
 2. If an allowed public notebook beats 0.944, it becomes the new anchor (new version, D-001)
    and a final pick. Under the recalibrated blend model (L18) the 0.936 N leg adds at most about
    +0.0004 to a 0.947-0.950 anchor (best w 0.0-0.17); w 0.30 would cost 0.001-0.0013. Test a

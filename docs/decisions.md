@@ -3,6 +3,26 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-019 - 2026-10-08 - Adopt the OAI-trained public CoAtNet base
+
+**Decision.** Use the public CoAtNet-384 checkpoint `raptor_ft_alldata_t16_blendjev_oai_d96_r384_swa.pt`
+(`nartaa/rsna-knee-publication-swa-weights-20261007`, trained with 2,399 OAI knees) as the new
+base: first reproduce the strongest public 0.950 notebook unchanged as a new version (anchor
+swap, D-001), then test whether our v13 N leg or other components add to it. User decision
+2026-10-08 after `public-landscape-2026-10-08.md`; the user accepts the rule risk.
+
+**Reason.** Every public notebook at 0.949-0.950 uses this checkpoint; without it the public
+frontier is our 0.944 while bronze needs 0.947 (2026-10-08). The author reports +0.005 from the
+OAI data.
+
+**Consequences.** Rule risk: whether OAI-derived models are allowed is unresolved. The host's
+principles exclude institution-gated data and require data generally accessible to all
+participants; OAI is distributed under an NIMH Data Archive Data Use Certification and is reported
+to be unavailable in some countries; topic 743416 (OAI listed) is unanswered. A ruling against OAI
+could remove the team from the leaderboard. Recommended by the agent instead: ask the host first
+(declined). Final selection is revisited once the new base is scored. Own-model work is judged
+against the new base (STATUS L18: a 0.936 leg adds at most about +0.0003 to a 0.949 base).
+
 ## D-018 - 2026-10-08 - Submit both pre-registered blends before the leg-alone score
 
 **Decision.** Build and submit both pre-registered blends of the v05 anchor and the v13 arm-N 5-fold
