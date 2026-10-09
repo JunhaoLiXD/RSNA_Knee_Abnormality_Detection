@@ -62,9 +62,10 @@ def run(args):
     record = {'started': time.strftime('%Y-%m-%d %H:%M:%S'), 'mode': args.mode, 'workers': args.workers,
               'git_commit': subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=REPO, capture_output=True, text=True).stdout.strip(),
               'notebook_sha256': base.sha256(NB)}
-    state = {'done': False, 'killed': None}
+    state = {'done': False, 'killed': None, 'commit_peak_gb': 0.0}
     threading.Thread(target=base.watchdog, args=(work / 'v23' / f'v23_log_{args.mode}.txt', args.stall_min * 60, state),
                      daemon=True).start()
+    threading.Thread(target=base.commit_sampler, args=(state,), daemon=True).start()
     ns = {'__name__': '__main__'}
     try:
         for i, src in enumerate(cells):
@@ -81,7 +82,9 @@ def run(args):
                 print(f'local overrides: MODE {args.mode}, workers {args.workers}', flush=True)
     finally:
         state['done'] = True
-    record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), killed=state['killed'])
+    record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), killed=state['killed'],
+                  windows_commit_peak_gb=round(state['commit_peak_gb'], 2),
+                  windows_commit_limit_gb=round(state.get('commit_limit_gb', 0.0), 2))
     (work / 'v23' / f'v23_local_run_{args.mode}.json').write_text(json.dumps(record, indent=2))
     print(json.dumps(record))
 

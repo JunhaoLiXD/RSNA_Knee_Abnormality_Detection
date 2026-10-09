@@ -222,3 +222,20 @@ Verdict: proceed with changes. Every finding was checked against the files and n
 
 Order: Codex proposed E4 before an unresolved E5. Stage 0 resolved the main open point (fidelity),
 so the user's order E6, E1, E5, E4, E7 stays.
+
+## 11. Codex re-check of the v23 notebook before the adaptation run (2026-10-09)
+
+Verdict: run after the listed fixes. All six findings verified in `notebooks/v23-coatnet-adapt.ipynb`
+and fixed before the adapt run; the schedule itself was judged reasonable and kept.
+
+| # | Finding (severity) | Disposition |
+|---|---|---|
+| 1 | The target term was divided by the weight sum, which cancels the 0.3 down-weighting and departs from 4.2 (high) | **Fixed**: `mean(w * BCE)` over the 12 cells; teacher term unweighted |
+| 2 | Accumulation counted across epochs and dropped epoch tails (1,630 instead of 1,632 updates) (high) | **Fixed**: epoch-local groups, the tail flushed with its own size, an assertion on the step count; scaler-skipped steps recorded |
+| 3 | Admission thresholded the bootstrap mean; a missing v18 silently removed a condition; invalid draws unguarded (high) | **Fixed**: the observed gold difference is gated; v18 and full 58-study coverage are required; 2,000 valid draws with an attempt cap |
+| 4 | Torch RNG (dropout) not seeded (medium) | **Fixed**: Python, NumPy and Torch seeded; bitwise reproducibility not claimed |
+| 5 | No probability drift on gold against the untouched model (medium) | **Fixed**: per-finding mean absolute difference and Spearman on gold and on 300 training studies (saved) |
+| 6 | The teacher file was trusted by name; the cfg contract lacked normalisation and label order (medium) | **Fixed**: the teacher receipt must match the checkpoint hash, intensity and study count; normalisation and labels stored; strict cfg-driven reload tested after saving |
+
+Runtime: the runner records the peak Windows commit charge; memory after the first optimizer step is
+logged; 4 loader workers.
