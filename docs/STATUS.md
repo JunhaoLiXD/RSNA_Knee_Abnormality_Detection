@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-08 (end of session)
+Last updated: 2026-10-09 (options note for external resources)
 
 ## Current phase
 
@@ -16,8 +16,8 @@ stack (v15). All public notebooks at 0.949-0.950 share one CoAtNet-384 checkpoin
 data; the user adopted it despite the unresolved rule risk (D-019). v17 (public 0.950 notebook
 unchanged) reproduced **0.950**; v19 (v17 + our leg at w 0.15) also **0.950** (tie at 3 decimals;
 ranking uses unrounded scores). v20 (w 0.25) scored 0.949 (rejected).
-Our leg adds about nothing to this base (L21). Leaderboard 2026-10-08 ~23:00 UTC: **rank 247 of 5,537**, inside silver (cut rank 276)
-but the 0.950 block spans ranks 176-554 and is growing. Final selection now: **v19 (0.950) + v15
+Our leg adds about nothing to this base (L21). Leaderboard 2026-10-09 01:52 UTC: **rank 268 of 5,543**, inside silver (cut rank 277)
+but the 0.950 block spans ranks 186-591 and is growing. Final selection now: **v19 (0.950) + v15
 (0.944, non-OAI)**. Deadline 2026-10-22; entry and team-merger deadline 2026-10-15.
 
 ## Versions and results
@@ -320,7 +320,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    a design note: train our OOF-teacher target on a CoAtNet / 384 px recipe, or fine-tune the public
    CoAtNet-384 checkpoint with our targets (D-019 already accepts OAI-derived weights), using the
    local RTX 3080 Ti (D-016, about 2.5 h per ConvNeXt fold; CoAtNet-384 will be slower). Gold-58 cannot
-   rank families (L20), so plan LB checks.
+   rank families (L20), so plan LB checks. **2026-10-09:** options for external resources by pipeline stage
+   (with Codex) in `docs/research/external-levers-2026-10-09.md`: no public report-label table beats our
+   4-source mean on gold, but the CC0 Gemini table adds +0.0035 to the round-2 target (CI -0.0007 to
+   +0.0079); a synthetic benchmark puts a local CoAtNet fold at about 6 h. Shortlist awaits the user.
 4. **Team merger** (deadline 2026-10-15): the user's decision; not discussed yet.
 5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
    ruling (topic 743416) could still change the picture; check it before 2026-10-22.

@@ -9,6 +9,7 @@ dependencies:
   - pip:
       - kaggle
       - pandas
+      - pyarrow   # parquet label tables in external datasets
       - numpy
       - scikit-learn
       - pydicom
