@@ -48,6 +48,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v19 / v20 | 2026-10-08 | submit (blends, design v19-fusion rev 2) | v17 anchor (cells unchanged) + v13 arm-N 5-fold leg, outer rank blend at w 0.15 (v19) / 0.25 (v20); absolute leg deadline, byte-equal reference, OOF over 5 folds at 1e-3 | built; local tests of the leg and blend cells pass (fallback, blend formula, deadline kill) | - | commit runs pass all three gates (base = v17 byte for byte; reference byte-equal on the v17 image; OOF 5 folds <= 5.5e-5; blend recomputed); **v19 0.950** (= v17; tie keeps v19 per the decision rule); **v20 0.949** (below v19: rejected; v19 stays the pick) |
 | v21 | 2026-10-09 | submit (E6, D-020) | v17 CoAtNet cells + v13 arm-N 5-fold leg in place of the public reader, per-finding TW fusion | built; local fusion tests pass (independent TW recomputation 1e-16, fallback) | - | commit run awaits approval |
 | v22 | 2026-10-09 | training (E1, D-020) | v13 arm N with target T3 (CC0 Gemini report labels as a fifth source), local fold 0 | val 0.8990 (v13 F0 0.8988); gold 0.9182 (v13 F0 0.9200; -0.0020, CI -0.0091 to +0.0050) | - | no gain: predictions match v13 F0 (Spearman 0.98); fold-0 LB check optional |
+| v23 | 2026-10-09 | training (E5, D-020) | public OAI CoAtNet through the v07 adapter, adapted 3 epochs on the round-2 target + self-distillation, local | adapter alone gold 0.9255 (v18 exact 0.9228, Spearman 0.984); adapted 0.9230 (-0.0025 vs untouched, CI -0.0088 to +0.0035) | - | not admitted (design 4.3): E5 stopped |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -304,6 +305,13 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    target being the v11 OOF teacher, one more report source moves the target too little to change what
    the model learns. Contrast L17, where changing the teacher did change the student. No public report
    table beats our 4-source mean on gold (`external-levers-2026-10-09.md` 2.1).
+
+24. **Our target does not improve the OAI CoAtNet** (v23, E5): three epochs on the round-2 target with a
+   0.5 self-distillation term moved gold from 0.9255 to 0.9230 (CI -0.0088 to +0.0035), losing most on
+   MCL, Lateral Meniscus and PF OA, the findings where our own models are weak. Our v07 cache feeds the
+   public checkpoint almost exactly (adapter: Spearman 0.984 with the exact pipeline, gold 0.9255 vs
+   0.9228), so that pipeline route is open for inference; our labels are not better than the ones it was
+   trained on.
 
 ## Open hypotheses for why v08 is weak (untested)
 
