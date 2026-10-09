@@ -239,3 +239,27 @@ and fixed before the adapt run; the schedule itself was judged reasonable and ke
 
 Runtime: the runner records the peak Windows commit charge; memory after the first optimizer step is
 logged; 4 loader workers.
+
+Result (2026-10-09): not admitted (adapted 0.9230 vs untouched 0.9255 on gold, -0.0025, CI -0.0088 to
++0.0035); E5 stopped (STATUS v23, L24).
+
+## 12. E4 smoke failure and the BatchNorm change (2026-10-09)
+
+The first v24 smoke run (revision 2 recipe, BatchNorm in eval mode as decided in section 10 finding 8)
+produced a non-finite training loss after about 27 optimizer steps (micro-steps 250-300) and NaN
+validation predictions. A step-by-step replication on 400 training studies located it:
+
+| Check | Result |
+|---|---|
+| ImageNet-initialised backbone, fp16 vs fp32 forward on 20 studies (80 tokens each) | no non-finite output; feature max 18.7 |
+| Training replication, BatchNorm frozen, LR 1e-4 (20 warm-up steps) | parameters finite throughout, but features in fp16 become NaN at step 27 (validation feature max 6 -> 32.5 between steps 20 and 25) |
+| Same, lower backbone LR 3e-5 (smoke rerun) | training loss finite to micro-step 300, validation still NaN |
+| Same, **BatchNorm in train mode**, LR 1e-4 | 50 steps stable; validation feature max 16 -> 3.7, no NaN |
+| Pretrained BatchNorm running variance | as small as 2.0e-6 (`stages.1.blocks.*.norm2`), eps 1e-5 |
+
+Cause: with frozen statistics, channels whose pretrained running variance is near zero are scaled by
+about `1 / sqrt(1.2e-5)` = 290; once fine-tuning moves their inputs, activations exceed the fp16 range.
+**Change:** arm C uses BatchNorm in train mode (timm's default for fine-tuning; batch statistics over
+the 20 tokens of one study); the memory probe's random-input BatchNorm update is undone by restoring the
+buffers. The double running-statistics update under checkpoint recomputation is accepted (it changes
+the effective momentum, not the training-mode normalisation). Everything else in section 5 stays.

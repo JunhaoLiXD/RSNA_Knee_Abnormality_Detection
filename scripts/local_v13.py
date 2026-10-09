@@ -171,7 +171,7 @@ def fold(args):
     k, arm, v = args.fold, args.arm, VERSION
     if v == 'v13' and k == 0:
         raise SystemExit('v13 fold 0 is the Kaggle-trained model (D-016)')
-    work_root = REPO / 'results' / v / (f'local_f{k}' if args.mode == 'folds' else 'local_smoke')
+    work_root = REPO / 'results' / v / (f'local_f{k}' if args.mode == 'folds' else f'local_smoke{args.tag}')
     tag = f'fold{k}_{arm}'
     out = work_root / v / tag
     if out.exists() and any(out.iterdir()):
@@ -184,13 +184,18 @@ def fold(args):
         if args.mode == 'smoke':
             assert k == 0 and v == 'v24', 'smoke runs only for v24 arm C on fold 0'
             ns['SMOKE_ARMS'] = [arm]
+        for kv in args.arm_set:              # diagnostic overrides of the arm's settings (smoke only)
+            assert args.mode == 'smoke', '--arm-set is for smoke diagnostics; change the notebook for real runs'
+            key, val = kv.split('=', 1)
+            ns['ARMS'][arm][key] = json.loads(val)
+            print(f'arm override: {key} = {ns["ARMS"][arm][key]}', flush=True)
         ns['QUOTA_AT_LAUNCH_H'] = 11.0       # no quota locally; hard stop min(10.5, 11 - 0.4) h
         ns['HARD_STOP_S'] = min(10.5, ns['QUOTA_AT_LAUNCH_H'] - 0.4) * 3600
         ns['COMMON']['num_workers'] = args.workers
         print(f'local overrides: FOLDS_JOBS {ns["FOLDS_JOBS"]}, workers {args.workers}', flush=True)
 
     record = {'started': time.strftime('%Y-%m-%d %H:%M:%S'), 'version': v, 'fold': k, 'arm': arm,
-              'workers': args.workers, **env_record()}
+              'workers': args.workers, 'arm_set': args.arm_set, **env_record()}
     state = {'done': False, 'killed': None, 'commit_peak_gb': 0.0}
     threading.Thread(target=watchdog, args=(work_root / v / f'{v}_log_{tag}.txt', args.stall_min * 60, state),
                      daemon=True).start()
@@ -320,6 +325,8 @@ if __name__ == '__main__':
     f.add_argument('fold', type=int, choices=[0, 1, 2, 3, 4])
     f.add_argument('--arm', default='N', choices=['N', 'C'])
     f.add_argument('--mode', default='folds', choices=['folds', 'smoke'])   # smoke: v24 arm C check (design v21-shortlist 5)
+    f.add_argument('--arm-set', action='append', default=[], metavar='KEY=JSON')   # smoke diagnostics only
+    f.add_argument('--tag', default='')     # smoke: suffix of the work folder, to keep diagnostic runs apart
     f.add_argument('--workers', type=int, default=6)   # 8 reached the Windows commit limit (fold 2, 2026-10-07)
     f.add_argument('--stall-min', type=float, default=15.0)
     a = ap.parse_args()
