@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXT = ROOT / "external" / "datasets"
 L = ['ACL', 'MCL', 'Medial Meniscus', 'Lateral Meniscus', 'Medial OA', 'Lateral OA', 'PF OA',
      'Effusion', 'Synovitis', "Baker's", 'Contusion', 'Fracture']
-B = 1000
+B = 2000
 
 train = pd.read_csv(ROOT / "data" / "train.csv").drop(columns=["Report"])
 gold = train.dropna(subset=L).set_index("StudyInstanceUID")[L].astype(int)
@@ -111,13 +111,17 @@ per = pd.DataFrame({s: [macro_auc(Y[:, [j]], src[s].reindex(G)[L].values[:, [j]]
 print("\nPer finding (gold-58 AUC):")
 print(per.round(3).to_string())
 
-# Pre-specified variant: the Gemini table as a fifth equal-weight source (weight 0.2) in the round-2 target.
+# T3 as pre-specified in design v21-shortlist section 3: the Gemini table as an equal-weight extra
+# source, soft5 = (n * soft4 + gemini) / (n + 1) with n = the v06 source count of each cell. On gold
+# n is 3 (684 cells) or 2 (12 cells), because the dread table has no gold rows, so Gemini weighs 1/4
+# or 1/3 here against 1/5 in training. The v11 part on gold is the mean of the five fold models
+# (teacher ensemble), not an out-of-fold prediction as for the training studies.
 gem = src["nartaa (Gemini 3 Flash)"].reindex(G)[L].astype(float)
+n_src = targets.loc[G, [f"{c}__n_sources" for c in L]].to_numpy(float)
+soft5 = (n_src * soft.values + gem.values) / (n_src + 1.0)
 round2 = (0.5 * soft + 0.5 * v11).values
-print("\nGemini as an extra target source (weight wg; other sources keep their relative weights):")
-for wg in [0.2, 0.33, 0.5]:
-    t = (1 - wg) * soft + wg * gem
-    r2g = (0.5 * t + 0.5 * v11).values
-    m, lo, hi, ple0 = paired(r2g, round2)
-    print(f"  wg {wg:.2f}: target alone {macro_auc(Y, t.values):.4f}; round-2 style {macro_auc(Y, r2g):.4f} "
-          f"(vs round-2 {macro_auc(Y, round2):.4f}: {m:+.4f}, CI {lo:+.4f} to {hi:+.4f}, P(<=0) {ple0:.3f})")
+t3 = 0.5 * soft5 + 0.5 * v11.values
+m, lo, hi, ple0 = paired(t3, round2)
+print(f"\nT3 (design v21-shortlist 3): soft5 {macro_auc(Y, soft5):.4f} (soft4 {macro_auc(Y, soft.values):.4f}); "
+      f"T3 {macro_auc(Y, t3):.4f} vs round-2 {macro_auc(Y, round2):.4f}: {m:+.4f}, CI {lo:+.4f} to {hi:+.4f}, "
+      f"P(gain <= 0) {ple0:.3f} ({B} paired resamples)")

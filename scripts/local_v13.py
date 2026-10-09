@@ -1,4 +1,4 @@
-"""Run v13 arm-N folds on the local GPU (decision D-016).
+"""Run arm-N folds of v13 or a notebook derived from it (v22) on the local GPU (decision D-016).
 
 The notebook stays the only source of truth: its code cells are executed here with the Kaggle
 paths mapped to a local input tree and working directory. Differences to the Kaggle run: one GPU
@@ -8,7 +8,11 @@ the data-loader worker count.
 Run in the conda env `kaggle-gpu` (environment-gpu.yml):
   python scripts/local_v13.py prepare            # input tree + checks of the v07 cache download
   python scripts/local_v13.py check              # re-infer the Kaggle fold-0 N checkpoint locally
-  python scripts/local_v13.py fold 1 --workers 6 # train arm N on fold 1 (watchdog: --stall-min 15)
+  python scripts/local_v13.py fold 1 --workers 6 # train v13 arm N on fold 1 (watchdog: --stall-min 15)
+  python scripts/local_v13.py --version v22 fold 0   # v22 (target T3) arm N on fold 0
+
+Before anything is trained the training targets are checked: v13's must equal those of the Kaggle
+F0 run; v22's must equal T3 recomputed here independently from the inputs.
 """
 import argparse
 import hashlib
@@ -27,8 +31,11 @@ import numpy as np
 import pandas as pd
 
 REPO = Path(__file__).resolve().parents[1]
-NB = REPO / 'notebooks' / 'v13-round2-mri.ipynb'
-INPUT = REPO / 'results' / 'v13' / 'local_input'
+NOTEBOOKS = {'v13': 'v13-round2-mri.ipynb', 'v22': 'v22-n-gemini-target.ipynb'}
+VERSION = 'v13'                                          # set from --version in __main__
+NB = REPO / 'notebooks' / NOTEBOOKS[VERSION]
+INPUT = REPO / 'results' / 'v13' / 'local_input'          # shared by all versions
+GEMINI = REPO / 'external' / 'datasets' / 'nartaa__rsna-knee-hpo-assets' / 'labels_v1_gemlow.parquet'   # v22 (CC0)
 CACHE_RUN = REPO / 'results' / 'v07' / 'full3'          # lingxd/v07-cache-320 version 3 output
 V06 = REPO / 'results' / 'v06' / 'run1' / 'v06'
 V11_OOF = {f'v11_{kind}_fold{k}_B_k16.csv': REPO / 'results' / 'v11' / run / 'v11' / f'fold{k}_B' / f'v11_{kind}_fold{k}_B_k16.csv'
@@ -90,6 +97,8 @@ def prepare(_args):
     (INPUT / 'rsna-knee-v11-oof').mkdir()
     for name, src in V11_OOF.items():
         shutil.copy(src, INPUT / 'rsna-knee-v11-oof' / name)
+    (INPUT / 'rsna-knee-hpo-assets').mkdir()
+    shutil.copy(GEMINI, INPUT / 'rsna-knee-hpo-assets' / GEMINI.name)
     import _winapi
     _winapi.CreateJunction(str(CACHE_RUN), str(INPUT / 'v07-cache-320'))
     print('input tree:', sorted(str(p.relative_to(INPUT)) for p in INPUT.rglob('*.csv') if 'cache' not in p.parts))
@@ -105,9 +114,27 @@ def kaggle_f0_targets_sha256():
     return json.loads((F0 / 'fold0_N' / 'v13_receipt_fold0_N.json').read_text())['train_targets_sha256']
 
 
+def t3_independent(nb_targets_path):
+    """v22: recompute T3 = 0.5 * soft5 + 0.5 * v11 OOF from the inputs, without the notebook's code,
+    and return the maximum absolute difference to the notebook's training targets."""
+    t = pd.read_csv(V06 / 'v06_targets.csv', dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+    oof = pd.concat([pd.read_csv(REPO / 'results' / 'v11' / run / 'v11' / f'fold{k}_B' / f'v11_oof_fold{k}_B_k16.csv',
+                                 dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+                     for k, run in enumerate(['run1', 'run2', 'run2', 'run5', 'run5'])])
+    gem = pd.read_parquet(GEMINI).set_index('StudyInstanceUID')
+    ids = oof.index
+    n = t.loc[ids, [f'{c}__n_sources' for c in LABELS]].to_numpy(float)
+    soft5 = (n * t.loc[ids, LABELS].to_numpy(float) + gem.loc[ids, LABELS].to_numpy(float)) / (n + 1.0)
+    want = pd.DataFrame(0.5 * soft5 + 0.5 * oof.loc[ids, LABELS].to_numpy(float), index=ids, columns=LABELS)
+    got = pd.read_csv(nb_targets_path, dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+    assert set(got.index) == set(want.index) and not t.loc[got.index, 'is_gold'].astype(bool).any(), 'T3 study sets differ'
+    return float(np.abs(got.loc[want.index, LABELS].to_numpy() - want.to_numpy()).max())
+
+
 def run_cells(work_root, override, stop_after=None):
     """Execute the notebook's code cells with local paths; `override(ns)` runs after the config cell.
-    Before anything is trained, the training targets must equal those of the Kaggle F0 run."""
+    Before anything is trained, the training targets are checked (v13: equal to the Kaggle F0 run;
+    v22: equal to T3 recomputed independently)."""
     work_root.mkdir(parents=True, exist_ok=True)
     subs = [('/kaggle/input', INPUT.as_posix()), ('/kaggle/working', work_root.as_posix())]
     ns = {'__name__': '__main__'}
@@ -119,23 +146,30 @@ def run_cells(work_root, override, stop_after=None):
             Path(first.split(None, 1)[1].strip()).write_text(body, encoding='utf-8')
         else:
             exec(compile(src, f'{NB.name}[code cell {i}]', 'exec'), ns)
-        if src.startswith('# v13 configuration'):
+        if src.startswith(f'# {VERSION} configuration'):
             override(ns)
         if 'train_targets' in ns.get('PATHS', {}) and not ns.get('_targets_checked'):
-            local, kaggle = targets_sha256_lf(ns['PATHS']['train_targets']), kaggle_f0_targets_sha256()
-            assert local == kaggle, f'training targets differ from the Kaggle F0 run: {local} vs {kaggle}'
+            if VERSION == 'v13':
+                local, kaggle = targets_sha256_lf(ns['PATHS']['train_targets']), kaggle_f0_targets_sha256()
+                assert local == kaggle, f'training targets differ from the Kaggle F0 run: {local} vs {kaggle}'
+                print('training targets equal to the Kaggle F0 run (sha256 with LF endings)', flush=True)
+            else:
+                diff = t3_independent(ns['PATHS']['train_targets'])
+                assert diff <= 1e-9, f'training targets differ from the independent T3: max abs diff {diff}'
+                print(f'training targets equal to the independent T3 (max abs diff {diff:.2e})', flush=True)
             ns['_targets_checked'] = True
-            print('training targets equal to the Kaggle F0 run (sha256 with LF endings)', flush=True)
         if stop_after is not None and i >= stop_after:
             break
     return ns
 
 
 def fold(args):
-    k, arm = args.fold, 'N'
-    work_root = REPO / 'results' / 'v13' / f'local_f{k}'
+    k, arm, v = args.fold, 'N', VERSION
+    if v == 'v13' and k == 0:
+        raise SystemExit('v13 fold 0 is the Kaggle-trained model (D-016)')
+    work_root = REPO / 'results' / v / f'local_f{k}'
     tag = f'fold{k}_{arm}'
-    out = work_root / 'v13' / tag
+    out = work_root / v / tag
     if out.exists() and any(out.iterdir()):
         raise SystemExit(f'{out} is not empty; move it away before a rerun')
 
@@ -148,29 +182,35 @@ def fold(args):
         ns['COMMON']['num_workers'] = args.workers
         print(f'local overrides: FOLDS_JOBS {ns["FOLDS_JOBS"]}, workers {args.workers}', flush=True)
 
-    record = {'started': time.strftime('%Y-%m-%d %H:%M:%S'), 'fold': k, 'arm': arm, 'workers': args.workers, **env_record()}
+    record = {'started': time.strftime('%Y-%m-%d %H:%M:%S'), 'version': v, 'fold': k, 'arm': arm,
+              'workers': args.workers, **env_record()}
     state = {'done': False, 'killed': None}
-    threading.Thread(target=watchdog, args=(work_root / 'v13' / f'v13_log_{tag}.txt', args.stall_min * 60, state),
+    threading.Thread(target=watchdog, args=(work_root / v / f'{v}_log_{tag}.txt', args.stall_min * 60, state),
                      daemon=True).start()
     try:
         run_cells(work_root, override)
     finally:
         state['done'] = True
-    receipt = json.loads((out / f'v13_receipt_fold{k}_{arm}.json').read_text())
+    receipt = json.loads((out / f'{v}_receipt_fold{k}_{arm}.json').read_text())
+    targets_file = work_root / v / f'{v}_train_targets.csv'
     record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), status=receipt['status'], killed=state['killed'],
-                  train_targets_sha256_lf=targets_sha256_lf(work_root / 'v13' / 'v13_train_targets.csv'))
-    record['targets_equal_kaggle_f0'] = record['train_targets_sha256_lf'] == kaggle_f0_targets_sha256()
-    (work_root / 'v13' / f'v13_local_run_{tag}.json').write_text(json.dumps(record, indent=2))
+                  train_targets_sha256_lf=targets_sha256_lf(targets_file))
+    if v == 'v13':
+        record['targets_equal_kaggle_f0'] = record['train_targets_sha256_lf'] == kaggle_f0_targets_sha256()
+    else:
+        record['targets_max_abs_diff_independent_t3'] = t3_independent(targets_file)
+    (work_root / v / f'{v}_local_run_{tag}.json').write_text(json.dumps(record, indent=2))
     print(json.dumps({key: receipt.get(key) for key in ('status', 'best_epoch', 'val_macro_k16', 'gold_macro_k16',
                                                         'gold_ci', 'train_images_per_s', 'total_seconds')}, default=float))
     if receipt['status'] != 'done' or state['killed']:
         raise SystemExit(f'{tag} did not complete (status {receipt["status"]}, killed {state["killed"]}); '
                          f'checkpoints left in {out}')
-    dest = REPO / 'models' / 'v13' / 'v13' / tag
+    dest = REPO / 'models' / v / v / tag
     dest.mkdir(parents=True, exist_ok=True)
     for p in out.glob('*.pt'):
         shutil.move(str(p), dest / p.name)
-    print('targets equal to the Kaggle F0 run:', record['targets_equal_kaggle_f0'], '| checkpoints moved to', dest)
+    check = {k2: record[k2] for k2 in ('targets_equal_kaggle_f0', 'targets_max_abs_diff_independent_t3') if k2 in record}
+    print('targets check:', check, '| checkpoints moved to', dest)
 
 
 def watchdog(log_path, stall_s, state):
@@ -235,14 +275,18 @@ def check(args):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--version', choices=sorted(NOTEBOOKS), default='v13')
     sub = ap.add_subparsers(dest='cmd', required=True)
     sub.add_parser('prepare')
     c = sub.add_parser('check')
     c.add_argument('--n-val', type=int, default=100)
     c.add_argument('--tolerance', type=float, default=0.01)
     f = sub.add_parser('fold')
-    f.add_argument('fold', type=int, choices=[1, 2, 3, 4])
+    f.add_argument('fold', type=int, choices=[0, 1, 2, 3, 4])
     f.add_argument('--workers', type=int, default=6)   # 8 reached the Windows commit limit (fold 2, 2026-10-07)
     f.add_argument('--stall-min', type=float, default=15.0)
     a = ap.parse_args()
+    VERSION, NB = a.version, REPO / 'notebooks' / NOTEBOOKS[a.version]
+    if a.cmd == 'check' and VERSION != 'v13':
+        raise SystemExit('check re-infers the Kaggle v13 fold-0 checkpoint; run it with --version v13')
     {'prepare': prepare, 'check': check, 'fold': fold}[a.cmd](a)

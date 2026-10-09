@@ -19,8 +19,8 @@ model (v13, D-015).** Status 2026-10-07: Gate F0 kept N only (MRI-CORE arm M gol
 the floor); step D passed (v14, N fold 0 alone, 0.934 >= 0.933, STATUS L17); N folds 1-4 next.
 Status 2026-10-08: Priority 2b done (5-fold N leg 0.936 alone; v15 blend 0.944, STATUS L18).
 **Active: Priority 5**, the OAI-based public anchor (v17 0.950, D-019) with our leg blended in (v19
-0.950 at w 0.15; v20 0.949 at w 0.25). Next: a design note for a stronger own model (Priority 6,
-proposed, not yet reviewed).
+0.950 at w 0.15; v20 0.949 at w 0.25). Status 2026-10-09: **Priority 6 active** (D-020): the
+external-levers shortlist v21-v25.
 
 ## Goal and constraints
 
@@ -199,12 +199,24 @@ about nothing to this base (STATUS L21). Rank 268 of 5,543 on 2026-10-09 and sli
 **Risk.** The OAI rule question is unresolved (topic 743416); the user accepted it (D-019). v15
 (0.944, non-OAI) stays the second final pick as a hedge.
 
-## Priority 6 - A stronger own model - proposed (needs a design note and Codex review)
+## Priority 6 - External levers and a stronger own model - active (D-020)
 
-The fusion lever is nearly used up (STATUS L21): a 0.936 leg ties when added to a 0.950 base. Ideas to
-compare in a design note, not yet evaluated: our OOF-teacher target on a CoAtNet / 384 px recipe, or
-fine-tuning the public CoAtNet-384 checkpoint with our targets; local GPU (D-016). Gold-58 cannot rank
-models of different families (STATUS L20), so the plan must budget LB checks.
+The fusion lever is nearly used up (STATUS L21): a 0.936 leg ties when added to a 0.950 base. Options
+by pipeline stage were collected with Codex in `docs/research/external-levers-2026-10-09.md`; the
+shortlist runs in order per `docs/research/v21-shortlist-design.md` revision 2:
+
+1. **E6 `v21_submit`**: N in place of the public reader inside the v17 fusion (no training).
+2. **E1 `v22`**: N with target T3 (CC0 Gemini report labels as a fifth source; gold +0.0036 over the
+   round-2 target, CI -0.0015 to +0.0089); fold 0 locally, then a fold-0 LB check against v14 (0.934).
+3. **E5 `v23` / `v25_submit`**: short adaptation of the public OAI CoAtNet through the v07 adapter
+   (Stage 0 passed: Spearman 0.984 to the exact public pipeline).
+4. **E4 `v24`**: own CoAtNet-rmlp-2 (ImageNet-12k, no OAI) in our pipeline; fold 0, full CV only at
+   LB >= 0.937.
+5. E7: optional mirror-TTA check for N.
+
+**Why.** STATUS L20-L21 (the leg is redundant; gold cannot rank families, so LB checks are budgeted);
+L4/L17 (target quality moved the student before); external-levers 2.1 (no public table beats our
+mean, Gemini is complementary). Adoption over v19 / v15 needs +0.002 on the displayed public score.
 
 ## Priority 3 - Anchor robustness and runtime
 

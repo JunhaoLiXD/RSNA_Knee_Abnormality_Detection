@@ -3,6 +3,26 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-020 - 2026-10-09 - Run the external-levers shortlist (E6, E1, E5, E4, E7) in order
+
+**Decision.** Run the shortlist of `docs/research/external-levers-2026-10-09.md` in the user's order,
+as designed in `docs/research/v21-shortlist-design.md` revision 2 (Codex-reviewed): E6 `v21_submit`
+(our N leg in place of the public reader inside the v17 fusion), E1 `v22` (N recipe with target T3:
+the CC0 Gemini report-label table as a fifth source), E5 `v23` / `v25_submit` (adaptation of the public
+OAI CoAtNet fed from our v07 cache), E4 `v24` (own CoAtNet-rmlp-2, no OAI), E7 (optional mirror-TTA
+check). Adoption over the current picks needs +0.002 on the displayed public score; fold-0 public
+scores allocate compute; gold is a screen. User decision 2026-10-09 ("advance the shortlist in order").
+
+**Reason.** Blending N into v17 is exhausted (STATUS L21). No public label table beats our 4-source
+mean on gold, but the Gemini table adds +0.0036 to the round-2 target (CI -0.0015 to +0.0089); the
+v07-cache adapter reproduces the public checkpoint (Spearman 0.984 with the exact pipeline, gold
+0.9256 vs 0.9228), which makes local adaptation possible; a local CoAtNet fold costs about 6.5 h.
+
+**Consequences.** New versions v21-v25 (v25 reserved for the E5 ensemble). Local GPU training per
+D-016 (`scripts/local_v13.py --version v22`). The public checkpoint's terms (research and education,
+including this competition) are recorded with any adapted weights, which stay private. E5 inherits
+the D-019 rule risk; E1 and E4 are non-OAI. Remote steps are asked for each time.
+
 ## D-019 - 2026-10-08 - Adopt the OAI-trained public CoAtNet base
 
 **Decision.** Use the public CoAtNet-384 checkpoint `raptor_ft_alldata_t16_blendjev_oai_d96_r384_swa.pt`
