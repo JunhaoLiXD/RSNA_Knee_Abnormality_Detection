@@ -15,8 +15,8 @@ finished: our 5-fold arm-N leg scores 0.936 alone (v13_submit) and 0.944 blended
 stack (v15). All public notebooks at 0.949-0.950 share one CoAtNet-384 checkpoint trained with OAI
 data; the user adopted it despite the unresolved rule risk (D-019). v17 (public 0.950 notebook
 unchanged) reproduced **0.950**; v19 (v17 + our leg at w 0.15) also **0.950** (tie at 3 decimals;
-ranking uses unrounded scores). v20 (w 0.25) was scheduled to be submitted right after 00:00 UTC
-2026-10-09. Leaderboard 2026-10-08 ~23:00 UTC: **rank 247 of 5,537**, inside silver (cut rank 276)
+ranking uses unrounded scores). v20 (w 0.25) was submitted at 00:02 UTC
+2026-10-09 (ref 56979496), score pending. Leaderboard 2026-10-08 ~23:00 UTC: **rank 247 of 5,537**, inside silver (cut rank 276)
 but the 0.950 block spans ranks 176-554 and is growing. Final selection now: **v19 (0.950) + v15
 (0.944, non-OAI)**. Deadline 2026-10-22; entry and team-merger deadline 2026-10-15.
 
@@ -45,7 +45,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v15 / v16 | 2026-10-08 | submit (blends, D-018) | v05 anchor (cells unchanged from v09) + v13 arm-N 5-fold leg, rank blend at w 0.30 (v15) / 0.45 (v16) | built; local tests of the leg and blend cells pass (fallback keeps the anchor; blend formula) | **0.944** / 0.943 | v15 is the first own submission above v05; final picks v05 + v15 (D-018). Leaderboard moved: on 2026-10-08 bronze needs 0.947 (rank 549 of 5,493), we are rank 844 |
 | v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | commit run passes (weights hash verified, fusion applied); submitted 2026-10-08 (ref 56958475) | **0.950** | reproduces the source; new anchor (rank 247 of 5,537 on 2026-10-08 together with v19) |
 | v18 | 2026-10-08 | audit (gold diagnostic) | the v17 components (CoAtNet-384 inference cell with its data root pointed at a gold-58 tree; ConvNeXt reader infer.py) on the 58 gold studies, for blend analysis with our v13 N leg | built; gold-tree cell tested locally with the real CSVs; run 2026-10-08 (188 s) | gold: CoAtNet 0.923, reader 0.915, v17 0.925, N 0.920 | N-CoAtNet gold noise corr 0.81 (reader 0.79); fusion design v19/v20 under Codex review |
-| v19 / v20 | 2026-10-08 | submit (blends, design v19-fusion rev 2) | v17 anchor (cells unchanged) + v13 arm-N 5-fold leg, outer rank blend at w 0.15 (v19) / 0.25 (v20); absolute leg deadline, byte-equal reference, OOF over 5 folds at 1e-3 | built; local tests of the leg and blend cells pass (fallback, blend formula, deadline kill) | - | commit runs pass all three gates (base = v17 byte for byte; reference byte-equal on the v17 image; OOF 5 folds <= 5.5e-5; blend recomputed); **v19 0.950** (= v17; tie keeps v19 per the decision rule); v20 scheduled after 00:00 UTC 2026-10-09 (user-approved) |
+| v19 / v20 | 2026-10-08 | submit (blends, design v19-fusion rev 2) | v17 anchor (cells unchanged) + v13 arm-N 5-fold leg, outer rank blend at w 0.15 (v19) / 0.25 (v20); absolute leg deadline, byte-equal reference, OOF over 5 folds at 1e-3 | built; local tests of the leg and blend cells pass (fallback, blend formula, deadline kill) | - | commit runs pass all three gates (base = v17 byte for byte; reference byte-equal on the v17 image; OOF 5 folds <= 5.5e-5; blend recomputed); **v19 0.950** (= v17; tie keeps v19 per the decision rule); v20 submitted 2026-10-09 00:02 UTC (ref 56979496), score pending |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -308,10 +308,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **v20** (v17 + N at w 0.25): a background timer in the 2026-10-08 session was to submit it right
-   after 00:00 UTC 2026-10-09 (user-approved). Check `kaggle competitions submissions`: if it is not
-   there, submit `lingxd/v20-submit` version 1 (commit run already passed all gates, `results/v20/run1/`).
-   Record the ref and score in `experiments.md`.
+1. **v20** (v17 + N at w 0.25) was submitted at 00:02 UTC 2026-10-09 (ref 56979496) by the background
+   timer; read its score when the user reports it and record it in `experiments.md`.
 2. **Decision rule** (`v19-fusion-design.md`): v20 replaces v19 as the anchor-family pick only with a
    public score >= v19 + 0.002 (i.e. >= 0.952). Also compare our leaderboard rank before and after
    v20 is scored (L22): a better rank means v20 beats our best in the hidden digits.
