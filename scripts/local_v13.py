@@ -10,9 +10,12 @@ Run in the conda env `kaggle-gpu` (environment-gpu.yml):
   python scripts/local_v13.py check              # re-infer the Kaggle fold-0 N checkpoint locally
   python scripts/local_v13.py fold 1 --workers 6 # train v13 arm N on fold 1 (watchdog: --stall-min 15)
   python scripts/local_v13.py --version v22 fold 0   # v22 (target T3) arm N on fold 0
+  python scripts/local_v13.py --version v24 fold 0 --arm C --mode smoke   # v24 arm C smoke check
+  python scripts/local_v13.py --version v24 fold 0 --arm C                # v24 arm C on fold 0
 
-Before anything is trained the training targets are checked: v13's must equal those of the Kaggle
-F0 run; v22's must equal T3 recomputed here independently from the inputs.
+Before anything is trained the training targets are checked: v13's and v24's must equal those of the
+Kaggle v13 F0 run; v22's must equal T3 recomputed here independently from the inputs. The peak Windows
+commit charge is recorded (L19).
 """
 import argparse
 import hashlib
@@ -31,7 +34,8 @@ import numpy as np
 import pandas as pd
 
 REPO = Path(__file__).resolve().parents[1]
-NOTEBOOKS = {'v13': 'v13-round2-mri.ipynb', 'v22': 'v22-n-gemini-target.ipynb'}
+NOTEBOOKS = {'v13': 'v13-round2-mri.ipynb', 'v22': 'v22-n-gemini-target.ipynb', 'v24': 'v24-coatnet-own.ipynb'}
+KAGGLE_F0_TARGETS = ('v13', 'v24')                       # versions trained on v13's round-2 target
 VERSION = 'v13'                                          # set from --version in __main__
 NB = REPO / 'notebooks' / NOTEBOOKS[VERSION]
 INPUT = REPO / 'results' / 'v13' / 'local_input'          # shared by all versions
@@ -149,7 +153,7 @@ def run_cells(work_root, override, stop_after=None):
         if src.startswith(f'# {VERSION} configuration'):
             override(ns)
         if 'train_targets' in ns.get('PATHS', {}) and not ns.get('_targets_checked'):
-            if VERSION == 'v13':
+            if VERSION in KAGGLE_F0_TARGETS:
                 local, kaggle = targets_sha256_lf(ns['PATHS']['train_targets']), kaggle_f0_targets_sha256()
                 assert local == kaggle, f'training targets differ from the Kaggle F0 run: {local} vs {kaggle}'
                 print('training targets equal to the Kaggle F0 run (sha256 with LF endings)', flush=True)
@@ -164,19 +168,22 @@ def run_cells(work_root, override, stop_after=None):
 
 
 def fold(args):
-    k, arm, v = args.fold, 'N', VERSION
+    k, arm, v = args.fold, args.arm, VERSION
     if v == 'v13' and k == 0:
         raise SystemExit('v13 fold 0 is the Kaggle-trained model (D-016)')
-    work_root = REPO / 'results' / v / f'local_f{k}'
+    work_root = REPO / 'results' / v / (f'local_f{k}' if args.mode == 'folds' else 'local_smoke')
     tag = f'fold{k}_{arm}'
     out = work_root / v / tag
     if out.exists() and any(out.iterdir()):
         raise SystemExit(f'{out} is not empty; move it away before a rerun')
 
     def override(ns):
-        ns['MODE'] = 'folds'
+        ns['MODE'] = args.mode
         ns['FOLD0_ARMS'] = []                # F0 is done; keeps the MRI-CORE weights out of the inputs
         ns['FOLDS_JOBS'] = [(arm, k)]        # one GPU: one job per invocation
+        if args.mode == 'smoke':
+            assert k == 0 and v == 'v24', 'smoke runs only for v24 arm C on fold 0'
+            ns['SMOKE_ARMS'] = [arm]
         ns['QUOTA_AT_LAUNCH_H'] = 11.0       # no quota locally; hard stop min(10.5, 11 - 0.4) h
         ns['HARD_STOP_S'] = min(10.5, ns['QUOTA_AT_LAUNCH_H'] - 0.4) * 3600
         ns['COMMON']['num_workers'] = args.workers
@@ -184,18 +191,28 @@ def fold(args):
 
     record = {'started': time.strftime('%Y-%m-%d %H:%M:%S'), 'version': v, 'fold': k, 'arm': arm,
               'workers': args.workers, **env_record()}
-    state = {'done': False, 'killed': None}
+    state = {'done': False, 'killed': None, 'commit_peak_gb': 0.0}
     threading.Thread(target=watchdog, args=(work_root / v / f'{v}_log_{tag}.txt', args.stall_min * 60, state),
                      daemon=True).start()
+    threading.Thread(target=commit_sampler, args=(state,), daemon=True).start()
     try:
         run_cells(work_root, override)
     finally:
         state['done'] = True
     receipt = json.loads((out / f'{v}_receipt_fold{k}_{arm}.json').read_text())
+    record['windows_commit_peak_gb'] = round(state['commit_peak_gb'], 2)
+    if args.mode == 'smoke':
+        record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), status=receipt['status'], killed=state['killed'])
+        (work_root / v / f'{v}_local_run_smoke_{tag}.json').write_text(json.dumps(record, indent=2))
+        keys = ('status', 'checks_passed', 'checks', 'peak_reserved_gb', 'projected_fold_hours', 'train_images_per_s',
+                'data_share', 'val_seconds_k16', 'smoke_val_macro_auc')
+        print(json.dumps({**{key: receipt.get(key) for key in keys}, 'windows_commit_peak_gb': record['windows_commit_peak_gb']},
+                         default=float))
+        return
     targets_file = work_root / v / f'{v}_train_targets.csv'
     record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), status=receipt['status'], killed=state['killed'],
                   train_targets_sha256_lf=targets_sha256_lf(targets_file))
-    if v == 'v13':
+    if v in KAGGLE_F0_TARGETS:
         record['targets_equal_kaggle_f0'] = record['train_targets_sha256_lf'] == kaggle_f0_targets_sha256()
     else:
         record['targets_max_abs_diff_independent_t3'] = t3_independent(targets_file)
@@ -211,6 +228,24 @@ def fold(args):
         shutil.move(str(p), dest / p.name)
     check = {k2: record[k2] for k2 in ('targets_equal_kaggle_f0', 'targets_max_abs_diff_independent_t3') if k2 in record}
     print('targets check:', check, '| checkpoints moved to', dest)
+
+
+def commit_sampler(state):
+    """Peak Windows commit charge (total page file minus available) while training runs (L19)."""
+    import ctypes
+
+    class MEMORYSTATUSEX(ctypes.Structure):
+        _fields_ = [('dwLength', ctypes.c_ulong), ('dwMemoryLoad', ctypes.c_ulong), ('ullTotalPhys', ctypes.c_ulonglong),
+                    ('ullAvailPhys', ctypes.c_ulonglong), ('ullTotalPageFile', ctypes.c_ulonglong),
+                    ('ullAvailPageFile', ctypes.c_ulonglong), ('ullTotalVirtual', ctypes.c_ulonglong),
+                    ('ullAvailVirtual', ctypes.c_ulonglong), ('ullAvailExtendedVirtual', ctypes.c_ulonglong)]
+    m = MEMORYSTATUSEX()
+    m.dwLength = ctypes.sizeof(MEMORYSTATUSEX)
+    while not state['done']:
+        if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(m)):
+            state['commit_peak_gb'] = max(state['commit_peak_gb'], (m.ullTotalPageFile - m.ullAvailPageFile) / 2**30)
+            state['commit_limit_gb'] = m.ullTotalPageFile / 2**30
+        time.sleep(10)
 
 
 def watchdog(log_path, stall_s, state):
@@ -283,6 +318,8 @@ if __name__ == '__main__':
     c.add_argument('--tolerance', type=float, default=0.01)
     f = sub.add_parser('fold')
     f.add_argument('fold', type=int, choices=[0, 1, 2, 3, 4])
+    f.add_argument('--arm', default='N', choices=['N', 'C'])
+    f.add_argument('--mode', default='folds', choices=['folds', 'smoke'])   # smoke: v24 arm C check (design v21-shortlist 5)
     f.add_argument('--workers', type=int, default=6)   # 8 reached the Windows commit limit (fold 2, 2026-10-07)
     f.add_argument('--stall-min', type=float, default=15.0)
     a = ap.parse_args()
