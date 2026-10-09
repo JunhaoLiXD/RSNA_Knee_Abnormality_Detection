@@ -168,3 +168,16 @@ Verdict: proceed with changes. Every finding was checked against the files.
 | 6 | Gold is a selection set; bootstrap figures are not success probabilities (medium) | Yes | **Accepted**: wording in 1.2 |
 | 7 | Choosing the top public score is too sensitive to one display unit; prefer the smaller weight unless the advantage is >= 0.002; two failures do not prove the family must change (medium) | Partly | **Partly accepted**: the 0.002 threshold applies to moving from w 0.15 to 0.25, and the "must change family" conclusion is removed. For v19 vs v17 we keep v19 unless it scores lower: the scenario analysis and gold both point to a small positive effect, and the downside of w 0.15 is small |
 | 8 | Worth doing, but fix the run validation first; check the daily quota (low) | Yes: one submission left on 2026-10-08 | **Accepted**: v19 first, v20 the next UTC day |
+
+## 6. Results (2026-10-08/09)
+
+| Entry | Public LB | Note |
+|---|---:|---|
+| v17 (base) | 0.950 | - |
+| v19 (w 0.15) | 0.950 | tie; kept as the anchor-family pick per the decision rule |
+| v20 (w 0.25) | 0.949 | lower; rejected |
+
+Reading under section 1.3: a tie at w 0.15 and a loss at w 0.25 fit an N-v17 correlation of about
+0.90-0.93 on the LB scale, above the 0.88 central assumption; the gold correlations (0.81-0.83)
+understated it. The N leg adds about nothing to this base; further gains need a different or
+stronger model (STATUS L21, IMPROVEMENT_PLAN Priority 6).

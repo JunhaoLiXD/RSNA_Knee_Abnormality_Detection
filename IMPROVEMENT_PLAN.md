@@ -19,7 +19,7 @@ model (v13, D-015).** Status 2026-10-07: Gate F0 kept N only (MRI-CORE arm M gol
 the floor); step D passed (v14, N fold 0 alone, 0.934 >= 0.933, STATUS L17); N folds 1-4 next.
 Status 2026-10-08: Priority 2b done (5-fold N leg 0.936 alone; v15 blend 0.944, STATUS L18).
 **Active: Priority 5**, the OAI-based public anchor (v17 0.950, D-019) with our leg blended in (v19
-0.950 at w 0.15; v20 at w 0.25 pending). Next: a design note for a stronger own model (Priority 6,
+0.950 at w 0.15; v20 0.949 at w 0.25). Next: a design note for a stronger own model (Priority 6,
 proposed, not yet reviewed).
 
 ## Goal and constraints
@@ -193,8 +193,8 @@ outer rank blend at w 0.15 / 0.25 (`docs/research/v19-fusion-design.md` revision
 0.944 (STATUS L20). On gold our leg is about as different from the CoAtNet as the reader that adds
 +0.001 on the LB (STATUS L21).
 
-**Result so far.** v17 0.950; v19 0.950 (tie, kept per the decision rule); v20 scheduled for
-2026-10-09. Rank 247 of 5,537 on 2026-10-08.
+**Result.** v17 0.950; v19 0.950 (tie, kept per the decision rule); v20 0.949 (rejected). The leg adds
+about nothing to this base (STATUS L21). Rank 268 of 5,543 on 2026-10-09 and sliding.
 
 **Risk.** The OAI rule question is unresolved (topic 743416); the user accepted it (D-019). v15
 (0.944, non-OAI) stays the second final pick as a hedge.
