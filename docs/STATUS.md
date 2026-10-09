@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-09 (options note for external resources)
+Last updated: 2026-10-09 (shortlist E6/E1/E5/E4: v21 built, v22 and v23 done, v24 fold 0 running)
 
 ## Current phase
 
@@ -49,6 +49,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v21 | 2026-10-09 | submit (E6, D-020) | v17 CoAtNet cells + v13 arm-N 5-fold leg in place of the public reader, per-finding TW fusion | built; local fusion tests pass (independent TW recomputation 1e-16, fallback) | - | commit run awaits approval |
 | v22 | 2026-10-09 | training (E1, D-020) | v13 arm N with target T3 (CC0 Gemini report labels as a fifth source), local fold 0 | val 0.8990 (v13 F0 0.8988); gold 0.9182 (v13 F0 0.9200; -0.0020, CI -0.0091 to +0.0050) | - | no gain: predictions match v13 F0 (Spearman 0.98); fold-0 LB check optional |
 | v23 | 2026-10-09 | training (E5, D-020) | public OAI CoAtNet through the v07 adapter, adapted 3 epochs on the round-2 target + self-distillation, local | adapter alone gold 0.9255 (v18 exact 0.9228, Spearman 0.984); adapted 0.9230 (-0.0025 vs untouched, CI -0.0088 to +0.0035) | - | not admitted (design 4.3): E5 stopped |
+| v24 | 2026-10-09 | training (E4, D-020) | own CoAtNet-rmlp-2 (ImageNet-12k, no OAI), round-2 target, local fold 0 | smoke passed after two fixes (BatchNorm in train mode: frozen BN diverged in fp16; fp32 reload check in small chunks: GPU oversubscription); projected 7.0 h per fold | - | fold 0 running (started 2026-10-09 18:47 local) |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -313,6 +314,13 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    0.9228), so that pipeline route is open for inference; our labels are not better than the ones it was
    trained on.
 
+25. **Local training limits changed and CoAtNet needs care** (v24 smoke, design v21-shortlist 12): the
+   Windows commit limit is now 36.5 GB (4.8 GB page file; 47.3 GB in L19) with about 13 GB used at idle,
+   so worker counts that fit before now stall the machine (two GPU timeout resets logged). With frozen
+   BatchNorm the ImageNet CoAtNet diverges in fp16 after about 27 steps (pretrained running variances down
+   to 2e-6); BatchNorm in train mode is stable. Large fp32 evaluations oversubscribe the 12 GB GPU and
+   crawl instead of failing. A silent stall is caught only by the log watchdog.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -340,7 +348,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    rank families (L20), so plan LB checks. **2026-10-09:** options for external resources by pipeline stage
    (with Codex) in `docs/research/external-levers-2026-10-09.md`: no public report-label table beats our
    4-source mean on gold, but the CC0 Gemini table adds +0.0035 to the round-2 target (CI -0.0007 to
-   +0.0079); a synthetic benchmark puts a local CoAtNet fold at about 6 h. Shortlist awaits the user.
+   +0.0079); a synthetic benchmark puts a local CoAtNet fold at about 6 h. **Shortlist running (D-020,
+   `v21-shortlist-design.md`):** E6 v21 built and tested, Kaggle commit run awaits approval; E1 v22 no
+   gain (L23; fold-0 LB check proposed to be skipped, awaits the user); E5 v23 not admitted (L24); E4 v24
+   fold 0 training locally (about 7 h; LB gate 0.937 for folds 1-4, start by 10-14 12:00 UTC); E7
+   optional.
 4. **Team merger** (deadline 2026-10-15): the user's decision; not discussed yet.
 5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
    ruling (topic 743416) could still change the picture; check it before 2026-10-22.
