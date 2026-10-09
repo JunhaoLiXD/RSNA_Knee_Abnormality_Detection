@@ -263,3 +263,17 @@ about `1 / sqrt(1.2e-5)` = 290; once fine-tuning moves their inputs, activations
 the 20 tokens of one study); the memory probe's random-input BatchNorm update is undone by restoring the
 buffers. The double running-statistics update under checkpoint recomputation is accepted (it changes
 the effective momentum, not the training-mode normalisation). Everything else in section 5 stays.
+
+Three further smoke runs with BatchNorm in train mode trained normally (300 micro-steps, 53 img/s, data
+share 0.11 with 2 workers) but stalled in the K16 validation pass and were stopped by the stall
+watchdog (15, 15 and 45 min); Windows logged two GPU timeout resets (LiveKernelEvent 141) during those
+passes, and the peak commit charge was 34.7-37.0 GB against a limit of 36.5 GB (32 GB RAM, a 4.8 GB
+page file; the limit was 47.3 GB when L19 was written). The evaluation itself is fast in isolation (0.46 s
+per study in the main process, 947 studies in about 7 min). **Change:** arm C evaluates in the main
+process (`eval_workers` 0), so no worker processes are spawned on top of the trainer; training keeps 2
+loader workers. A fifth smoke run still stalled with the GPU memory full about 8 minutes into the
+evaluation phase, while a replication (40 training steps, then fp16 evaluation in the same process)
+ran at 0.47 s per study with 6.8 GB reserved. The stall is in the smoke-only reload check, which runs
+the model in **fp32** in chunks of 40 tokens: with the training cache still reserved this exceeds 12 GB
+and Windows pages GPU memory to system memory. **Change:** that check runs in chunks of 8 tokens after
+`torch.cuda.empty_cache()`. The fold run does not use this code path.
