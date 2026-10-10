@@ -90,6 +90,13 @@ CoAtNet on gold (diagnostic only).
 checks as v19 (reference byte-equal, OOF of the fold-0 reference study at 1e-3, coverage). Confound: B1
 changes both the views and the target against N; the blend score is what decides.
 
+**Implementation (2026-10-10, `notebooks/v27-submit.ipynb`).** Built from v19 by `build_v27` logic: v17 cells
+unchanged; the leg keeps v19's preprocessing, reference check, deadline and fallbacks, with the data and model
+sections of the v26 trainer; the model is built from the checkpoint cfg (asserting two views, crop source,
+ImageNet normalisation, 320 px) and loaded strictly. The checkpoint stores `timm_kwargs: None`, which the first
+draft would have passed as `**None`; fixed before the push. Local GPU test of the leg's own model code on the
+fold-0 reference study: max difference to the v26 OOF 1.4e-4 (tolerance 1e-3).
+
 ## 4. B2 - `v28` cache and `v29` model (local view from DICOM)
 
 **Cache `v28`.** The v07 notebook with one change: the field is a **100 mm** centre crop (instead of 140 mm)
