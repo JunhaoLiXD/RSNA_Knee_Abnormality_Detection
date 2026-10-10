@@ -56,6 +56,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | ref | 2026-10-05 | leaderboard | 5,184 teams; #1 0.963; #10 0.959; #100 0.951; silver line 0.945; >= 0.944 is inside bronze; 0.943 block ranks 370-1,375; we are #1,278 | - | - | reference |
 | ref | 2026-10-08 | public notebooks | twelve at 0.949-0.950, all on the OAI-trained CoAtNet-384 SWA (nartaa); 0.950 = + goodpjw2008 ConvNeXt reader (`public-landscape-2026-10-08.md`) | - | 0.950 | reference |
 | ref | 2026-10-08 | leaderboard | 5,537 teams (~23:00 UTC); #1 0.964; 0.950 block ranks 176-554; silver cut rank 276 and bronze cut rank 553 both at 0.950; we are #247 | - | - | reference |
+| ref | 2026-10-10 | public notebooks | best verified 0.954 (heliosli: CoAtNet 0.7 + anatomy-anchored compact ConvNeXt-small "S6" using the SKM-TEA segmenter, 0.3); 0.951 forks with an older S6 bundle; S6 files retired 2026-10-09 13:50 UTC, notebooks no longer runnable (`public-landscape-2026-10-10.md`) | - | 0.954 | reference |
 | ref | 2026-10-10 | leaderboard | 5,641 teams (05:13 UTC); #1 0.964; 331 teams above 0.950; 0.950 block ranks 332-837; **silver cut rank 282 at 0.951**; bronze cut rank 564 at 0.950; we are #497 | - | - | reference |
 
 ### OAI-based anchor (v17; base of v19/v20)
