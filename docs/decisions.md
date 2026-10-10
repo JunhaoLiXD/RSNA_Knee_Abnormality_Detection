@@ -3,6 +3,29 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-022 - 2026-10-10 - v27 as provisional pick; capped hidden-digit exception for fold expansion
+
+**Decision.** (1) Provisional final picks are **v27 + v15** (v27 replaces v19); the final OAI choice is made
+after the fixed three-fold B1 test (`v31_submit`), and more folds do not replace v27 by default. (2) The
+B1/B2 decision table of `docs/research/v25-local-views-design.md` is replaced by the one in its section 8
+(revision 3): displayed >= 0.952 four total folds; displayed 0.951, or a displayed tie that is above the
+running best public submission by the rank-crossing test, three total folds with one submission after both
+extra folds; otherwise stop. The tie route is a post-result exception: once per branch, at most four extra
+folds across both branches, and a later hidden-digit win does not renew funding. (3) B1 qualifies now: v26
+folds 1-2 after v29 fold 0, then `v31_submit`. User decision 2026-10-10 ("agree to replace v19 with v27 and
+to D-022, after consulting Codex"); Codex review in section 9 of the design note (draft rule rejected as
+renewable, replaced by the capped version).
+
+**Reason.** v27 displays 0.950 like v19, but our rank rose 616 -> 458 with 158 stable teams crossing below us
+and none above (STATUS L22, L29), so its unrounded public score is higher; the size is below 0.001 and the
+paired gold screen against v19 is +0.0010 (CI -0.0021 to +0.0040). It is the first LB-positive change since
+v17 and comes from the branch that changes views and supervision (L27).
+
+**Consequences.** STATUS tracks best public submission, expansion eligibility and provisional picks
+separately. At most four further structural LB candidates under the plan (v30, v31, a qualifying three-fold
+B2, one fixed B1+B2 combination). Rank-crossing claims need stable witnesses (count, time, score, membership
+unchanged) and persistence in a later snapshot.
+
 ## D-021 - 2026-10-10 - Run the local-views plan (I1, B1, B2) after the S6 template
 
 **Decision.** Execute `docs/research/plan-2026-10-10-local-views.md` as designed in

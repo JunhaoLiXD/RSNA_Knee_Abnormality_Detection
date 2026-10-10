@@ -233,12 +233,15 @@ the plan `docs/research/plan-2026-10-10-local-views.md` runs as designed in
 2. **B1 `v26` / `v27_submit`**: N recipe with a second, central 100 mm view cropped from the v07 cache and
    the report-only target; fold 0 locally, then v17 + leg at w 0.15.
 3. **B2 `v28` / `v29` / `v30_submit`**: the local view rendered from DICOM at 100 mm (new cache), same
-   model; folds by the decision table (stop below 0.951; 2 folds at 0.951, 4 at >= 0.952).
+   model; folds by the D-022 table (design section 8: >= 0.952 four total folds; 0.951 or a hidden-digit
+   tie win three total folds; else stop).
+4. **Result so far (2026-10-10):** I1 v25 0.949 (L28); B1 v27 0.950, above v19 in the hidden digits (L29):
+   provisional picks v27 + v15, v26 folds 1-2 then `v31_submit` (D-022); B2 v29 fold 0 running.
 
 **Why.** STATUS L23-L27: changing only the target (v22, v23) or only the backbone (v24) leaves our model
 redundant with N, and N adds nothing to the OAI CoAtNet (L21, L26); the 0.954 model differs from ours in
 views and supervision. L24: the v07 adapter reproduces the public checkpoint, so a second input path costs
-no training. Adoption over v19 needs a displayed 0.952; large experiments stop 2026-10-19.
+no training. Adoption needed a displayed 0.952 (amended for ties by D-022); large experiments stop 2026-10-19.
 
 ## Priority 3 - Anchor robustness and runtime
 
@@ -248,7 +251,8 @@ no training. Adoption over v19 needs a displayed 0.952; large experiments stop 2
 2. Check the stack's A5 stage, which uses bf16 autocast on T4 GPUs that have no native
    bf16: compare its predictions under bf16 and fp16 on a few training studies; if the
    rankings differ materially, run it in fp16.
-3. **Final selection** (superseded on 2026-10-08: picks are v19 + v15, see STATUS and D-018/D-019;
+3. **Final selection** (superseded: picks were v19 + v15 from 2026-10-08, provisionally v27 + v15 since
+   2026-10-10, see STATUS and D-018/D-019/D-022;
    original text kept below) (two picks by 2026-10-22, over the measured candidates v05, v12, v13;
    replaces "pre-declared blend weight plus a conservative variant"): pick 1 is the highest
    public LB; pick 2 is the highest of the other kind (anchor-based v05/v13 versus own-only

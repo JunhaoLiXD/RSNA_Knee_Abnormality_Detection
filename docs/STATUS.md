@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-10 (v27 0.950 above v19 in hidden digits, rank 458; v24/v25 rejected; v29 fold 0 running locally)
+Last updated: 2026-10-10 (v27 above v19 in hidden digits, rank 458; D-022: provisional picks v27 + v15, B1 to three folds; v29 fold 0 running)
 
 ## Current phase
 
@@ -17,8 +17,8 @@ data; the user adopted it despite the unresolved rule risk (D-019). v17 (public 
 unchanged) reproduced **0.950**; v19 (v17 + our leg at w 0.15) also **0.950** (tie at 3 decimals;
 ranking uses unrounded scores). v20 (w 0.25) scored 0.949 (rejected).
 Our leg adds about nothing to this base (L21). Leaderboard 2026-10-09 01:52 UTC: **rank 268 of 5,543**, inside silver (cut rank 277)
-but the 0.950 block spans ranks 186-591 and is growing. Final selection now: **v19 (0.950) + v15
-(0.944, non-OAI)**. Deadline 2026-10-22; entry and team-merger deadline 2026-10-15.
+but the 0.950 block spans ranks 186-591 and is growing. Final selection then: v19 + v15; **now provisionally v27 + v15**
+(D-022). Deadline 2026-10-22; entry and team-merger deadline 2026-10-15.
 
 **2026-10-10:** the external-levers shortlist (D-020) gave no gain (v21 0.949; v22 and v23 no gain; v24
 fold 0 0.934 = N fold 0; L23-L27). After the verified 0.954 template (public CoAtNet + an anatomy-anchored local-view
@@ -56,7 +56,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v24 | 2026-10-09 | training (E4, D-020) | own CoAtNet-rmlp-2 (ImageNet-12k, no OAI), round-2 target, local fold 0 | fold 0: val 0.8943 (N F0 0.8988), gold 0.9166 (N F0 0.9200); Spearman with N 0.95 (gold) / 0.94 (val); N+C rank mean gold 0.9213 | 0.934 | v24_submit (fold-0 leg alone, ref 57045065) = N fold 0 (v14 0.934): below the 0.937 gate, **E4 stopped** (folds 1-4 not trained; L27) |
 | v25 | 2026-10-10 | submit (I1, D-021) | v17 cells unchanged + the same public CoAtNet through a second input path (v19 leg preprocessing + v23 adapter), combined CoAtNet = rank mean of exact and adapter, then v17's reader fusion; gated (else v17's output) | gold: I1 0.9269 vs v17 0.9245 (+0.0024, CI -0.0014 to +0.0064); local port (310 studies), parity (fp16 7e-5) and fusion tests pass | 0.949 | **rejected** (below v19/v17 0.950; gold had predicted +0.0024; L28). Commit run: all gates pass (exact = v17 byte for byte, reference byte-equal, T4/RTX parity max 2.0e-4, coverage 1.0, recomputed locally); submitted 2026-10-10 16:11 UTC (ref 57047189); adoption over v19 at >= 0.952 |
 | v26 | 2026-10-10 | training (B1, D-021) | N recipe + a second view per slot (central 100 mm crop of the v07 140 mm field, own slot ids), report-only target (v06 4-source soft), local fold 0 | fold 0: val 0.8921 (N F0 0.8988), gold 0.9091 (N F0 0.9200); Spearman on gold with the CoAtNet 0.864 (N 0.899), with N 0.941; gold screen v17 + v26 at 0.15: +0.0029 (CI +0.0001 to +0.0063) | - | weaker alone, less redundant; `v27_submit` (v17 + v26 F0 at 0.15) next |
-| v27 | 2026-10-10 | submit (B1, D-021) | v17 anchor (cells unchanged) + v26 arm-L fold-0 leg at w 0.15 (v19 leg code with the v26 two-view dataset and model, built from the checkpoint cfg, strict load) | local GPU leg test: reference study vs v26 OOF max diff 1.4e-4; commit run: all gates pass (base = v17 byte for byte, reference byte-equal, OOF 7.8e-5 on T4, coverage 1.0, blend recomputed) | **0.950** | displayed tie with v19, but **above v19 in the hidden digits**: team rank 616 -> 458 (158 teams that did not submit moved below us, none passed us; L29); our best public submission now. Pre-registered adoption needs a displayed 0.952; final picks are the user's decision |
+| v27 | 2026-10-10 | submit (B1, D-021) | v17 anchor (cells unchanged) + v26 arm-L fold-0 leg at w 0.15 (v19 leg code with the v26 two-view dataset and model, built from the checkpoint cfg, strict load) | local GPU leg test: reference study vs v26 OOF max diff 1.4e-4; commit run: all gates pass (base = v17 byte for byte, reference byte-equal, OOF 7.8e-5 on T4, coverage 1.0, blend recomputed) | **0.950** | displayed tie with v19, but **above v19 in the hidden digits**: team rank 616 -> 458 (158 teams that did not submit moved below us, none passed us; L29); our best public submission now; paired gold vs v19 +0.0010 (CI -0.0021 to +0.0040). **Provisional pick with v15 (D-022)**; B1 expansion to three folds (`v31_submit`) |
 | v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
 | v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | CPU checks on the downloaded cache pass (alignment, report-only target, local token = v28 slice) | - | smoke passed (190 img/s, projected 4.8 h, commit peak 32.6 GB); fold 0 running |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
@@ -353,12 +353,14 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    Every change to the v17 fusion tried so far (v20, v21, v25) scored 0.949; gold gains of this size are
    not evidence (L20). Displayed scores have 3 decimals, so the true loss may be small.
 
-29. **A less redundant leg lifts the v17 blend where N did not** (v27, B1): v17 + the v26 fold-0 two-view
-   report-only leg at w 0.15 displays 0.950 like v19, but our team rank went from 616 to 458 while none of
-   the teams that did not submit passed us, so its unrounded public score is above v19's (L22). The leg is
-   weaker alone than N (gold 0.9091 vs 0.9200) but less correlated with the CoAtNet (gold Spearman 0.864 vs
-   0.899). This is the first LB-positive change since v17, from one fold; the size is below the 0.001
-   display step and within public-LB noise.
+29. **v27 is above v19 in the hidden digits; the cause is not established** (v27, B1): v17 + the v26 fold-0
+   two-view report-only leg at w 0.15 displays 0.950 like v19, but our rank went 616 -> 458 while 158 stable
+   teams (count, time, score and membership unchanged) crossed below us and none above, so its unrounded
+   public score is higher (L22), by less than 0.001. Paired gold vs v19 +0.0010 (CI -0.0021 to +0.0040). The
+   leg is weaker alone than N (gold 0.9091 vs 0.9200) and less correlated with the CoAtNet (0.864 vs 0.899),
+   but the data show a higher public score for this configuration, not that lower correlation caused it.
+   First LB-positive change since v17, from one fold, within public-LB noise; selection among related variants
+   of one base inflates such wins (D-022 caps what they fund).
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -397,12 +399,15 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    I1 `v25_submit` scored 0.949 (rejected, L28); B1 `v26` fold 0 done (gold 0.9091, less redundant with
    the CoAtNet than N), `v27_submit` scored 0.950, above v19 in the hidden digits (rank 616 -> 458, L29);
    B2 `v28` cache done and audited (no clipping, aligned with v07), `v29` smoke passed and fold 0 running
-   locally (then `v30_submit`; decision table: < 0.951 stop, 0.951 two folds, >= 0.952 four). Large
+   locally (then `v30_submit`). D-022 table (design section 8): >= 0.952 four total folds; 0.951 or a
+   hidden-digit tie win three total folds; else stop. B1 qualifies: v26 folds 1-2 after v29 fold 0, then
+   `v31_submit`; v29 folds 1-2 only if v30 qualifies. Best public submission: v27. Large
    experiments stop 2026-10-19. Leaderboard 2026-10-10 22:04 UTC: rank 458 of 5,706 with v27, inside
    bronze (cut rank 570 at 0.950); 0.951 reaches about rank 380, silver cut rank 285.
 4. **Team merger** (deadline 2026-10-15): the user's decision; more relevant now that 0.950 is below the
    bronze cut.
-5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
+5. **Provisional final picks: v27 (0.950, best public) + v15 (0.944, non-OAI hedge)** (D-022; v19 replaced).
+   The final OAI choice follows the three-fold B1 test (`v31_submit`). The OAI
    ruling (topic 743416) could still change the picture; check it before 2026-10-22.
 
 ## Open questions

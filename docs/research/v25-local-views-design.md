@@ -1,6 +1,7 @@
 # v25-v30 design: CoAtNet two-path inference (I1) and local-view models (B1, B2)
 
-Status: revision 2 after the Codex review (section 7; required changes accepted, the separate cache pilot
+Status: revision 3 (section 8: provisional final pick and D-022 after v27, Codex-reviewed in section 9);
+revision 2 after the Codex review in section 7 (required changes accepted, the separate cache pilot
 replaced by a local audit of the full cache). Plan: `plan-2026-10-10-local-views.md`, approved by
 the user on 2026-10-10. Evidence: `public-landscape-2026-10-10.md` (S6), STATUS L20-L26.
 
@@ -161,3 +162,73 @@ Verdict: proceed with changes. Findings checked against the files.
 | 6 | B2: raw-index equality does not prove the same series or orientation; padding below a 100 mm field is windowed raw zero (medium) | Yes | **Accepted**: join v28 to v07 per (study, slot) on series UID, presence, series length, raw indices, flip and reversal flags, image count; mismatches fail training; padding behaviour recorded (one selected series below 100 mm) |
 | 7 | A single central crop is a weak stand-in for S6 (which keeps offset patellofemoral, posterior and +-30 mm coronal views); 30.6% of slot entries are subsampled to 32 slices; restore a stratified 100-study pilot (high) | Partly | **Accepted in framing**: B2 is a *central magnification* experiment, S6 is motivation only. The full view (v07, 140 mm) keeps patella and posterior structures; the local view targets the joint. **Pilot run rejected**: the full v28 cache costs about 1.5 CPU hours and no GPU quota, so it runs directly; the stratified visual audit (planes, laterality, field of view, spacing, off-centre series, patella and compartments) is done locally on the downloaded cache before training, with a stop/revise rule for systematic clipping |
 | 8 | Budgets need measurement; B1 has weak decision value; decision table incomplete (medium) | Yes | **Accepted**: T4 throughput and runtime measured in the commit runs; B1 is cut first if it delays B2 and doubles as the loader/model smoke test. Decision table: below 0.951 stop the line; folds mean total folds (2 at 0.951, 4 at >= 0.952); a second-fold blend that does not improve stops expansion; runtime over 2.5 h of hidden scoring for the leg stops deployment; a verified 0.951 candidate is kept for final comparison |
+
+## 8. After v27 (revision 3, 2026-10-10): provisional final pick and D-022
+
+Revision 3 replaces the draft of this section after the Codex review in section 9.
+
+**Evidence.** v27 (v17 + v26 fold-0 two-view report-only leg at w 0.15) displays 0.950, the same as v19.
+Leaderboard snapshots `external/lb/2026-10-10b` (archive time 18:10 UTC, before v27 was scored) and
+`-10c` (22:05 UTC, after): our rank 616 -> 458. We passed 185 existing teams and 27 passed us (all of them had
+new submissions). Stable witnesses (TeamId, submission count, last submission time, displayed score and
+membership unchanged; 5,339 teams, with no change of relative order among them): 158 crossed from above us
+to below, none the other way, all at displayed 0.950. Since ties go to the earlier submission and v27 was our
+only new scored submission, this is strong evidence under normal leaderboard operation that v27's unrounded
+public score is above v17's and v19's; it does not exclude a rescoring or an inconsistent refresh, so it is
+confirmed in a later snapshot. The size is only bounded, 0 < delta < 0.001: the 158 teams may be one cluster
+of identical scores. Gold-58 (reused, a screen): v27 0.9274 vs **v19 0.9264 (+0.0010, CI -0.0021 to
++0.0040, P(<= 0) 0.24)**; v19 vs v17 +0.0019. Per finding v27 - v19: Synovitis +0.010, Fracture +0.004,
+Lateral Meniscus -0.006, PF OA -0.004, others within 0.002.
+
+**A. Final picks (provisional).** v27 + v15 replace v19 + v15 as the provisional picks. v27 has the higher
+observed public score, the same structure and fallbacks as v19, and a checked pipeline; against it are one
+trained fold (v19's leg has five), an effect smaller than the display step and selection among related
+variants of one base. The scored v19 and v27 artifacts are kept. The final OAI choice is made after the fixed
+three-fold B1 test; a rebuild with more folds does not replace v27 by default. Three separate fields are
+tracked in STATUS: best public submission, expansion eligibility, provisional picks.
+
+**B. D-022: a capped, post-result exception (not a renewable rule).** The v27 hidden-digit result is recorded
+as a post-result exception, not as a pre-registered success. One authoritative table for B1 and B2, judged
+against the running best public submission (now v27):
+
+| Branch result (fold-0 blend, w 0.15) | Action |
+|---|---|
+| displayed >= 0.952 | four total folds |
+| displayed 0.951, or a displayed tie above the running best by the rank-crossing test | **three total folds** (folds 1-2), one submission after both finish; replaces the old "two folds, stop if the second-fold blend does not improve" |
+| no demonstrated improvement over the running best | stop the branch |
+
+Rank-crossing test: two snapshots around the candidate's scoring, the candidate the only new scored own
+submission, at least 20 stable witnesses crossing from above to below and none the other way, persistence in
+a later snapshot. The threshold is an operational robustness check, not a statistical one. Caps: one
+expansion per branch through the tie route, at most four additional folds across both branches through it;
+a later hidden-digit win updates the best public submission but **does not renew compute funding**; more than
+three folds needs a separate decision. A candidate that does not raise our best is "no demonstrated
+improvement", with no ordering inferred among losing candidates; identical predictions are not resubmitted.
+
+Frozen before training: scanner-grouped folds 1-2 (v06), the v26 recipe and seed unchanged, best-validation
+checkpoint per fold, leg = mean of the fold ranks (as v19), outer weight 0.15. Gold screens are paired against
+the fixed baselines (v27 and v19), reported per finding; a positive aggregate is required as support, an
+interval excluding zero is not.
+
+**Applied now.** B1 qualifies through the tie route: v26 folds 1-2 (about 8.8 h) after v29 fold 0, then
+`v31_submit` (v17 + v26 folds 0-2 at 0.15; a new ensemble version under D-017). B2: `v30_submit` (v17 + v29
+fold 0) is judged by the table against the running best; v29 folds 1-2 only if it qualifies. The queue is
+reversed only if v30 shows a displayed >= 0.951 before B1 fold 1 starts; a running fold is not interrupted.
+Predeclared LB candidates under this plan, at most four: v30, v31, a qualifying three-fold B2, and one
+optional fixed B1+B2 combination (each branch's rank aggregate at equal weight inside a total outer weight of
+0.15, its own version). Submissions are sequential with refreshed snapshots in between.
+
+## 9. Codex review of the revision 3 draft (GPT-6 Astra, high, read-only, 2026-10-10) and disposition
+
+Verdict: rank inference accepted with changes; v27 as provisional pick accepted with changes; D-022 as
+drafted rejected (renewable funding); B1 folds after v29 fold 0 accepted with changes; a combined leg not
+next. Each finding was checked against the snapshots and files.
+
+| # | Finding (severity) | Verified | Disposition |
+|---|---|---|---|
+| 1 | Rank inference sound but "only a rise explains" too absolute; date alone is not a stability filter (15 teams changed count, not date); net 158 = 185 passed - 27 passing (medium) | Yes (stable cohort 5,339, 0 order reversals, 158 down, 0 up; 185 and 27) | **Accepted**: stricter witness definition, qualified wording, persistence check |
+| 2 | D-022 as drafted is a renewable public-LB search policy (winner's curse over related variants) (high) | Yes (the draft re-tested rebuilds "under the same rule") | **Accepted**: post-result exception, one expansion per branch, four extra folds at most, no renewed funding |
+| 3 | Gold comparator wrong: +0.0029 is vs v17, the replacement is vs v19 (high) | Yes: recomputed v27 vs five-fold v19 +0.0010 (CI -0.0021 to +0.0040) | **Accepted**: paired screens against the fixed baselines; L29 softened |
+| 4 | Replacing v19 is reasonable provisionally, not final (medium) | Yes | **Accepted**: provisional picks v27 + v15; final OAI choice after the three-fold test |
+| 5 | "Two more folds as a 0.951 does" contradicts the section 7 table (two total folds) (medium) | Yes | **Accepted**: one table, three total folds for limited expansion, single submission after both folds |
+| 6 | Rank crossing cannot order candidates that do not raise our best; plan the queue and LB tests (medium) | Yes | **Accepted**: "no demonstrated improvement" class; at most four predeclared candidates; B1 first, conditional reversal |
