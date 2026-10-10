@@ -199,7 +199,7 @@ about nothing to this base (STATUS L21). Rank 268 of 5,543 on 2026-10-09 and sli
 **Risk.** The OAI rule question is unresolved (topic 743416); the user accepted it (D-019). v15
 (0.944, non-OAI) stays the second final pick as a hedge.
 
-## Priority 6 - External levers and a stronger own model - active (D-020)
+## Priority 6 - External levers and a stronger own model - done, no gain (D-020)
 
 The fusion lever is nearly used up (STATUS L21): a 0.936 leg ties when added to a 0.950 base. Options
 by pipeline stage were collected with Codex in `docs/research/external-levers-2026-10-09.md`; the
@@ -217,6 +217,28 @@ shortlist runs in order per `docs/research/v21-shortlist-design.md` revision 2:
 **Why.** STATUS L20-L21 (the leg is redundant; gold cannot rank families, so LB checks are budgeted);
 L4/L17 (target quality moved the student before); external-levers 2.1 (no public table beats our
 mean, Gemini is complementary). Adoption over v19 / v15 needs +0.002 on the displayed public score.
+
+**Result (2026-10-10).** No gain: E6 v21 0.949 (L26); E1 v22 equals v13 fold 0 (L23); E5 v23 not
+admitted (L24); E4 v24 fold 0 0.934 = N fold 0, below the 0.937 gate, stopped (L27); E7 not run.
+Superseded by Priority 7.
+
+## Priority 7 - Local views and a second CoAtNet input path - active (D-021)
+
+After the verified public 0.954 (CoAtNet + an anatomy-anchored local-view model, `public-landscape-2026-10-10.md`),
+the plan `docs/research/plan-2026-10-10-local-views.md` runs as designed in
+`docs/research/v25-local-views-design.md` revision 2 (Codex-reviewed):
+
+1. **I1 `v25_submit`**: the public CoAtNet through the exact pipeline and the v07 adapter, rank mean, then
+   v17's reader fusion (no training; gold +0.0024 over v17).
+2. **B1 `v26` / `v27_submit`**: N recipe with a second, central 100 mm view cropped from the v07 cache and
+   the report-only target; fold 0 locally, then v17 + leg at w 0.15.
+3. **B2 `v28` / `v29` / `v30_submit`**: the local view rendered from DICOM at 100 mm (new cache), same
+   model; folds by the decision table (stop below 0.951; 2 folds at 0.951, 4 at >= 0.952).
+
+**Why.** STATUS L23-L27: changing only the target (v22, v23) or only the backbone (v24) leaves our model
+redundant with N, and N adds nothing to the OAI CoAtNet (L21, L26); the 0.954 model differs from ours in
+views and supervision. L24: the v07 adapter reproduces the public checkpoint, so a second input path costs
+no training. Adoption over v19 needs a displayed 0.952; large experiments stop 2026-10-19.
 
 ## Priority 3 - Anchor robustness and runtime
 
