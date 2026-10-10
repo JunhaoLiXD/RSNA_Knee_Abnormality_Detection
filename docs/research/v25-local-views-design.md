@@ -99,6 +99,22 @@ canonical orientation and laterality, percentile window computed on the cropped 
 size about 14 GB (one Kaggle output), CPU about 1-1.5 h. Gate: every study present; per slot the stored
 `raw_index` lists equal v07's; 10 preview montages look sane.
 
+**Cache result (2026-10-10, `lingxd/v28-local-cache-100mm` version 1).** 4,407 studies, 0 errors, 14.44 GB
+(JPEG quality 92 chosen by the pilot: 14.28 GB projected), 0.88 h CPU. Audit (`scripts/audit_v28_cache.py`,
+outputs in `results/v28/audit/`): every (study, slot) matches v07 in presence, series, series length, stored
+count, flips, reversal and sort method (22,035 rows), and the stored slot and raw-index arrays match in all
+4,407 studies. On 800 random studies (4,000 middle slices) the v28 slice correlates with the matching central
+crop of the v07 slice at median 0.979 (5th percentile 0.941, minimum 0.82; the lowest are noisy Siemens
+coronal fat-suppressed series at 180 mm, where the finer v28 sampling keeps more noise), with no difference
+by side, field of view or vendor; zero pixels in v28 slices: 95th percentile 3.4% (air around axial
+sections). The foreground share inside the central 100 mm is a median 0.64 of the v07 field (it measures
+field size, not clipping). The 44 montage pairs (random per slot, smallest foreground share, lowest
+correlation, smallest field of view) and the notebook previews show the femorotibial joint inside the 100 mm
+field in every case; the patella and the popliteal region are at or beyond its edge in some sagittal slices,
+which the full view keeps. No systematic clipping: the stop/revise rule is not triggered. The v29 notebook's
+own alignment check and a dataset check (local token equal to the v28 slice at the full token's index) pass on
+the downloaded cache.
+
 **Model `v29`.** B1 with the local tokens read from the v28 cache at the same slice indices instead of
 cropping v07. Fold 0 first; folds 1-4 only per the gate in section 0.
 

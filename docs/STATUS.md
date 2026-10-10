@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-10 (v24_submit 0.934: E4 stopped; local-views plan D-021: v25 I1 commit run pushed, v26 fold 0 running locally, v28 cache run pushed)
+Last updated: 2026-10-10 (v24_submit 0.934: E4 stopped; D-021: v25 submitted (pending), v26 fold 0 running locally, v28 cache audited)
 
 ## Current phase
 
@@ -56,8 +56,8 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v24 | 2026-10-09 | training (E4, D-020) | own CoAtNet-rmlp-2 (ImageNet-12k, no OAI), round-2 target, local fold 0 | fold 0: val 0.8943 (N F0 0.8988), gold 0.9166 (N F0 0.9200); Spearman with N 0.95 (gold) / 0.94 (val); N+C rank mean gold 0.9213 | 0.934 | v24_submit (fold-0 leg alone, ref 57045065) = N fold 0 (v14 0.934): below the 0.937 gate, **E4 stopped** (folds 1-4 not trained; L27) |
 | v25 | 2026-10-10 | submit (I1, D-021) | v17 cells unchanged + the same public CoAtNet through a second input path (v19 leg preprocessing + v23 adapter), combined CoAtNet = rank mean of exact and adapter, then v17's reader fusion; gated (else v17's output) | gold: I1 0.9269 vs v17 0.9245 (+0.0024, CI -0.0014 to +0.0064); local port (310 studies), parity (fp16 7e-5) and fusion tests pass | pending | commit run: all gates pass (exact = v17 byte for byte, reference byte-equal, T4/RTX parity max 2.0e-4, coverage 1.0, recomputed locally); submitted 2026-10-10 16:11 UTC (ref 57047189); adoption over v19 at >= 0.952 |
 | v26 | 2026-10-10 | training (B1, D-021) | N recipe + a second view per slot (central 100 mm crop of the v07 140 mm field, own slot ids), report-only target (v06 4-source soft), local fold 0 | smoke passed (179 img/s, peak 5.87 GB, projected 4.97 h per fold, commit peak 33.0 of 36.5 GB); fold 0 running | - | `v27_submit` (v17 + v26 F0 at 0.15) after fold 0 |
-| v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality from a 120-study pilot) | - | - | Kaggle CPU run pushed (version 1); alignment with v07 and visual audit after download |
-| v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | built, not run | - | waits for v28 |
+| v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
+| v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | CPU checks on the downloaded cache pass (alignment, report-only target, local token = v28 slice) | - | smoke and fold 0 after v26 fold 0 frees the GPU |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -378,8 +378,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    bronze cut (rank 564) is still at 0.950 but the block above us grows by about 150 teams a day.
    **Local-views plan (D-021, `plan-2026-10-10-local-views.md`, design `v25-local-views-design.md` rev 2):**
    I1 `v25_submit` commit run passed all gates and was submitted 2026-10-10 16:11 UTC (ref 57047189, pending); B1 `v26` fold 0
-   running locally (then `v27_submit`); B2 `v28` cache Kaggle run pushed (download with --page-size 200,
-   v07 alignment and stratified visual audit, then `v29` smoke and fold 0, `v30_submit`). Large
+   running locally (then `v27_submit`); B2 `v28` cache done and audited (no clipping; aligned with v07); `v29` smoke and fold 0 after
+   v26 fold 0, then `v30_submit`. Large
    experiments stop 2026-10-19.
 4. **Team merger** (deadline 2026-10-15): the user's decision; not discussed yet.
 5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
