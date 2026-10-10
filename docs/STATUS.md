@@ -46,7 +46,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v17 | 2026-10-08 | public anchor (D-019) | sujanmajhisuzan/rsna-knee-apex-grandmaster-stack v1 unchanged: CoAtNet-384 SWA (OAI-trained, nartaa) + goodpjw2008 ConvNeXt reader, per-finding rank weights | commit run passes (weights hash verified, fusion applied); submitted 2026-10-08 (ref 56958475) | **0.950** | reproduces the source; new anchor (rank 247 of 5,537 on 2026-10-08 together with v19) |
 | v18 | 2026-10-08 | audit (gold diagnostic) | the v17 components (CoAtNet-384 inference cell with its data root pointed at a gold-58 tree; ConvNeXt reader infer.py) on the 58 gold studies, for blend analysis with our v13 N leg | built; gold-tree cell tested locally with the real CSVs; run 2026-10-08 (188 s) | gold: CoAtNet 0.923, reader 0.915, v17 0.925, N 0.920 | N-CoAtNet gold noise corr 0.81 (reader 0.79); fusion design v19/v20 under Codex review |
 | v19 / v20 | 2026-10-08 | submit (blends, design v19-fusion rev 2) | v17 anchor (cells unchanged) + v13 arm-N 5-fold leg, outer rank blend at w 0.15 (v19) / 0.25 (v20); absolute leg deadline, byte-equal reference, OOF over 5 folds at 1e-3 | built; local tests of the leg and blend cells pass (fallback, blend formula, deadline kill) | - | commit runs pass all three gates (base = v17 byte for byte; reference byte-equal on the v17 image; OOF 5 folds <= 5.5e-5; blend recomputed); **v19 0.950** (= v17; tie keeps v19 per the decision rule); **v20 0.949** (below v19: rejected; v19 stays the pick) |
-| v21 | 2026-10-09 | submit (E6, D-020) | v17 CoAtNet cells + v13 arm-N 5-fold leg in place of the public reader, per-finding TW fusion | commit run: all three gates pass (base = v17 CoAtNet byte for byte; leg checks; TW recomputation exact) | pending | submitted 2026-10-10 03:33 UTC (ref 57029729); adoption over v19 at >= 0.952 |
+| v21 | 2026-10-09 | submit (E6, D-020) | v17 CoAtNet cells + v13 arm-N 5-fold leg in place of the public reader, per-finding TW fusion | commit run: all three gates pass (base = v17 CoAtNet byte for byte; leg checks; TW recomputation exact) | 0.949 | rejected (below v19's 0.950); the public reader is the better partner (L26) |
 | v22 | 2026-10-09 | training (E1, D-020) | v13 arm N with target T3 (CC0 Gemini report labels as a fifth source), local fold 0 | val 0.8990 (v13 F0 0.8988); gold 0.9182 (v13 F0 0.9200; -0.0020, CI -0.0091 to +0.0050) | - | no gain: predictions match v13 F0 (Spearman 0.98); fold-0 LB check optional |
 | v23 | 2026-10-09 | training (E5, D-020) | public OAI CoAtNet through the v07 adapter, adapted 3 epochs on the round-2 target + self-distillation, local | adapter alone gold 0.9255 (v18 exact 0.9228, Spearman 0.984); adapted 0.9230 (-0.0025 vs untouched, CI -0.0088 to +0.0035) | - | not admitted (design 4.3): E5 stopped |
 | v24 | 2026-10-09 | training (E4, D-020) | own CoAtNet-rmlp-2 (ImageNet-12k, no OAI), round-2 target, local fold 0 | fold 0: val 0.8943 (N F0 0.8988), gold 0.9166 (N F0 0.9200); Spearman with N 0.95 (gold) / 0.94 (val); N+C rank mean gold 0.9213 | - | v24_submit (fold-0 leg) commit run pushed 2026-10-10; LB gate >= 0.937 for folds 1-4 |
@@ -56,6 +56,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | ref | 2026-10-05 | leaderboard | 5,184 teams; #1 0.963; #10 0.959; #100 0.951; silver line 0.945; >= 0.944 is inside bronze; 0.943 block ranks 370-1,375; we are #1,278 | - | - | reference |
 | ref | 2026-10-08 | public notebooks | twelve at 0.949-0.950, all on the OAI-trained CoAtNet-384 SWA (nartaa); 0.950 = + goodpjw2008 ConvNeXt reader (`public-landscape-2026-10-08.md`) | - | 0.950 | reference |
 | ref | 2026-10-08 | leaderboard | 5,537 teams (~23:00 UTC); #1 0.964; 0.950 block ranks 176-554; silver cut rank 276 and bronze cut rank 553 both at 0.950; we are #247 | - | - | reference |
+| ref | 2026-10-10 | leaderboard | 5,641 teams (05:13 UTC); #1 0.964; 331 teams above 0.950; 0.950 block ranks 332-837; **silver cut rank 282 at 0.951**; bronze cut rank 564 at 0.950; we are #497 | - | - | reference |
 
 ### OAI-based anchor (v17; base of v19/v20)
 
@@ -321,6 +322,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    to 2e-6); BatchNorm in train mode is stable. Large fp32 evaluations oversubscribe the 12 GB GPU and
    crawl instead of failing. A silent stall is caught only by the log watchdog.
 
+26. **Our N does not help the OAI CoAtNet in any configuration tried**: outside the fusion at w 0.15 a
+   tie (v19 0.950), at w 0.25 0.949 (v20), and in place of the public reader with its per-finding weights
+   0.949 (v21), although N alone beats the reader (0.936 vs 0.929) and gold predicted +0.0013 for the swap.
+   Standalone strength and gold-58 do not predict a partner's value for this base (L20, L21).
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -349,10 +355,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    (with Codex) in `docs/research/external-levers-2026-10-09.md`: no public report-label table beats our
    4-source mean on gold, but the CC0 Gemini table adds +0.0035 to the round-2 target (CI -0.0007 to
    +0.0079); a synthetic benchmark puts a local CoAtNet fold at about 6 h. **Shortlist running (D-020,
-   `v21-shortlist-design.md`):** E6 v21 built and tested, Kaggle commit run awaits approval; E1 v22 no
-   gain (L23; fold-0 LB check proposed to be skipped, awaits the user); E5 v23 not admitted (L24); E4 v24
-   fold 0 training locally (about 7 h; LB gate 0.937 for folds 1-4, start by 10-14 12:00 UTC); E7
-   optional.
+   `v21-shortlist-design.md`):** E6 v21 scored 0.949 (rejected, L26); E1 v22 no gain (L23; no LB check);
+   E5 v23 not admitted (L24); E4 v24 fold 0 done locally (val 0.8943, gold 0.9166, close to N), fold-0
+   leg `v24_submit` commit run pushed 2026-10-10 (LB gate 0.937 for folds 1-4, start by 10-14 12:00 UTC);
+   E7 optional. Leaderboard 2026-10-10 05:13 UTC: rank 497 of 5,641; silver now needs 0.951 and the
+   bronze cut (rank 564) is still at 0.950 but the block above us grows by about 150 teams a day.
 4. **Team merger** (deadline 2026-10-15): the user's decision; not discussed yet.
 5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
    ruling (topic 743416) could still change the picture; check it before 2026-10-22.
