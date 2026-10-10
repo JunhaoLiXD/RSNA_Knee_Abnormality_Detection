@@ -34,8 +34,12 @@ import numpy as np
 import pandas as pd
 
 REPO = Path(__file__).resolve().parents[1]
-NOTEBOOKS = {'v13': 'v13-round2-mri.ipynb', 'v22': 'v22-n-gemini-target.ipynb', 'v24': 'v24-coatnet-own.ipynb'}
+NOTEBOOKS = {'v13': 'v13-round2-mri.ipynb', 'v22': 'v22-n-gemini-target.ipynb', 'v24': 'v24-coatnet-own.ipynb',
+             'v26': 'v26-local-views.ipynb', 'v29': 'v29-local-views-native.ipynb'}
 KAGGLE_F0_TARGETS = ('v13', 'v24')                       # versions trained on v13's round-2 target
+REPORT_ONLY = ('v26', 'v29')                             # versions trained on the v06 soft target alone
+SMOKE_VERSIONS = ('v24', 'v26', 'v29')
+LOCAL_CACHE_RUN = REPO / 'results' / 'v28' / 'full1'     # lingxd/v28-local-cache-100mm output (v29)
 VERSION = 'v13'                                          # set from --version in __main__
 NB = REPO / 'notebooks' / NOTEBOOKS[VERSION]
 INPUT = REPO / 'results' / 'v13' / 'local_input'          # shared by all versions
@@ -135,6 +139,28 @@ def t3_independent(nb_targets_path):
     return float(np.abs(got.loc[want.index, LABELS].to_numpy() - want.to_numpy()).max())
 
 
+def soft_independent(nb_targets_path):
+    """v26/v29: the report-only target must equal the v06 soft target on the non-gold cached pool."""
+    t = pd.read_csv(V06 / 'v06_targets.csv', dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+    folds = pd.read_csv(V06 / 'v06_folds.csv', dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+    cached = pd.read_csv(CACHE_RUN / 'v07' / 'v07_cache_studies.csv', dtype={'StudyInstanceUID': str})
+    ok = set(cached[cached.error.fillna('') == ''].StudyInstanceUID)
+    fold_of = folds.fold.reindex(t.index)
+    pool = [u for u in t.index if fold_of[u] >= 0 and u in ok]
+    got = pd.read_csv(nb_targets_path, dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+    assert sorted(got.index) == sorted(pool) and not t.loc[got.index, 'is_gold'].astype(bool).any(), 'study set differs'
+    return float(np.abs(got.loc[pool, LABELS].to_numpy() - t.loc[pool, LABELS].to_numpy(float)).max())
+
+
+def ensure_local_cache_link():
+    """v29: link the downloaded v28 cache into the shared input tree (idempotent; prepare() is not rerun)."""
+    link = INPUT / 'v28-local-cache-100mm'
+    if not link.exists():
+        assert (LOCAL_CACHE_RUN / 'v28' / 'v28_cache_studies.csv').is_file(), f'download the v28 output to {LOCAL_CACHE_RUN}'
+        import _winapi
+        _winapi.CreateJunction(str(LOCAL_CACHE_RUN), str(link))
+
+
 def run_cells(work_root, override, stop_after=None):
     """Execute the notebook's code cells with local paths; `override(ns)` runs after the config cell.
     Before anything is trained, the training targets are checked (v13: equal to the Kaggle F0 run;
@@ -157,6 +183,10 @@ def run_cells(work_root, override, stop_after=None):
                 local, kaggle = targets_sha256_lf(ns['PATHS']['train_targets']), kaggle_f0_targets_sha256()
                 assert local == kaggle, f'training targets differ from the Kaggle F0 run: {local} vs {kaggle}'
                 print('training targets equal to the Kaggle F0 run (sha256 with LF endings)', flush=True)
+            elif VERSION in REPORT_ONLY:
+                diff = soft_independent(ns['PATHS']['train_targets'])
+                assert diff <= 1e-12, f'training targets differ from the v06 soft target: max abs diff {diff}'
+                print(f'training targets equal to the v06 soft target (max abs diff {diff:.2e})', flush=True)
             else:
                 diff = t3_independent(ns['PATHS']['train_targets'])
                 assert diff <= 1e-9, f'training targets differ from the independent T3: max abs diff {diff}'
@@ -182,7 +212,7 @@ def fold(args):
         ns['FOLD0_ARMS'] = []                # F0 is done; keeps the MRI-CORE weights out of the inputs
         ns['FOLDS_JOBS'] = [(arm, k)]        # one GPU: one job per invocation
         if args.mode == 'smoke':
-            assert k == 0 and v == 'v24', 'smoke runs only for v24 arm C on fold 0'
+            assert k == 0 and v in SMOKE_VERSIONS, f'smoke runs only for {SMOKE_VERSIONS} on fold 0'
             ns['SMOKE_ARMS'] = [arm]
         for kv in args.arm_set:              # diagnostic overrides of the arm's settings (smoke only)
             assert args.mode == 'smoke', '--arm-set is for smoke diagnostics; change the notebook for real runs'
@@ -201,6 +231,8 @@ def fold(args):
                      daemon=True).start()
     threading.Thread(target=commit_sampler, args=(state,), daemon=True).start()
     try:
+        if v == 'v29':
+            ensure_local_cache_link()
         run_cells(work_root, override)
     finally:
         state['done'] = True
@@ -221,6 +253,9 @@ def fold(args):
         record['targets_equal_kaggle_f0'] = record['train_targets_sha256_lf'] == kaggle_f0_targets_sha256()
     else:
         record['targets_max_abs_diff_independent_t3'] = t3_independent(targets_file)
+    if v in REPORT_ONLY:
+        record.pop('targets_max_abs_diff_independent_t3', None)
+        record['targets_max_abs_diff_v06_soft'] = soft_independent(targets_file)
     (work_root / v / f'{v}_local_run_{tag}.json').write_text(json.dumps(record, indent=2))
     print(json.dumps({key: receipt.get(key) for key in ('status', 'best_epoch', 'val_macro_k16', 'gold_macro_k16',
                                                         'gold_ci', 'train_images_per_s', 'total_seconds')}, default=float))
@@ -231,7 +266,7 @@ def fold(args):
     dest.mkdir(parents=True, exist_ok=True)
     for p in out.glob('*.pt'):
         shutil.move(str(p), dest / p.name)
-    check = {k2: record[k2] for k2 in ('targets_equal_kaggle_f0', 'targets_max_abs_diff_independent_t3') if k2 in record}
+    check = {k2: record[k2] for k2 in ('targets_equal_kaggle_f0', 'targets_max_abs_diff_independent_t3', 'targets_max_abs_diff_v06_soft') if k2 in record}
     print('targets check:', check, '| checkpoints moved to', dest)
 
 
@@ -323,7 +358,7 @@ if __name__ == '__main__':
     c.add_argument('--tolerance', type=float, default=0.01)
     f = sub.add_parser('fold')
     f.add_argument('fold', type=int, choices=[0, 1, 2, 3, 4])
-    f.add_argument('--arm', default='N', choices=['N', 'C'])
+    f.add_argument('--arm', default='N', choices=['N', 'C', 'L'])
     f.add_argument('--mode', default='folds', choices=['folds', 'smoke'])   # smoke: v24 arm C check (design v21-shortlist 5)
     f.add_argument('--arm-set', action='append', default=[], metavar='KEY=JSON')   # smoke diagnostics only
     f.add_argument('--tag', default='')     # smoke: suffix of the work folder, to keep diagnostic runs apart
