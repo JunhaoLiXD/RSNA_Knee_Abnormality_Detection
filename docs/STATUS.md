@@ -386,11 +386,14 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    E7 optional. Leaderboard 2026-10-10 05:13 UTC: rank 497 of 5,641; silver now needs 0.951 and the
    bronze cut (rank 564) is still at 0.950 but the block above us grows by about 150 teams a day.
    **Local-views plan (D-021, `plan-2026-10-10-local-views.md`, design `v25-local-views-design.md` rev 2):**
-   I1 `v25_submit` scored 0.949 (rejected, L28); B1 `v26` fold 0
-   running locally (then `v27_submit`); B2 `v28` cache done and audited (no clipping; aligned with v07); `v29` smoke and fold 0 after
-   v26 fold 0, then `v30_submit`. Large
-   experiments stop 2026-10-19.
-4. **Team merger** (deadline 2026-10-15): the user's decision; not discussed yet.
+   I1 `v25_submit` scored 0.949 (rejected, L28); B1 `v26` fold 0 done (gold 0.9091, less redundant with
+   the CoAtNet than N), `v27_submit` commit run pushed 2026-10-10 19:41 UTC (check, then one submission);
+   B2 `v28` cache done and audited (no clipping, aligned with v07), `v29` smoke passed and fold 0 running
+   locally (then `v30_submit`; decision table: < 0.951 stop, 0.951 two folds, >= 0.952 four). Large
+   experiments stop 2026-10-19. Leaderboard 2026-10-10 18:10 UTC: rank 616 of 5,691, outside bronze
+   (cut rank 569 at 0.950); 0.951 reaches about rank 360.
+4. **Team merger** (deadline 2026-10-15): the user's decision; more relevant now that 0.950 is below the
+   bronze cut.
 5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
    ruling (topic 743416) could still change the picture; check it before 2026-10-22.
 
