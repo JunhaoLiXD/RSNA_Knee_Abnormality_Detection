@@ -3,6 +3,27 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-021 - 2026-10-10 - Run the local-views plan (I1, B1, B2) after the S6 template
+
+**Decision.** Execute `docs/research/plan-2026-10-10-local-views.md` as designed in
+`docs/research/v25-local-views-design.md` revision 2 (Codex-reviewed): I1 `v25_submit` (the public CoAtNet
+through the exact pipeline and the v07 adapter, rank mean, then v17's reader fusion); B1 `v26` (N recipe
+with a second, central 100 mm view cropped from the v07 cache, report-only target, local fold 0) and
+`v27_submit`; B2 `v28` (100 mm cache rendered from DICOM, Kaggle CPU), `v29` (B1 with the local view from
+`v28`) and `v30_submit`. New legs are tested only as `rank(0.85 * rank(v17) + 0.15 * rank(leg))`; adoption
+over v19 needs a displayed 0.952, 0.951 funds limited expansion. User decision 2026-10-10 ("proceed with
+this plan").
+
+**Reason.** The best verified public score (0.954) adds an anatomy-anchored local-view model to the same
+CoAtNet; its assets (SKM-TEA segmenter, report likelihood table, gold-trained weights) are unusable or
+unavailable, so we test the cheap parts we can own: a second input path for the CoAtNet (gold +0.0024
+with the reader) and local views with report-only supervision (STATUS L23-L26: backbone or target changes
+alone stay redundant with N).
+
+**Consequences.** v25 is reassigned from the stopped E5 ensemble (D-020) to I1. No SKM-TEA, KneeXNet or
+OrthoFoundation assets. Large experiments stop 2026-10-19. Remote steps inside the plan (commit runs,
+the pre-registered submissions) proceed; anything else is asked for.
+
 ## D-020 - 2026-10-09 - Run the external-levers shortlist (E6, E1, E5, E4, E7) in order
 
 **Decision.** Run the shortlist of `docs/research/external-levers-2026-10-09.md` in the user's order,

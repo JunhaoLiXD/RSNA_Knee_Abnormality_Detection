@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-09 (shortlist E6/E1/E5/E4: v21 built, v22 and v23 done, v24 fold 0 running)
+Last updated: 2026-10-10 (local-views plan D-021: v25 I1 commit run pushed, v26 fold 0 running locally, v28 cache run pushed)
 
 ## Current phase
 
@@ -19,6 +19,10 @@ ranking uses unrounded scores). v20 (w 0.25) scored 0.949 (rejected).
 Our leg adds about nothing to this base (L21). Leaderboard 2026-10-09 01:52 UTC: **rank 268 of 5,543**, inside silver (cut rank 277)
 but the 0.950 block spans ranks 186-591 and is growing. Final selection now: **v19 (0.950) + v15
 (0.944, non-OAI)**. Deadline 2026-10-22; entry and team-merger deadline 2026-10-15.
+
+**2026-10-10:** the external-levers shortlist (D-020) gave no gain (v21 0.949; v22, v23, v24 redundant
+with N, L23-L26). After the verified 0.954 template (public CoAtNet + an anatomy-anchored local-view
+model), the local-views plan runs (D-021): I1 `v25_submit`, B1 `v26`/`v27_submit`, B2 `v28`-`v30_submit`.
 
 ## Versions and results
 
@@ -50,6 +54,10 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v22 | 2026-10-09 | training (E1, D-020) | v13 arm N with target T3 (CC0 Gemini report labels as a fifth source), local fold 0 | val 0.8990 (v13 F0 0.8988); gold 0.9182 (v13 F0 0.9200; -0.0020, CI -0.0091 to +0.0050) | - | no gain: predictions match v13 F0 (Spearman 0.98); fold-0 LB check optional |
 | v23 | 2026-10-09 | training (E5, D-020) | public OAI CoAtNet through the v07 adapter, adapted 3 epochs on the round-2 target + self-distillation, local | adapter alone gold 0.9255 (v18 exact 0.9228, Spearman 0.984); adapted 0.9230 (-0.0025 vs untouched, CI -0.0088 to +0.0035) | - | not admitted (design 4.3): E5 stopped |
 | v24 | 2026-10-09 | training (E4, D-020) | own CoAtNet-rmlp-2 (ImageNet-12k, no OAI), round-2 target, local fold 0 | fold 0: val 0.8943 (N F0 0.8988), gold 0.9166 (N F0 0.9200); Spearman with N 0.95 (gold) / 0.94 (val); N+C rank mean gold 0.9213 | - | v24_submit (fold-0 leg) commit run pushed 2026-10-10; LB gate >= 0.937 for folds 1-4 |
+| v25 | 2026-10-10 | submit (I1, D-021) | v17 cells unchanged + the same public CoAtNet through a second input path (v19 leg preprocessing + v23 adapter), combined CoAtNet = rank mean of exact and adapter, then v17's reader fusion; gated (else v17's output) | gold: I1 0.9269 vs v17 0.9245 (+0.0024, CI -0.0014 to +0.0064); local port (310 studies), parity (fp16 7e-5) and fusion tests pass | - | commit run pushed 2026-10-10 (version 1); adoption over v19 at >= 0.952 |
+| v26 | 2026-10-10 | training (B1, D-021) | N recipe + a second view per slot (central 100 mm crop of the v07 140 mm field, own slot ids), report-only target (v06 4-source soft), local fold 0 | smoke passed (179 img/s, peak 5.87 GB, projected 4.97 h per fold, commit peak 33.0 of 36.5 GB); fold 0 running | - | `v27_submit` (v17 + v26 F0 at 0.15) after fold 0 |
+| v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality from a 120-study pilot) | - | - | Kaggle CPU run pushed (version 1); alignment with v07 and visual audit after download |
+| v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | built, not run | - | waits for v28 |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
 | ref | 2026-10-01 | leaderboard | #1 0.961; #10 0.957; #100 0.949; 1,001 teams >= 0.943 | - | - | reference |
 | ref | 2026-10-05 | public notebooks | no public notebook above 0.946; reproducible ceiling still 0.943 (`docs/research/public-landscape-2026-10-05.md`) | - | - | reference |
@@ -361,6 +369,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    leg `v24_submit` commit run pushed 2026-10-10 (LB gate 0.937 for folds 1-4, start by 10-14 12:00 UTC);
    E7 optional. Leaderboard 2026-10-10 05:13 UTC: rank 497 of 5,641; silver now needs 0.951 and the
    bronze cut (rank 564) is still at 0.950 but the block above us grows by about 150 teams a day.
+   **Local-views plan (D-021, `plan-2026-10-10-local-views.md`, design `v25-local-views-design.md` rev 2):**
+   I1 `v25_submit` commit run pushed 2026-10-10 (check gates 1-3, then one submission); B1 `v26` fold 0
+   running locally (then `v27_submit`); B2 `v28` cache Kaggle run pushed (download with --page-size 200,
+   v07 alignment and stratified visual audit, then `v29` smoke and fold 0, `v30_submit`). `v24_submit`
+   score pending (ref 57045065). Large experiments stop 2026-10-19.
 4. **Team merger** (deadline 2026-10-15): the user's decision; not discussed yet.
 5. Final selection until something beats it: **v19 (0.950) + v15 (0.944, non-OAI hedge)**. The OAI
    ruling (topic 743416) could still change the picture; check it before 2026-10-22.

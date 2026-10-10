@@ -47,6 +47,30 @@ that falls back blocks the submission; on the hidden test a failed leg leaves v1
 **Runtime.** Adapter leg on about 1,300 studies: preprocessing about 0.3 h (v07 measurement) plus about
 244 k CoAtNet images on two T4s (estimate 30-40 min); total with v17 under 2.5 h.
 
+**Implementation (2026-10-10, `notebooks/v25-submit.ipynb`).** v17 cells 2-11 byte-identical; the leg
+script is the v19 leg preprocessing verbatim (reference check included) plus a `pack` that stores the
+per-slot series UID, series length and flips in the leg cache, and the v23 core `build_volume` reading them.
+Local checks before the push:
+
+- Port test (CPU): rebuilding leg cache entries from 310 v07 studies (the 10 parity studies + 300 random)
+  gives the v07 arrays back, and the leg adapter volume, mask and evaluation centres equal the v23 core
+  output on all 310 (0 failures).
+- Parity tolerance, measured on the local GPU on the 10 parity studies against `v23_teacher_probs.csv`:
+  fp16 rerun max error 7e-5 (6-decimal storage plus cuDNN), fp32 vs fp16 max 4.8e-4 (a proxy for
+  cross-GPU fp16 differences). The 2e-3 tolerance is kept (4x the proxy); a wrong flip or slice pick moves
+  probabilities by far more. The adapter-volume SHA-256 is reported but not gated (a JPEG decoder or
+  resize difference on Kaggle would change bytes without changing the model input materially).
+- Control flow (CPU, DICOM replaced by the v07 cache, CoAtNet by a stub): prepare, pack, parity check,
+  prediction, shard CSV and receipt run end to end.
+- Fusion cell on the v17 commit-run outputs: recomputing v17's fusion from the saved parts reproduces v17's
+  submission exactly (max difference 0.0); with all gates the I1 output equals an independent computation;
+  a failed parity check, a missing shard or a missing reader output each keep v17's submission.
+
+Deviation from the gate list: on the hidden test the leg is used at coverage >= 0.98 of the unique test
+studies, a missing study taking its exact rank (as v19); the commit run must still show coverage 1.0.
+The commit run (`lingxd/v25-submit` version 1, pushed 2026-10-10 ~15:08 UTC) is checked against gates 1-3
+before the submission.
+
 ## 3. B1 - `v26` (local view from the v07 cache)
 
 **Model.** The v13 trainer (arm N recipe: ConvNeXt-tiny `fb_in22k_ft_in1k`, 320 px triplets, 15 epochs, LR
