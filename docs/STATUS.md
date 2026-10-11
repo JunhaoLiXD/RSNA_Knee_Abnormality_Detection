@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-11 (handover: v33 0.954 best, above v32; v29 folds 1-2 training; v35 next; D-026 pending)
+Last updated: 2026-10-11 ~19:15 UTC (v33 0.954 best; v29 fold 1 done, fold 2 training; v35 prepared; v36 gap diagnostics on Kaggle, D-027; D-026 pending)
 
 ## Current phase
 
@@ -387,28 +387,33 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-**Handover state (2026-10-11 ~14:10 UTC).** Best public: **v33 0.954** (above v32 in the hidden digits, rank
-crossing confirmed); provisional picks **v33 + v15**; v30 (0.951) non-S6 OAI backup. Leaderboard 12:31 UTC: rank 208,
-silver cut 0.954 (rank 286), gold cut 0.961.
+**Handover state (2026-10-11 ~19:15 UTC).** Best public: **v33 0.954** (above v32 in the hidden digits); provisional
+picks **v33 + v15**; v30 (0.951) non-S6 OAI backup. Team merger: not considered for now (user, 2026-10-11).
 
-1. **Running locally:** v29 folds 1-2 (`scripts/local_v13.py --version v29 fold k --arm L --workers 2 --stall-min 25`),
-   fold 1 at epoch 8 of 15 (~14:10 UTC), fold 2 after it (~22:00 UTC). Check `results/v29/local_f{1,2}/v29/v29_log_fold*_L.txt`
-   and `models/v29/v29/fold*_L/`. If the launching session ended and a fold is missing, relaunch that fold.
-2. **v35 (D-024, eligible):** v32 + both three-fold legs (v26 folds 0-2 done; v29 folds 0-2), frozen hierarchical
-   aggregation (branch = rank of mean fold ranks; leg = rank of mean of the two branch ranks; outer 0.15). Builder
-   ready (scratchpad `build_v35.py`, see the handover prompt); then local leg test, a v34 run with the six-model leg
-   (runtime: leg must stay <= 2.5 h; launch allowance 1.5 x projected leg), v35 commit run, gates, snapshot, submit;
-   adopt over v33 only by display or rank crossing (stable witnesses >= 20, none reverse, persistence).
-3. **Pending user decision - D-026 (fusion probes, Codex-proposed):** after v35, freeze B (v35 if it beats v33, else
-   v33) and run four one-parameter probes: outer leg weight 0.05; 0.25; CoAtNet/S6 0.5/0.5; branch v26/v29 0.25/0.75;
-   sequential, rank crossing; replacing B in the picks needs >= +0.002 displayed; cap 5 submissions incl. v35, done by
-   2026-10-19.
-4. **Dread ablation (D-025 follow-up, after v35):** one matched B2 fold-0 student on the three-source target (pilkwang,
-   steven, lixin), same trainer and best-validation rule vs the same validation labels, one frozen blend; expectation
-   near zero. LLM report-reading branch is stopped (Codex confirmed).
-5. **Team merger** (deadline 2026-10-15): the user's decision.
-6. Kaggle defaults apply again (ask before remote actions outside an approved plan; no polling unless the user hands
-   over); consult Codex on major decisions; keep the 5-hour usage window below 90% (`get_usage`).
+1. **v29 folds 1-2 (local):** fold 1 done (val 0.8618, gold 0.9125, best epoch 13, 4.78 h; v26 fold 1: 0.8612 / 0.9125;
+   per-finding Spearman with v26 fold 1 0.968 val / 0.972 gold). Fold 2 running (started 15:56 UTC by the launcher loop of
+   the previous session, ends about 20:45 UTC; checkpoint moved to `models/v29/v29/fold2_L/` when done).
+2. **v35 (D-024):** prepared in this session's scratchpad (`build_v35.py --leg-min <min>`, `build_v34_six.py`,
+   `test_v35_blend.py` (passes), `test_v35_leg.py`, `check_v35_gates.py` (non-zero exit on failure), `rank_cross.py`); design
+   `v32-s6-anchor-design.md` section 8 (uncommitted until v35 is built) with the Codex code review (five findings accepted:
+   fallback robustness, coverage by finite rows; and the old builder's `VERSION = 'v33'` bug). `lingxd/rsna-knee-v26-weights`
+   version 2 holds folds 0-2. After fold 2: upload v29 weights (folds 0-2), real build, local leg test, v34 version 4 (six-model
+   runtime; `LEG_MIN_S` = 1.5 x projected leg), v35 commit run, gates, snapshot, submit; adopt over v33 only by display or rank
+   crossing.
+3. **v36 (D-027, design `v36-single-model-gap-design.md` rev 2, Codex-reviewed):** fold-0 diagnostics of our single-model gap
+   (forum single models 0.947-0.959 vs our 0.934-0.936): arms C (control), W (training weights 1.0), G (224 px, K_train 8), P
+   (round-3 target, N OOF teacher). Running on Kaggle (user: use Kaggle GPUs): session A = `lingxd/v36-gap-diagnostics` version 1
+   (C + W, pushed about 19:10 UTC, about 6.5-7 h); session B (G + P) after A's outputs are downloaded. Both targets checked
+   locally (`local_v13.py --version v36 targets`: C equals the Kaggle F0 target, P equals an independent recomputation). LB
+   tests, expansion (fold-0 LB >= 0.940) and caps per design section 5.
+4. **Pending user decision - D-026 (fusion probes):** as before (after v35; four one-parameter probes; +0.002 displayed to
+   replace B; cap 5 submissions incl. v35; done by 2026-10-19).
+5. **Research (2026-10-11):** `related-work-2026-10-11.md`: past RSNA winners and knee MRI papers give no large lever (Codex:
+   nothing planned for GPU; medial/lateral flip withdrawn); section 7 = the forum gap evidence behind v36. KJD-25K = KneeCoT
+   (prohibited).
+6. Dread ablation (D-025 follow-up): after v35, only if still wanted. Kaggle defaults apply (ask before remote actions outside
+   an approved plan; no polling unless handed over); consult Codex on major decisions; keep the 5-hour usage window below 90%.
+   Kaggle GPU quota 28.1 h left on 2026-10-11 (resets 2026-10-17 00:00 UTC) before v36.
 
 ## Open questions
 
