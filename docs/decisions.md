@@ -3,6 +3,24 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-028 - 2026-10-11 - Public 0.956 anchor (v37) and one frozen leg test on it (v38)
+
+**Decision.** (1) `v37_submit` = heliosli/blend-mine-in-private-lb-luck-to-all-upvoters (public 0.956: the v32 assets with
+CoAtNet:S6 rank weights 0.5:0.5, a changed S6 execution path and a permissive S6 fallback) reproduced unchanged except the
+S6 dataset slug (`rsna-knee-compact-v1` instead of `rsna-knee-compact-r6cnxfsss`, which Kaggle refuses as a
+non-versioned dataset; identical files). (2) `v38_submit` = v37 + v35's six-model leg unchanged at outer weight 0.15: one
+frozen test, no weight sweep. (3) Provisional picks become **v37 + v15** once v37 shows 0.956; v38 replaces v37 only if
+displayed higher or above v37 by the rank-crossing test. (4) D-026 probe 3 (CoAtNet:S6 0.5:0.5) is superseded by the
+public result; D-026 stays pending for the other probes; D-027 is unchanged. User decision 2026-10-11 ("consult Codex
+quickly, then do v37 and v38"); Codex quick review in `v32-s6-anchor-design.md` section 9.
+
+**Reason.** The public 0.956 notebook uses the same models as our v32/v33/v35 line (0.954); at 22:17 UTC 144 teams were
+at >= 0.955 and 493 at 0.954, our rank had fallen to 353 (silver cut rank 289 at 0.954), and v35 alone is expected to
+move only the hidden digits.
+
+**Consequences.** Rule exposure as D-023 (no new asset category). v35's comparison with v33 may be unresolvable once v37
+scores. Two Kaggle GPU batch sessions at most run at once (push error 2026-10-11).
+
 ## D-027 - 2026-10-11 - v36: fold-0 diagnostics of our single-model gap, trained on Kaggle
 
 **Decision.** Run `docs/research/v36-single-model-gap-design.md` revision 2 (Codex-reviewed, all required changes

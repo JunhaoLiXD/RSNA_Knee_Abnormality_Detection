@@ -217,3 +217,30 @@ code cells; fixed, and the builder now asserts that no v33 identifiers remain in
 (two models in version 3: 400 / 387 s); all leg checks pass in S6's environment. Projection for about 1,300 studies:
 leg 1.26 h (ceiling 2.5 h), whole run about 5.2 h; launch allowance 1.5 x 1.26 h = 115 min. v35 commit run: all 11
 gates pass; submitted 2026-10-11 22:17 UTC (ref 57086653).
+
+## 9. The public 0.956 notebook: v37 reproduction and v38 (2026-10-11, D-028)
+
+**Evidence.** heliosli/blend-mine-in-private-lb-luck-to-all-upvoters (public 0.956 on the Code page, 2026-10-11 ~22:30 UTC;
+0.954 for our v32 source). Read in the code and the author's outputs: the same CoAtNet checkpoint (raptor_sub byte-equal to
+v17) and S6 bundle `209a32c8b50a6b1c` (new slug `rsna-knee-compact-r6cnxfsss` version 2: manifest and state spec
+byte-equal to `rsna-knee-compact-v1`, same model hashes; our archived files match); S6 output equal to v32 run 2 within
+4.9e-7 (identical ranks); final = rank(0.5 rank(CoAtNet) + 0.5 rank(S6)) (recomputed, 3.3e-8). Three embedded S6 source
+files changed (Codex), S6 runs with `--max-fallback-fraction 1.0`, stage 3 ranks each model over its own non-failed
+studies and stops above 50% S6 failures.
+
+**Codex quick review (GPT-6 Astra, high, read-only)**: proceed with a gated v37 reproduction, then one frozen v38 test at
+0.15.
+
+| # | Finding | Verified | Disposition |
+|---|---|---|---|
+| 1 | Three embedded source files differ (`compact_train.py`, `compact_infer.py`, `probe_dual.py`), S6 serialisation nine significant digits: a new execution path, not only a weight change | Partly (one hash difference seen in our diff; the S6 output differs from v32's by 4.9e-7 only) | **Accepted**: recorded in the v37 header |
+| 2 | Verify mounted-file identity (models, side model, state spec, anatomy), stackers absent, outputs equal to the author's run; predeclared tolerances | Yes | **Accepted**: `check_v37_gates.py` (CoAtNet raw 1e-4 with identical ranks, the v32 run-to-run rule; S6 and submission byte-equal) |
+| 3 | The permissive fallback is acceptable for an unchanged reproduction but a hidden-run risk | Yes (stage 3 still stops above 50% S6 failures; CoAtNet above 3%) | **Accepted**: no change |
+| 4 | v38 at 0.15 is a reasonable experiment, not a validated improvement; frozen, with parity to v35's leg, OOF checks, coverage, recomputation | Yes | **Accepted**: `check_v38_gates.py` adds six-model parity with the v35 run |
+| 5 | Picks: v37 + v15 if v37 shows 0.956; judge v38 against v37; v35 vs v33 may become unresolvable | Yes | **Accepted** (D-028) |
+| 6 | No unconditional blocker; no implicit approval of D-026 or extension of D-027 | Yes | **Accepted** |
+
+**v37 version 1** (commit run, 2026-10-11 22:29 UTC): all gates pass (CoAtNet ranks byte-equal; raw 7.0e-5; S6 output and
+submission byte-equal to the author's; input hashes; 0.5/0.5 confirmed). **Submission refused**: "Your Notebook uses
+non-versioned datasets [/datasets/heliosli/rsna-knee-compact-r6cnxfsss]". **v37 version 2** reads the identical files
+from `rsna-knee-compact-v1` (three strings in the author's code; header change 4).
