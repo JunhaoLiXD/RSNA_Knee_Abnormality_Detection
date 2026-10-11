@@ -72,6 +72,15 @@ not byte identity or hidden-test equivalence:
 4. Input hashes equal the manifest and the author's run where recorded; submission columns, order, finiteness.
 A tolerance is not loosened after a failure.
 
+**Commit run 1 (2026-10-11) and the follow-up rule, fixed before run 2.** Run 1 passed every gate except gate 1's
+raw-probability tolerance: `raptor_raw.csv` differs from the author's by up to 5.3e-5 (relative 1.3e-4, random
+signs, identical ranks), while `raptor_sub.csv`, `ours_sub.csv` and `submission.csv` equal the author's. The
+tolerance is not changed. User decision: rerun the unchanged notebook once (version 2) and compare our two runs.
+If run 2 passes every other gate and its raw probabilities differ from run 1 by between 1e-6 and 1e-3 (run-to-run
+variation exists, attributable to fp16 with `cudnn.benchmark`), the run-1 deviation is attributed to that
+variation and v32 is submitted. If run 2 equals run 1 exactly but both differ from the author's, the difference is
+systematic: reported to the user, no submission without a new decision.
+
 ## 3. v34 throughput diagnostic and v33
 
 **v34-s6-throughput** (before v33): the v32 stages 1-2 and the v27 leg, run on about 150 training studies
