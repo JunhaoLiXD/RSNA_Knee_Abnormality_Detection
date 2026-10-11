@@ -3,6 +3,23 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-027 - 2026-10-11 - v36: fold-0 diagnostics of our single-model gap, trained on Kaggle
+
+**Decision.** Run `docs/research/v36-single-model-gap-design.md` revision 2 (Codex-reviewed, all required changes
+accepted): arms C (matched control = N), W (training weights 1.0), G (224 px with K_train 8), P (round-3 target with the
+v13 arm-N OOF teacher) on fold 0; fold-0-alone LB tests against v14 (0.934), at most three; one expansion to five folds
+only at a fold-0 LB >= 0.940; blends of a winner designed and reviewed separately; everything stops on 2026-10-19.
+Training runs on Kaggle (2 x T4; session A: C + W, session B: G + P) because the local GPU is busy (user, 2026-10-11:
+"use Kaggle GPUs"). The v13 arm-N OOF files are uploaded as the private dataset `lingxd/rsna-knee-v13n-oof`. Team merger
+is not considered for now (user). User decision 2026-10-11 ("start v36 by revision 2").
+
+**Reason.** Papers and past RSNA winners give no large lever (`related-work-2026-10-11.md` sections 1-6); the
+competition forum shows single models at 0.947-0.959 against our 0.934-0.936, so our own pipeline is the largest
+visible deficit (section 7), and it also limits the non-OAI hedge (v15 0.944).
+
+**Consequences.** v35 and approved D-026 probes keep priority for submission slots. About 14 Kaggle GPU hours of the
+28 h left until 2026-10-17. The local runner gains `--version v36` (targets check for both teachers).
+
 ## D-025 - 2026-10-11 - LLM label route: source audit and a gated L4 repair pilot with Claude subagents
 
 **Decision.** Start the staged plan of `docs/research/llm-labels-feasibility-2026-10-11.md` section 7 now, in

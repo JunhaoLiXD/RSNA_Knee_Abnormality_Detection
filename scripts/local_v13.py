@@ -11,6 +11,8 @@ Run in the conda env `kaggle-gpu` (environment-gpu.yml):
   python scripts/local_v13.py fold 1 --workers 6 # train v13 arm N on fold 1 (watchdog: --stall-min 15)
   python scripts/local_v13.py --version v22 fold 0   # v22 (target T3) arm N on fold 0
   python scripts/local_v13.py --version v24 fold 0 --arm C --mode smoke   # v24 arm C smoke check
+  python scripts/local_v13.py --version v36 targets  # v36: build and check both training targets (no training)
+  python scripts/local_v13.py --version v36 fold 0 --arm W   # a v36 arm (C, W, G, P) on fold 0
   python scripts/local_v13.py --version v24 fold 0 --arm C                # v24 arm C on fold 0
 
 Before anything is trained the training targets are checked: v13's and v24's must equal those of the
@@ -35,8 +37,8 @@ import pandas as pd
 
 REPO = Path(__file__).resolve().parents[1]
 NOTEBOOKS = {'v13': 'v13-round2-mri.ipynb', 'v22': 'v22-n-gemini-target.ipynb', 'v24': 'v24-coatnet-own.ipynb',
-             'v26': 'v26-local-views.ipynb', 'v29': 'v29-local-views-native.ipynb'}
-KAGGLE_F0_TARGETS = ('v13', 'v24')                       # versions trained on v13's round-2 target
+             'v26': 'v26-local-views.ipynb', 'v29': 'v29-local-views-native.ipynb', 'v36': 'v36-gap-diagnostics.ipynb'}
+KAGGLE_F0_TARGETS = ('v13', 'v24', 'v36')                # versions trained on v13's round-2 target (v36: arms C, W, G)
 REPORT_ONLY = ('v26', 'v29')                             # versions trained on the v06 soft target alone
 SMOKE_VERSIONS = ('v24', 'v26', 'v29')
 LOCAL_CACHE_RUN = REPO / 'results' / 'v28' / 'full1'     # lingxd/v28-local-cache-100mm output (v29)
@@ -50,6 +52,8 @@ V11_OOF = {f'v11_{kind}_fold{k}_B_k16.csv': REPO / 'results' / 'v11' / run / 'v1
            for kind in ('oof', 'gold') for k, run in enumerate(['run1', 'run2', 'run2', 'run5', 'run5'])}
 F0 = REPO / 'results' / 'v13' / 'f0_1' / 'v13'
 F0_CKPT = REPO / 'models' / 'v13' / 'v13' / 'fold0_N' / 'v13_fold_0_N_best.pt'
+N_OOF = {k: (F0 / 'fold0_N' if k == 0 else REPO / 'results' / 'v13' / f'local_f{k}' / 'v13' / f'fold{k}_N') / f'v13_oof_fold{k}_N_k16.csv'
+         for k in range(5)}                              # v36 arm P's teacher: the v13 arm-N OOF of the five folds
 V07_SHA256 = {   # lingxd/v07-cache-320 version 2, checked equal to version 3 on 2026-10-05
     '1.2.826.0.1.3680043.8.498.10004873229099053869093324292195817260': 'd640dc921307f8daae11d76d646e53b642177bf618a6398934923a8b2ec46ec1',
     '1.2.826.0.1.3680043.8.498.10004945927472656027199792075652399585': 'a4f06f96159b67751699f4ad4711c37c42b37013d0e05797477947b4e9b9858c',
@@ -139,6 +143,18 @@ def t3_independent(nb_targets_path):
     return float(np.abs(got.loc[want.index, LABELS].to_numpy() - want.to_numpy()).max())
 
 
+def p_independent(nb_targets_path):
+    """v36 arm P: recompute 0.5 * v06 soft + 0.5 * v13 arm-N OOF (five folds, one held-out row per study) without the
+    notebook's code and return the maximum absolute difference to the notebook's P target."""
+    t = pd.read_csv(V06 / 'v06_targets.csv', dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+    oof = pd.concat([pd.read_csv(N_OOF[k], dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID') for k in range(5)])
+    assert oof.index.is_unique and not t.loc[oof.index, 'is_gold'].astype(bool).any(), 'N OOF rows must be unique and non-gold'
+    want = 0.5 * t.loc[oof.index, LABELS].to_numpy(float) + 0.5 * oof[LABELS].to_numpy(float)
+    got = pd.read_csv(nb_targets_path, dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
+    assert set(got.index) == set(oof.index), 'P target study set differs from the N OOF studies'
+    return float(np.abs(got.loc[oof.index, LABELS].to_numpy() - want).max())
+
+
 def soft_independent(nb_targets_path):
     """v26/v29: the report-only target must equal the v06 soft target on the non-gold cached pool."""
     t = pd.read_csv(V06 / 'v06_targets.csv', dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
@@ -150,6 +166,16 @@ def soft_independent(nb_targets_path):
     got = pd.read_csv(nb_targets_path, dtype={'StudyInstanceUID': str}).set_index('StudyInstanceUID')
     assert sorted(got.index) == sorted(pool) and not t.loc[got.index, 'is_gold'].astype(bool).any(), 'study set differs'
     return float(np.abs(got.loc[pool, LABELS].to_numpy() - t.loc[pool, LABELS].to_numpy(float)).max())
+
+
+def ensure_n_oof_input():
+    """v36: copy the v13 arm-N OOF files (arm P's teacher) into the shared input tree, as the Kaggle dataset
+    lingxd/rsna-knee-v13n-oof (idempotent)."""
+    d = INPUT / 'rsna-knee-v13n-oof'
+    d.mkdir(exist_ok=True)
+    for k, src in N_OOF.items():
+        if not (d / src.name).is_file() or sha256(d / src.name) != sha256(src):
+            shutil.copy(src, d / src.name)
 
 
 def ensure_local_cache_link():
@@ -191,10 +217,24 @@ def run_cells(work_root, override, stop_after=None):
                 diff = t3_independent(ns['PATHS']['train_targets'])
                 assert diff <= 1e-9, f'training targets differ from the independent T3: max abs diff {diff}'
                 print(f'training targets equal to the independent T3 (max abs diff {diff:.2e})', flush=True)
+            if VERSION == 'v36':
+                diff = p_independent(ns['ARMS']['P']['train_targets'])
+                assert diff <= 1e-12, f'arm P target differs from the independent recomputation: max abs diff {diff}'
+                print(f'arm P target equal to the independent recomputation (max abs diff {diff:.2e})', flush=True)
             ns['_targets_checked'] = True
         if stop_after is not None and i >= stop_after:
             break
     return ns
+
+
+def targets(args):
+    """v36: run the configuration, input and target cells only (no training) and check both training targets."""
+    assert VERSION == 'v36', 'targets is for v36'
+    ensure_n_oof_input()
+    work_root = REPO / 'results' / 'v36' / 'local_targets'
+    ns = run_cells(work_root, lambda ns: ns.update(MODE='folds', FOLD0_ARMS=[]), stop_after=2)
+    print('C target (arms C, W, G):', ns['PATHS']['train_targets'], targets_sha256_lf(ns['PATHS']['train_targets']))
+    print('P target:', ns['ARMS']['P']['train_targets'], targets_sha256_lf(ns['ARMS']['P']['train_targets']))
 
 
 def fold(args):
@@ -233,6 +273,8 @@ def fold(args):
     try:
         if v == 'v29':
             ensure_local_cache_link()
+        if v == 'v36':
+            ensure_n_oof_input()
         run_cells(work_root, override)
     finally:
         state['done'] = True
@@ -253,6 +295,8 @@ def fold(args):
         record['targets_equal_kaggle_f0'] = record['train_targets_sha256_lf'] == kaggle_f0_targets_sha256()
     else:
         record['targets_max_abs_diff_independent_t3'] = t3_independent(targets_file)
+    if v == 'v36':
+        record['targets_p_max_abs_diff_independent'] = p_independent(work_root / v / 'v36_train_targets_P.csv')
     if v in REPORT_ONLY:
         record.pop('targets_max_abs_diff_independent_t3', None)
         record['targets_max_abs_diff_v06_soft'] = soft_independent(targets_file)
@@ -266,7 +310,8 @@ def fold(args):
     dest.mkdir(parents=True, exist_ok=True)
     for p in out.glob('*.pt'):
         shutil.move(str(p), dest / p.name)
-    check = {k2: record[k2] for k2 in ('targets_equal_kaggle_f0', 'targets_max_abs_diff_independent_t3', 'targets_max_abs_diff_v06_soft') if k2 in record}
+    check = {k2: record[k2] for k2 in ('targets_equal_kaggle_f0', 'targets_max_abs_diff_independent_t3', 'targets_max_abs_diff_v06_soft',
+                                       'targets_p_max_abs_diff_independent') if k2 in record}
     print('targets check:', check, '| checkpoints moved to', dest)
 
 
@@ -353,12 +398,13 @@ if __name__ == '__main__':
     ap.add_argument('--version', choices=sorted(NOTEBOOKS), default='v13')
     sub = ap.add_subparsers(dest='cmd', required=True)
     sub.add_parser('prepare')
+    sub.add_parser('targets')
     c = sub.add_parser('check')
     c.add_argument('--n-val', type=int, default=100)
     c.add_argument('--tolerance', type=float, default=0.01)
     f = sub.add_parser('fold')
     f.add_argument('fold', type=int, choices=[0, 1, 2, 3, 4])
-    f.add_argument('--arm', default='N', choices=['N', 'C', 'L'])
+    f.add_argument('--arm', default='N', choices=['N', 'C', 'L', 'W', 'G', 'P'])
     f.add_argument('--mode', default='folds', choices=['folds', 'smoke'])   # smoke: v24 arm C check (design v21-shortlist 5)
     f.add_argument('--arm-set', action='append', default=[], metavar='KEY=JSON')   # smoke diagnostics only
     f.add_argument('--tag', default='')     # smoke: suffix of the work folder, to keep diagnostic runs apart
@@ -368,4 +414,4 @@ if __name__ == '__main__':
     VERSION, NB = a.version, REPO / 'notebooks' / NOTEBOOKS[a.version]
     if a.cmd == 'check' and VERSION != 'v13':
         raise SystemExit('check re-infers the Kaggle v13 fold-0 checkpoint; run it with --version v13')
-    {'prepare': prepare, 'check': check, 'fold': fold}[a.cmd](a)
+    {'prepare': prepare, 'check': check, 'fold': fold, 'targets': targets}[a.cmd](a)
