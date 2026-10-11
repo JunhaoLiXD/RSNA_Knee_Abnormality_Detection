@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-11 ~19:15 UTC (v33 0.954 best; v29 fold 1 done, fold 2 training; v35 prepared; v36 gap diagnostics on Kaggle, D-027; D-026 pending)
+Last updated: 2026-10-11 ~22:45 UTC (v35 and v37 submitted, scores pending; v38 ready; v36 running; D-028)
 
 ## Current phase
 
@@ -387,33 +387,31 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-**Handover state (2026-10-11 ~19:15 UTC).** Best public: **v33 0.954** (above v32 in the hidden digits); provisional
-picks **v33 + v15**; v30 (0.951) non-S6 OAI backup. Team merger: not considered for now (user, 2026-10-11).
+**Handover state (2026-10-11 ~22:45 UTC).** Best displayed: **v33 0.954**; pending scores: **v35** (22:17 UTC, ref
+57086653) and **v37** (22:35 UTC, ref 57086928). Leaderboard 22:17 UTC: rank 353 at 0.954; 144 teams >= 0.955, 493 at 0.954;
+silver cut rank 289 at 0.954, gold cut 0.961. Provisional picks **v33 + v15**, to become **v37 + v15** once v37 shows 0.956
+(D-028); v30 (0.951) non-S6 OAI backup. Team merger: not considered for now (user). The previous window
+([local_bd917ada]) woke once at 20:30 UTC and committed `1c89cbf`; do not continue work there.
 
-1. **v29 folds 1-2 (local):** fold 1 done (val 0.8618, gold 0.9125, best epoch 13, 4.78 h; v26 fold 1: 0.8612 / 0.9125;
-   per-finding Spearman with v26 fold 1 0.968 val / 0.972 gold). Fold 2 running (started 15:56 UTC by the launcher loop of
-   the previous session, ends about 20:45 UTC; checkpoint moved to `models/v29/v29/fold2_L/` when done).
-2. **v35 (D-024):** prepared in this session's scratchpad (`build_v35.py --leg-min <min>`, `build_v34_six.py`,
-   `test_v35_blend.py` (passes), `test_v35_leg.py`, `check_v35_gates.py` (non-zero exit on failure), `rank_cross.py`); design
-   `v32-s6-anchor-design.md` section 8 (uncommitted until v35 is built) with the Codex code review (five findings accepted:
-   fallback robustness, coverage by finite rows; and the old builder's `VERSION = 'v33'` bug). `lingxd/rsna-knee-v26-weights`
-   version 2 holds folds 0-2. After fold 2: upload v29 weights (folds 0-2), real build, local leg test, v34 version 4 (six-model
-   runtime; `LEG_MIN_S` = 1.5 x projected leg), v35 commit run, gates, snapshot, submit; adopt over v33 only by display or rank
-   crossing.
-3. **v36 (D-027, design `v36-single-model-gap-design.md` rev 2, Codex-reviewed):** fold-0 diagnostics of our single-model gap
-   (forum single models 0.947-0.959 vs our 0.934-0.936): arms C (control), W (training weights 1.0), G (224 px, K_train 8), P
-   (round-3 target, N OOF teacher). Running on Kaggle (user: use Kaggle GPUs): session A = `lingxd/v36-gap-diagnostics` version 1
-   (C + W, pushed about 19:10 UTC, about 6.5-7 h); session B (G + P) after A's outputs are downloaded. Both targets checked
-   locally (`local_v13.py --version v36 targets`: C equals the Kaggle F0 target, P equals an independent recomputation). LB
-   tests, expansion (fold-0 LB >= 0.940) and caps per design section 5.
-4. **Pending user decision - D-026 (fusion probes):** as before (after v35; four one-parameter probes; +0.002 displayed to
-   replace B; cap 5 submissions incl. v35; done by 2026-10-19).
-5. **Research (2026-10-11):** `related-work-2026-10-11.md`: past RSNA winners and knee MRI papers give no large lever (Codex:
-   nothing planned for GPU; medial/lateral flip withdrawn); section 7 = the forum gap evidence behind v36. KJD-25K = KneeCoT
-   (prohibited).
-6. Dread ablation (D-025 follow-up): after v35, only if still wanted. Kaggle defaults apply (ask before remote actions outside
-   an approved plan; no polling unless handed over); consult Codex on major decisions; keep the 5-hour usage window below 90%.
-   Kaggle GPU quota 28.1 h left on 2026-10-11 (resets 2026-10-17 00:00 UTC) before v36.
+1. **v35 (D-024):** v32 + six-model leg (v26 + v29 folds 0-2), launch allowance 115 min from v34 version 4 (six-model leg
+   1.26 h projected for about 1,300 studies). Commit-run gates all pass; submitted. Judge against v33 by display or rank
+   crossing (snapshot before: `external/lb/2026-10-11h`); may become unresolvable once v37 scores (D-028).
+2. **v37 (D-028):** the public 0.956 notebook (heliosli "blend-mine-in": v32 assets, CoAtNet:S6 0.5:0.5, new S6 execution path)
+   reproduced; S6 files from `rsna-knee-compact-v1` because Kaggle refuses the author's new slug as a non-versioned dataset.
+   Gates pass (outputs byte-equal to the author's run); submitted (snapshot before: `external/lb/2026-10-11j`).
+3. **v38 (D-028):** v37 + v35's six-model leg at 0.15; commit run `lingxd/v38-submit` version 1, all 12 gates pass. **Submit
+   after v35 and v37 have scored**, with a fresh snapshot (rank-crossing against v37); 5 submissions on 2026-10-12.
+4. **v36 (D-027):** Kaggle session A (`lingxd/v36-gap-diagnostics` version 1: C + W, pushed about 19:10 UTC, about 7 h). Local
+   (RTX 3080 Ti, background chain C -> G -> P, `results/v36/local_f0_<arm>_runner.log`): C at epoch 12 of 15 (val 0.8970) at
+   22:35 UTC, G and P follow (about 04:30 UTC). W vs Kaggle C; G, P vs local C (design section 10). Then LB tests per design
+   section 5.
+5. **Pending user decision - D-026:** probe 3 superseded by v37 (public result); the other probes would now be on the v37/v38
+   base.
+6. Research: `related-work-2026-10-11.md` (no large lever from papers or past winners; forum gap evidence behind v36). New
+   public notebooks 2026-10-11: heliosli 0.956 (= v37), velci kcd25 20 0.955 (a hidden input, not usable), the rest 0.954.
+7. Kaggle: at most two GPU batch sessions at once; status checks of short commit runs are handed over to the agent (user,
+   2026-10-11); scoring is not polled. GPU quota about 20 h left after v36 session A (resets 2026-10-17). Keep the 5-hour usage
+   window below 90%; consult Codex on major decisions.
 
 ## Open questions
 
