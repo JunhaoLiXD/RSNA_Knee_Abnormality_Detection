@@ -125,3 +125,19 @@ the sampler's enrichment truncation dropped Contusion and Fracture selections (f
 (same weights, initialisation, views, epochs), then one fixed blend comparison, no weight sweep; (3) gold reads only
 if the audit finds a recurring distinction the existing sources miss, with a frozen vocabulary and baselines;
 (4) stop the branch if its novelty reduces to meniscus ontology plus source reweighting.
+
+## 9. Audit of the development deviations and stop (2026-10-11)
+
+An auditor subagent (Claude Opus, effort xhigh, not blinded; rubric, reports, reader A's outputs and the four source
+values) classified the 56 development cells with |p_A - mean| >= 0.2 or a verdict across 0.5
+(`results/llm/audit/dev_audit_summary.json`): **0 source errors**; 28 probability-only (16 Synovitis cells where the
+report never names synovitis and steven / dread infer it from the effusion size; 12 where one source, mostly dread,
+pulls the mean on clearly stated findings); 23 definition (12 meniscal degeneration without a stated tear, 7 marrow
+edema attributed to a non-traumatic cause, 4 single cases); 4 ambiguous reports; 1 reader error (`dev_0001`). Three
+cells show a rubric artefact (the uncertain band starts at 0.30).
+
+Decision under the stop rule of section 8 (pre-registered by the Codex review): the novelty reduces to definition
+choices and source weighting, so **the LLM reading branch stops** (no pilot reads, no gold reads). LLM spend: about
+0.25 M subagent tokens for reading and one audit. Remaining follow-up, token-free: the dread ablation (one matched
+B2 fold-0 student on the three-source target vs the four-source target), queued on the local GPU after the
+v26 / v29 folds. The Synovitis-from-effusion pattern of steven and dread is noted for that comparison, not acted on.
