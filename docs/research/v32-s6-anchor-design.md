@@ -174,3 +174,41 @@ B2. Codex review of the leg question (GPT-6 Astra, high, read-only) and disposit
 
 Budget: further structural submissions v33 and the conditional v35 (v30, v32 done). The silver cut rose from
 0.951 to 0.952 in one day; if it passes our best, the S6-family steps above are the only planned lever.
+
+## 8. v35 build (2026-10-11): six-model leg, runtime validation, code review
+
+v35 became eligible when v33 beat v32 by the rank-crossing test (52 stable witnesses, none reversed, persistence
+confirmed). It is built by script from the scored `notebooks/v33-submit.ipynb`; the v32 cells and the v33 checks stay
+unchanged. Changes:
+
+- **Leg** (cell 12): each branch loads its three fold models (v26 folds 0-2, crop view; v29 folds 0-2, 100 mm
+  rendering); one data pass per branch, the three fold models run on each batch. Output columns `<label>__b<i>f<k>`.
+- **Per-fold OOF check**: each of the six models is compared with its own fold's OOF on one reference training study
+  of that fold, re-created from DICOM (fold 0: v33's study; folds 1-2: the first validation study of the fold in
+  both branches' OOF), tolerance 1e-3; six checks required.
+- **Blend** (cell 14): the frozen D-024 aggregation, `leg = rank(mean over branches of rank(mean over folds of
+  rank(fold model)))`, `final = rank(0.85 * rank(v32 output) + 0.15 * leg)`.
+- **Runtime validation**: `v34-s6-throughput` version 4 runs the v35 cells on the v34 mock set (150 training studies,
+  58 gold + 92 random, as versions 1-3). The launch allowance `LEG_MIN_S` is 1.5 x the leg time projected to about
+  1,300 test studies; v35 is pushed only if the projected leg is at most 2.5 h.
+- **Robustness fixes** from the code review below (any leg failure keeps v32's output and the notebook completes).
+
+Local tests: a synthetic blend test (300 studies; the aggregation equals an independent computation; timeout, failed
+OOF check, missing or empty shard, truncated receipt, killed shard, NaN rows, a missing column and a weight-setup
+failure all keep the anchor; coverage >= 98% fills the missing studies from the anchor rank); a leg test on the local
+GPU (three validation studies, one per fold, each fold's two models against their own OOF; reference and six OOF checks).
+
+**Codex code review (GPT-6 Astra, high, read-only, 2026-10-11) of the dry build** (v29 folds 1-2 still training,
+their OOF expectations stubbed). Verdict: fix the findings; six-model mapping, the six OOF checks and the frozen
+aggregation found correct.
+
+| # | Finding (severity) | Verified | Disposition |
+|---|---|---|---|
+| 1 | A killed shard can leave an empty CSV or truncated receipt; the blend cell parses them before checking `killed_shards`, so the notebook raises instead of falling back (P1) | Yes (inherited from v33; reproduced with an empty CSV and a truncated receipt in the synthetic test) | **Accepted**: receipts and shard files parsed inside exception guards, failure keeps the anchor |
+| 2 | Weight lookup, loading and branch-contract asserts run unguarded in the notebook process; a missing or mismatched weight file aborts the notebook (P1) | Yes; in practice the scoring rerun mounts the same dataset versions as a passing commit run | **Accepted** (cheap; the design promises that any leg failure keeps v32): setup failure recorded, leg not launched |
+| 3 | Coverage counts study ids only; NaN predictions or a missing column pass the 98% gate and are filled from the anchor (P2) | Yes | **Accepted**: coverage = studies with all 72 leg columns finite; columns and unique ids checked |
+| 4 | The leg test's `max(worst, d)` turns NaN into a pass (P2) | Yes (`max(0.0, nan)` is 0.0) | **Accepted**: finite checks on all predictions and each difference |
+| 5 | The gate script exits 0 when a gate fails (P2) | Yes | **Accepted**: non-zero exit |
+
+Found in our own check before the review: the earlier builder left `VERSION = 'v33'` and two v33 comments in the v35
+code cells; fixed, and the builder now asserts that no v33 identifiers remain in code cells.
