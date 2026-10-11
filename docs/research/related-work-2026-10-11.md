@@ -93,3 +93,36 @@ sampling, triplets and pooling.
 | 9 | Max / top-k pooling instead of attention: a cheap diagnostic on cached features at most; our heads were trained with attention | Yes (reasoning) | Optional diagnostic, not planned |
 | 10 | Robustness is the most transferable lesson (decoders, missing planes, side ambiguity, S6 failures, runtime tails); temperature or monotonic calibration cannot change per-label AUC | Yes (v35 fallback fixes, v32 design section 8; STATUS open question on hidden transfer syntaxes) | **Accepted**: kept in the v35 checks |
 | 11 | Order after v35: freeze B (v35 if it beats v33, else v33); D-026 probes if approved; optional short inference diagnostics; the dread fold only if kept; no R1/R3/R4/R5 training; stop modelling by 2026-10-19 | Consistent with STATUS Next steps | **Accepted** as the recommendation |
+
+## 7. Where the gap to the top comes from: competition forum, 2026-10-11
+
+User question: "others reached 0.961, so there must be a way". Papers and past competitions (sections 1-6) give no
+large lever; the competition forum does. Threads saved to `external/forum/` (not tracked): 735304 (best single-model
+scores), 746792 (the public 0.949 CoAtNet recipe), 745861 (hengck23 "tricks"), 743416 (external data rules). All
+numbers are participants' self-reports, not verified.
+
+**Single models without external data reach 0.95+** (topic 735304): ConvNeXt-T 2.5D 0.953 and DINOv2 ViT-S 0.951,
+ensemble 0.955, "trained with pseudo labels ... no external data" (colum2131, 10-09); ConvNeXt-T 5-fold 0.959,
+EfficientNetV2-S 0.956, CoAtNet 0.952 (azamat1ch, 10-09); ResNet-50 224 px 5-fold 0.954 (09-28); DINOv2 224 px
+single fold 0.952 (10-11); "fold-0 0.947, only LLM labels, no pseudo" (k256.dev, 10-11); 0.955 single model 5-fold
+(10-06). hengck23: "model is not the key, it is your labels". Chris Deotte: single models trained on pseudo labels can
+match the best ensemble.
+
+**Ours**: N 5-fold 0.936 (v13_submit), N fold 0 0.934 (v14), own CoAtNet fold 0 0.934 (v24). With comparable
+report-derived labels, one reported fold-0 model is 0.013 above our fold 0. Our own image pipeline, not papers or
+external data, is the largest visible deficit, and it also caps the non-OAI hedge (v15 0.944).
+
+**External data**: the public CoAtNet's +0.005 came from OAI MOAKS image reads mapped to only three findings (PF OA,
+Lateral OA, Synovitis; other findings masked; 2,399 baseline knees, about 140 GB of MRI) (topic 746792, author's text).
+hengck23 after downloading OAI: "it is very good and with labels. I think OAI changes the competition!" and "kaggle
+annotation > external annotation > negative" as label priority. Access needs Login.gov + NDA accounts (personal
+action); several participants in China report being blocked, which bears on the host's "generally accessible"
+criterion (no ruling). KJD-25K (MICCAI 2026, cited by hengck23) is the KneeCoT dataset (`YiHui0124/KneeCoT`),
+**prohibited** by the host (topic 734109).
+
+**Candidate causes of our deficit** (untested; STATUS "Open hypotheses" plus new evidence): (a) the training target
+and its loss weights (UNK cells of pilkwang at weight 0.3: 27.3% of cells, Synovitis 84.4%, Fracture 56.6%;
+llm-labels section 6 finding 4); (b) input geometry and sampling (320 px of a 140 mm field, K_train 4 per slot;
+several 0.95+ reports use 224 px); (c) the self-training recipe (our round 2 used `0.5 soft + 0.5 OOF`; others report
+"pseudo labels" without detail); (d) optimisation (the public CoAtNet uses head LR 2e-3, 6.5x ours); (e) training on
+4/5 of the data per fold with scanner-grouped splits.
