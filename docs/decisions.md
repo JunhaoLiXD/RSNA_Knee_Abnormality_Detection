@@ -3,6 +3,28 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-023 - 2026-10-11 - Reproduce the restored public 0.954 notebook (S6) as anchor; then one v33 test
+
+**Decision.** (1) Build `v32_submit` = heliosli/rsna-knee-blend-gold-dataset-restored (public 0.954) with the
+author's cells unchanged, gated by `docs/research/v32-s6-anchor-design.md` revision 2 section 2. (2) After v32
+succeeds: one throughput diagnostic (`v34-s6-throughput`) and one `v33_submit` = v32 + the v26 fold-0 leg at
+w 0.15 (leg after stage 3, saved anchor restored on any leg failure, 8.6 h absolute leg deadline). (3) Narrow
+rule acceptance on top of D-019: the SKM-TEA segmentation checkpoint `anatomy.pt`, heliosli's S6 fold models
+and side classifier, and the author's code; not OrthoFoundation `best.pt` or KneeXNet; KneeCoT stays
+prohibited. This amends D-021's exclusion for these assets only. (4) Further submissions under the plan: v30
+(done), v31, v32, v33 (replaces D-022's optional B2 expansion and combination slots); D-022's training caps
+stand. (5) Provisional final picks after v32: the supported winner of v32/v33 plus v15; v32 on a tie. User
+decision 2026-10-11 ("option 1 first, then option 2, after consulting Codex"); Codex review in section 6 of the
+design note (proceed with changes; all accepted).
+
+**Reason.** The S6 files were restored on 2026-10-10 19:50 UTC; the public 0.954 notebook is runnable with
+public inputs, its CoAtNet stage is byte-identical to our v17's, and it is +0.004 over our best (0.950).
+The host has ruled only on KneeCoT; its guidance favours click-through agreements (SKM-TEA's category) but is
+not a ruling.
+
+**Consequences.** Higher rule exposure for the S6-based picks (v15 stays the non-OAI hedge). Dependency files
+archived locally (no redistribution). v31 after v32 is judged by its displayed score only.
+
 ## D-022 - 2026-10-10 - v27 as provisional pick; capped hidden-digit exception for fold expansion
 
 **Decision.** (1) Provisional final picks are **v27 + v15** (v27 replaces v19); the final OAI choice is made

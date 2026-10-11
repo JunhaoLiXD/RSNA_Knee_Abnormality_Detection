@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-10 (v27 above v19 in hidden digits, rank 458; D-022: provisional picks v27 + v15, B1 to three folds; v29 fold 0 running)
+Last updated: 2026-10-11 (D-023: v32 = restored public 0.954 notebook, commit run pushed; v30 pending; v26 folds 1-2 training)
 
 ## Current phase
 
@@ -58,6 +58,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v26 | 2026-10-10 | training (B1, D-021) | N recipe + a second view per slot (central 100 mm crop of the v07 140 mm field, own slot ids), report-only target (v06 4-source soft), local fold 0 | fold 0: val 0.8921 (N F0 0.8988), gold 0.9091 (N F0 0.9200); Spearman on gold with the CoAtNet 0.864 (N 0.899), with N 0.941; gold screen v17 + v26 at 0.15: +0.0029 (CI +0.0001 to +0.0063) | - | weaker alone, less redundant; `v27_submit` (v17 + v26 F0 at 0.15) next |
 | v27 | 2026-10-10 | submit (B1, D-021) | v17 anchor (cells unchanged) + v26 arm-L fold-0 leg at w 0.15 (v19 leg code with the v26 two-view dataset and model, built from the checkpoint cfg, strict load) | local GPU leg test: reference study vs v26 OOF max diff 1.4e-4; commit run: all gates pass (base = v17 byte for byte, reference byte-equal, OOF 7.8e-5 on T4, coverage 1.0, blend recomputed) | **0.950** | displayed tie with v19, but **above v19 in the hidden digits**: team rank 616 -> 458 (158 teams that did not submit moved below us, none passed us; L29); our best public submission now; paired gold vs v19 +0.0010 (CI -0.0021 to +0.0040). **Provisional pick with v15 (D-022)**; B1 expansion to three folds (`v31_submit`) |
 | v30 | 2026-10-11 | submit (B2, D-021/D-022) | v17 anchor (cells unchanged) + v29 fold-0 leg at w 0.15; the leg renders each study twice from DICOM (v07 code at 140 and 100 mm) with reference checks of both renderings | local flow test (cache-backed rendering, real fingerprints): reference 6/6 byte-equal, OOF 2.6e-5, 3/3 predicted | pending | commit run: all gates pass (both renderings byte-equal, OOF 8.7e-5 on T4, coverage 1.0); submitted 2026-10-11 01:52 UTC (ref 57058831); judged against v27 |
+| v32 | 2026-10-11 | public anchor (D-023) | heliosli/rsna-knee-blend-gold-dataset-restored unchanged: CoAtNet-384 (as v17) 0.7 + heliosli S6 (ConvNeXt-small, knee-anchored views via SKM-TEA `anatomy.pt`) 0.3; public 0.954 | built; receipt cell tested on the author's outputs | - | commit run pushed; gates in `v32-s6-anchor-design.md` section 2 |
 | v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
 | v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | fold 0: val 0.8875 (v26 0.8921), gold 0.9028 (v26 0.9091); Spearman with v26 0.968; paired gold v17 + v29 vs v27 -0.0013 (CI -0.0037 to +0.0009) | - | weaker than v26 and nearly the same model; `v30_submit` decides by the D-022 table |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
@@ -405,6 +406,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    `v31_submit`; v29 folds 1-2 only if v30 qualifies. Best public submission: v27. Large
    experiments stop 2026-10-19. Leaderboard 2026-10-10 22:04 UTC: rank 458 of 5,706 with v27, inside
    bronze (cut rank 570 at 0.950); 0.951 reaches about rank 380, silver cut rank 285.
+   **2026-10-11 (D-023):** the S6 files are public again (`public-landscape-2026-10-11.md`); `v32_submit`
+   reproduces the 0.954 notebook (commit run, gates, one submission), then a throughput diagnostic and one
+   `v33_submit` (v32 + v26 fold-0 leg). Provisional picks after v32: winner of v32/v33 + v15.
 4. **Team merger** (deadline 2026-10-15): the user's decision; more relevant now that 0.950 is below the
    bronze cut.
 5. **Provisional final picks: v27 (0.950, best public) + v15 (0.944, non-OAI hedge)** (D-022; v19 replaced).
