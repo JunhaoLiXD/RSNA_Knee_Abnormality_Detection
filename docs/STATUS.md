@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-11 (v32 0.954 reproduced; v34 diagnostic running, v33 built; LLM branch stopped; v26 folds 1-2 training)
+Last updated: 2026-10-11 (handover: v33 0.954 best, above v32; v29 folds 1-2 training; v35 next; D-026 pending)
 
 ## Current phase
 
@@ -387,49 +387,28 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-1. **v20** (v17 + N at w 0.25) scored **0.949** (ref 56979496), below v19/v17 (0.950): rejected per the
-   decision rule; v19 stays the anchor-family pick (v17 and v19 are a coin flip in the hidden digits).
-2. **Leaderboard 2026-10-09 01:52 UTC:** rank 268 of 5,543; 185 teams above 0.950; the 0.950 block spans
-   ranks 186-591; silver cut rank 277 and bronze cut rank 554 are both inside it. Our rank is sliding as
-   more teams pass 0.950, so a 0.950 entry is unlikely to hold silver, and possibly bronze, by 2026-10-22.
-3. **Next direction (needs a design note and Codex review, D-004):** blending our 0.936 leg into the
-   0.950 base is at a tie (L21); the remaining lever is a stronger own model. Candidates to compare in
-   a design note: train our OOF-teacher target on a CoAtNet / 384 px recipe, or fine-tune the public
-   CoAtNet-384 checkpoint with our targets (D-019 already accepts OAI-derived weights), using the
-   local RTX 3080 Ti (D-016, about 2.5 h per ConvNeXt fold; CoAtNet-384 will be slower). Gold-58 cannot
-   rank families (L20), so plan LB checks. **2026-10-09:** options for external resources by pipeline stage
-   (with Codex) in `docs/research/external-levers-2026-10-09.md`: no public report-label table beats our
-   4-source mean on gold, but the CC0 Gemini table adds +0.0035 to the round-2 target (CI -0.0007 to
-   +0.0079); a synthetic benchmark puts a local CoAtNet fold at about 6 h. **Shortlist running (D-020,
-   `v21-shortlist-design.md`):** E6 v21 scored 0.949 (rejected, L26); E1 v22 no gain (L23; no LB check);
-   E5 v23 not admitted (L24); E4 v24 fold 0 done locally (val 0.8943, gold 0.9166, close to N), fold-0
-   leg `v24_submit` scored 0.934 (= N fold 0), below the 0.937 gate: E4 stopped (L27);
-   E7 optional. Leaderboard 2026-10-10 05:13 UTC: rank 497 of 5,641; silver now needs 0.951 and the
-   bronze cut (rank 564) is still at 0.950 but the block above us grows by about 150 teams a day.
-   **Local-views plan (D-021, `plan-2026-10-10-local-views.md`, design `v25-local-views-design.md` rev 2):**
-   I1 `v25_submit` scored 0.949 (rejected, L28); B1 `v26` fold 0 done (gold 0.9091, less redundant with
-   the CoAtNet than N), `v27_submit` scored 0.950, above v19 in the hidden digits (rank 616 -> 458, L29);
-   B2 `v28` cache done and audited (no clipping, aligned with v07), `v29` smoke passed and fold 0 running
-   locally, fold 0 done (gold 0.9028, below v26); `v30_submit` commit run pushed. v26 folds 1-2 training (D-022). D-022 table (design section 8): >= 0.952 four total folds; 0.951 or a
-   hidden-digit tie win three total folds; else stop. B1 qualifies: v26 folds 1-2 after v29 fold 0, then
-   `v31_submit`; v29 folds 1-2 only if v30 qualifies. Best public submission: v27. Large
-   experiments stop 2026-10-19. Leaderboard 2026-10-10 22:04 UTC: rank 458 of 5,706 with v27, inside
-   bronze (cut rank 570 at 0.950); 0.951 reaches about rank 380, silver cut rank 285.
-   **2026-10-11 (D-023):** the S6 files are public again (`public-landscape-2026-10-11.md`); `v32_submit`
-   reproduces the 0.954 notebook (commit run, gates, one submission), then a throughput diagnostic and one
-   `v33_submit` (v32 + v26 fold-0 leg). Provisional picks after v32: winner of v32/v33 + v15.
-   **D-024 (silver route):** v33 = v32 + combined v26/v29 fold-0 leg; v29 folds 1-2 after v26 fold 2; v31
-   dropped; conditional v35 = v32 + both three-fold legs; gold screens descriptive only. Contingencies by
-   v32's score in `v32-s6-anchor-design.md` section 7. LLM-label route (D-025): development set read and
-   audited, 0 source errors in 56 deviations; branch stopped by its pre-registered rule; only the token-free
-   dread ablation remains (`llm-labels-feasibility-2026-10-11.md` section 9). v34 throughput diagnostic pushed
-   2026-10-11 04:46 UTC; v33 built and tested locally, waiting for v32's score and v34.
-4. **Team merger** (deadline 2026-10-15): the user's decision; more relevant now that 0.950 is below the
-   bronze cut.
-5. **Provisional final picks: v33 (0.954, best public; S6 family) + v15 (0.944, non-OAI hedge)** (D-023/D-024;
-   earlier v27 + v15, D-022). v30 (0.951) is the non-S6 OAI backup.
-   The final OAI choice follows the three-fold B1 test (`v31_submit`). The OAI
-   ruling (topic 743416) could still change the picture; check it before 2026-10-22.
+**Handover state (2026-10-11 ~14:10 UTC).** Best public: **v33 0.954** (above v32 in the hidden digits, rank
+crossing confirmed); provisional picks **v33 + v15**; v30 (0.951) non-S6 OAI backup. Leaderboard 12:31 UTC: rank 208,
+silver cut 0.954 (rank 286), gold cut 0.961.
+
+1. **Running locally:** v29 folds 1-2 (`scripts/local_v13.py --version v29 fold k --arm L --workers 2 --stall-min 25`),
+   fold 1 at epoch 8 of 15 (~14:10 UTC), fold 2 after it (~22:00 UTC). Check `results/v29/local_f{1,2}/v29/v29_log_fold*_L.txt`
+   and `models/v29/v29/fold*_L/`. If the launching session ended and a fold is missing, relaunch that fold.
+2. **v35 (D-024, eligible):** v32 + both three-fold legs (v26 folds 0-2 done; v29 folds 0-2), frozen hierarchical
+   aggregation (branch = rank of mean fold ranks; leg = rank of mean of the two branch ranks; outer 0.15). Builder
+   ready (scratchpad `build_v35.py`, see the handover prompt); then local leg test, a v34 run with the six-model leg
+   (runtime: leg must stay <= 2.5 h; launch allowance 1.5 x projected leg), v35 commit run, gates, snapshot, submit;
+   adopt over v33 only by display or rank crossing (stable witnesses >= 20, none reverse, persistence).
+3. **Pending user decision - D-026 (fusion probes, Codex-proposed):** after v35, freeze B (v35 if it beats v33, else
+   v33) and run four one-parameter probes: outer leg weight 0.05; 0.25; CoAtNet/S6 0.5/0.5; branch v26/v29 0.25/0.75;
+   sequential, rank crossing; replacing B in the picks needs >= +0.002 displayed; cap 5 submissions incl. v35, done by
+   2026-10-19.
+4. **Dread ablation (D-025 follow-up, after v35):** one matched B2 fold-0 student on the three-source target (pilkwang,
+   steven, lixin), same trainer and best-validation rule vs the same validation labels, one frozen blend; expectation
+   near zero. LLM report-reading branch is stopped (Codex confirmed).
+5. **Team merger** (deadline 2026-10-15): the user's decision.
+6. Kaggle defaults apply again (ask before remote actions outside an approved plan; no polling unless the user hands
+   over); consult Codex on major decisions; keep the 5-hour usage window below 90% (`get_usage`).
 
 ## Open questions
 
