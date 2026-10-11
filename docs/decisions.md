@@ -3,6 +3,24 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-025 - 2026-10-11 - LLM label route: source audit and a gated L4 repair pilot with Claude subagents
+
+**Decision.** Start the staged plan of `docs/research/llm-labels-feasibility-2026-10-11.md` section 7 now, in
+parallel with the silver route (D-024): source and weight audit, a blinded report-reading pilot (rubric
+`scripts/llm_label_rubric_v1.md`, tooling `scripts/llm_label_pilot.py`) on non-gold reports (40 development, 200
+pilot: half random, half disagreement-enriched; identical reports read once), a second blinded reader on proposed
+corrections, the pilot gates of section 7, then at most one matched B2 control/repair pair and three submissions.
+Readers are Claude subagents in this session, model Opus (Opus 5.5) at effort xhigh (user's choice). Budget per
+section 7; work stops when the 5-hour usage window nears its limit and resumes after the reset (user instruction).
+L2 (full-corpus multi-read) and L5 (image-reading LLM) are not done. User decision 2026-10-11.
+
+**Reason.** Codex review (section 6): labels may be a weakness of our own leg, the clearest new lever is repairing
+demonstrable extraction errors (12.4% of non-gold cells have sources at <= 0.2 and >= 0.8), with a planning
+expectation of zero to +0.001 in the final ensemble.
+
+**Consequences.** LLM outputs live in `results/llm/` (not tracked); prompts and tooling are tracked. Gold studies
+are not read in the pilot.
+
 ## D-024 - 2026-10-11 - Silver route around v32: combined leg for v33, B2 folds 1-2, conditional v35
 
 **Decision.** After v30 = 0.951 (L30), amending D-023 after a public result: (1) v33 = v32 + a combined leg
