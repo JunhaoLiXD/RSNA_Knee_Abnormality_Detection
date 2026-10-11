@@ -102,3 +102,26 @@ Budgets: LLM pilot 0.8 M input + 0.2 M output tokens; cumulative 2.5 M + 0.5 M i
 24 h for this branch (the v26/v29 queue finishes before 10-13). Kaggle: silver validation 6 h, label branch 6 h,
 reserve 8 h, unallocated 9.8 h. At most three new-branch submissions. LLM reads: Claude subagents in this session
 (structured JSON per report, prompt and model versions logged) or a hosted API if the user provides one.
+
+## 8. Development set (40 reports) and the second Codex review (2026-10-11)
+
+Reader A (two Claude Opus subagents, effort xhigh, rubric v1; about 245k subagent tokens and about 20% of a 5-hour
+window): 480 cells, absent 177, present 165, not_mentioned 79, uncertain 59; all evidence quotes are verbatim.
+No present/absent cell lies across 0.5 from the four-source mean with the 0.2 margin (three cross 0.5 with a smaller
+margin); 27 present/absent cells (56 over all statuses) differ from the mean by >= 0.2: 12 are meniscus
+"degeneration, no tear" (pilkwang and steven 0.68-0.82), several OA cells where dread is low and A agrees with the
+majority. In decisive disagreement cells A agrees with lixin 0.97, pilkwang and steven 0.81, dread 0.21. Gold check
+by regex: reports stating meniscal degeneration without a tear have gold meniscus = 1 in about 4 of 10 cases (gold is
+image-read), so a literal "repair" can move targets away from the test labels.
+
+Codex (GPT-6 Astra, high, read-only) verdict: pause LLM expansion; L4 narrowed, not refuted; the proposed
+gold-calibration of reader categories is exploratory (58 observations per finding, MCL nine positives, 208 distinct
+qualifier strings; leave-one-study-out AUC is biased for category-rate models; it must beat calibrated existing-source
+features, and gold-built targets spoil later gold evaluation). Agreement with lixin is not accuracy (lixin gold
+0.8352). Actions, accepted: (1) finish the manual audit of the 40 development reads (extraction mistakes vs rubric
+disagreements vs probability differences; example `dev_0001`: a normal Hoffa fat pad used as Synovitis absent);
+the sampler's enrichment truncation dropped Contusion and Fracture selections (fixed: quotas sum to the target);
+(2) a token-free dread ablation: one matched B2 fold-0 student on the three-source target vs the four-source target
+(same weights, initialisation, views, epochs), then one fixed blend comparison, no weight sweep; (3) gold reads only
+if the audit finds a recurring distinction the existing sources miss, with a frozen vocabulary and baselines;
+(4) stop the branch if its novelty reduces to meniscus ontology plus source reweighting.

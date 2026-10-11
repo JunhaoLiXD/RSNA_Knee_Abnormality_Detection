@@ -85,12 +85,11 @@ def sample(a):
         pool = [g for g in all_groups if g not in taken]
         rand = list(rng.choice(pool, size=n_rand, replace=False))
         taken.update(rand)
-        enr, per = [], int(np.ceil(n_enr / len(L)))
-        for c in L:   # enriched: groups with a disagreement in this finding, spread over findings
+        enr = []
+        quota = [n_enr // len(L) + (i < n_enr % len(L)) for i in range(len(L))]   # sums to n_enr, every finding kept
+        for c, q in zip(L, quota):   # enriched: groups with a disagreement in this finding, spread over findings
             cand = sorted(set(dis.loc[dis.finding == c, "group"]) - taken - set(enr))
-            pick = list(rng.choice(cand, size=min(per, len(cand)), replace=False))
-            enr += pick
-        enr = enr[:n_enr]
+            enr += list(rng.choice(cand, size=min(q, len(cand)), replace=False))
         taken.update(enr)
         sets[name] = pd.DataFrame({"group": rand + enr, "stratum": ["random"] * len(rand) + ["enriched"] * len(enr)})
     for name, df in sets.items():
