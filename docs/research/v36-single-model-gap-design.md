@@ -1,6 +1,6 @@
 # v36 design: why our single model trails the forum's best single models (fold-0 diagnostics)
 
-Status: revision 2 after the Codex review (section 9; all required changes accepted). No GPU spent. User decision
+Status: revision 2 after the Codex review (section 9; all required changes accepted); execution note 2.1 (section 10). User decision
 2026-10-11: "write the design note and send it to Codex" after the gap evidence in `related-work-2026-10-11.md`
 section 7. Team merger is not considered for now (user, same day). Evidence cited: STATUS v11, v13, v14, v22, v24;
 lessons L6, L9, L10, L11, L17, L20, L23, L26-L30; `llm-labels-feasibility-2026-10-11.md` section 6 finding 4.
@@ -145,3 +145,12 @@ validation 0.898751 and gold 0.920047 from the saved predictions and checked the
 | 11 | Runner lacks v36 and would route unknown targets to the T3 check; v14 hard-codes 320 px (high) | Yes (`local_v13.py` lines 37-40; v14 `'img': 320`) | **Accepted**: section 6 |
 | 12 | Allocation rules ambiguous: explicit caps for expansions, X, submissions and blends (high) | Yes | **Accepted**: section 5 rule 5 |
 | 13 | Omitted causes: supervision/selection, the v07 32-slice cap (30.61% of slot entries), scanner-grouped 78.2% training subsets (medium) | Yes (recomputed from `v07_cache_index.csv`: 30.6%, AX_FS 47.9%, max 320 slices) | **Accepted** as untested hypotheses (section 8); a cache rebuild does not fit this test |
+
+## 10. Execution note 2.1 (2026-10-11): where the arms run
+
+The user first asked for Kaggle GPUs (the local GPU was training v29 fold 2), then released the local GPU for this project
+once fold 2 ends. Arms are compared only with a control trained on the same hardware and code: **Kaggle** session A
+(`lingxd/v36-gap-diagnostics` version 1, 2 x T4): C and W; **local** RTX 3080 Ti (`scripts/local_v13.py --version v36`,
+2 loader workers): C, G, P, after v29 fold 2 and the v35 local leg test. W is judged against Kaggle C, G and P against
+local C; the two C runs give one cross-hardware comparison (not a seed-variance estimate). Kaggle session B is not needed.
+The local C run is a sixth fold-0 run; the cap of five (rule 5) applies to the arms and X, not to this duplicate control.
