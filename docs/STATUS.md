@@ -416,6 +416,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    **2026-10-11 (D-023):** the S6 files are public again (`public-landscape-2026-10-11.md`); `v32_submit`
    reproduces the 0.954 notebook (commit run, gates, one submission), then a throughput diagnostic and one
    `v33_submit` (v32 + v26 fold-0 leg). Provisional picks after v32: winner of v32/v33 + v15.
+   **D-024 (silver route):** v33 = v32 + combined v26/v29 fold-0 leg; v29 folds 1-2 after v26 fold 2; v31
+   dropped; conditional v35 = v32 + both three-fold legs; gold screens descriptive only. Contingencies by
+   v32's score in `v32-s6-anchor-design.md` section 7. LLM-label route under review
+   (`llm-labels-feasibility-2026-10-11.md`).
 4. **Team merger** (deadline 2026-10-15): the user's decision; more relevant now that 0.950 is below the
    bronze cut.
 5. **Provisional final picks: v27 (0.950, best public) + v15 (0.944, non-OAI hedge)** (D-022; v19 replaced).

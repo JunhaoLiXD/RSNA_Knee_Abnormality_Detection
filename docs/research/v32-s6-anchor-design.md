@@ -148,3 +148,29 @@ Verdict: v32 proceed with changes; v33 proceed with changes, conditional on v32.
 | 6 | v33 tests adding the leg, not the base; submission budget exceeds D-022's list; rank crossing only against the current best (medium) | Yes | **Accepted**: v26 fold 0 for one v33 test; budget v30, v31, v32, v33; order and comparator rules in section 4 |
 | 7 | Dataset deletion is a conditional rerun risk (high) | Yes (Kaggle clarification cited by Codex, not re-read) | **Accepted**: local archive; no redistribution; final-pick policy in section 4 |
 | 8 | Accepting OAI does not accept SKM-TEA; public availability is not licensing (medium) | Yes | **Accepted**: D-023 narrow with the asset list |
+
+## 7. Revision 3 (2026-10-11): silver route around v32 after v30 = 0.951 (D-024)
+
+v30 (v17 + v29 fold-0 leg, native 100 mm view) displayed 0.951, v27 (crop leg) 0.950 (L30). The user asked to
+keep silver first with v32 at the centre, and for a joint recommendation (Claude and Codex) on v33's leg and on
+B2. Codex review of the leg question (GPT-6 Astra, high, read-only) and disposition:
+
+| # | Finding | Verified | Disposition |
+|---|---|---|---|
+| 1 | Neither single leg deserves exclusive control (one display step, one fold each, gold and val point the other way); a fixed equal-weight combination is a modest hedge, not proven better; v26-v29 correlation 0.96-0.97 limits diversity; no leg has shown value on S6 | Yes | **Accepted**: v33 = v32 + combined leg (v26 F0 and v29 F0, equal-weight rank mean of the branch ranks, inside the 0.15 outer weight), frozen now; recorded as a post-result amendment of D-023 |
+| 2 | The current leg scripts cannot combine the two models by extending the weights list (one global CFG, one dataset, one tensor for all models); branch-specific input routing is needed; one preprocessing pass feeds both (v30 renders 140 and 100 mm), backbone inference is not shared | Yes (v27/v30 cell 14) | **Accepted**: a combined leg with per-branch datasets; per-branch probability parity against the v27 and v30 legs; any branch failure restores v32 (no silent single-branch submission) |
+| 3 | If v34 cannot validate the combined path, fall back to (a) v26 F0, decided for feasibility before any further LB result | Yes | **Accepted** |
+| 4 | B2 qualifies for three total folds (D-022 table) but that is training permission, not a submission entitlement; caps: 3 folds per branch, 6 checkpoints, no seeds or weight sweeps | Yes | **Accepted**: v29 folds 1-2 after v26 fold 2 |
+| 5 | Replace v31 by one conditional "v32 + both three-fold legs" (new version v35), only if v33 demonstrably beats v32 (displayed higher or rank-crossing) and the six-model leg passes runtime validation (projected full-set leg x 1.5 within the time left before 8.6 h; leg ceiling 2.5 h); "does not lose" is not observable and stops the line | Yes | **Accepted**: v31 dropped (number unused) |
+| 6 | Keep D-022's paired gold screens or amend them explicitly | Yes | **Amended explicitly**: gold screens are descriptive only from now on (L20, L28, L30: three misrankings) |
+
+**Silver plan (D-024), by v32's result:**
+
+| v32 result | Then |
+|---|---|
+| reproduces about 0.954 (displayed >= 0.953) | v34 throughput diagnostic (combined path, plus the 58 gold studies in the mock set for descriptive S6 gold predictions) -> frozen v33 -> outcome table (v33 must beat v32 by display or rank crossing) -> conditional v35 after v26/v29 folds 1-2. Provisional picks: the supported S6-family winner + v15; v30 is the non-S6 OAI backup |
+| scores 0.951-0.952 (S6 contribution partly lost, e.g. fallbacks) | no v33 before diagnosing the hidden run (v34 measures S6 throughput and fallbacks); picks stay v30 + v15 until resolved |
+| fails (error or timeout) | picks v30 + v15; S6 route stops unless v34 shows a fixable cause |
+
+Budget: further structural submissions v33 and the conditional v35 (v30, v32 done). The silver cut rose from
+0.951 to 0.952 in one day; if it passes our best, the S6-family steps above are the only planned lever.

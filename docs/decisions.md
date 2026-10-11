@@ -3,6 +3,22 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-024 - 2026-10-11 - Silver route around v32: combined leg for v33, B2 folds 1-2, conditional v35
+
+**Decision.** After v30 = 0.951 (L30), amending D-023 after a public result: (1) v33 = v32 + a combined leg
+(v26 fold 0 and v29 fold 0, equal-weight rank mean of the branch ranks inside the 0.15 outer weight), frozen
+before further scores; if the v34 diagnostic cannot validate it, v33 uses the v26 fold-0 leg. (2) Train v29
+folds 1-2 after v26 fold 2 (D-022 table, displayed 0.951; caps three folds per branch, no seeds or sweeps).
+(3) v31 is dropped; one conditional `v35_submit` = v32 + both three-fold legs, only if v33 demonstrably beats
+v32 and the six-model leg passes runtime validation. (4) Gold screens are descriptive only (L20, L28, L30).
+(5) Contingencies by v32's score in `v32-s6-anchor-design.md` section 7. User direction 2026-10-11 ("first keep
+silver, with v32 in the plan; recommend with Codex"); Codex review in that section.
+
+**Reason.** v30 beat v27 on the LB while gold and validation favoured v26, so neither leg is trusted alone; the
+S6 anchor is the strongest base and the silver cut is rising (0.952 on 2026-10-11).
+
+**Consequences.** Further structural submissions: v33 and the conditional v35. v30 is the non-S6 OAI backup pick.
+
 ## D-023 - 2026-10-11 - Reproduce the restored public 0.954 notebook (S6) as anchor; then one v33 test
 
 **Decision.** (1) Build `v32_submit` = heliosli/rsna-knee-blend-gold-dataset-restored (public 0.954) with the
