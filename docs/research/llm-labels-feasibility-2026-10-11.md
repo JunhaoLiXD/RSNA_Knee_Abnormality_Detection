@@ -141,3 +141,13 @@ choices and source weighting, so **the LLM reading branch stops** (no pilot read
 0.25 M subagent tokens for reading and one audit. Remaining follow-up, token-free: the dread ablation (one matched
 B2 fold-0 student on the three-source target vs the four-source target), queued on the local GPU after the
 v26 / v29 folds. The Synovitis-from-effusion pattern of steven and dread is noted for that comparison, not acted on.
+
+**Codex confirmation (2026-10-11, GPT-6 Astra, high, read-only).** Stop confirmed: the audit meets the
+pre-registered stop condition; no remaining LLM use has credible incremental LB value worth another
+reading-repair-training cycle (a budget decision, not proof that report labels cannot improve). Corrections: "0 source
+errors" partly follows from the threshold definition (wrong soft values on the correct side of 0.5 can still damage
+rankings) and the non-blinded audit is not independent accuracy evidence; `dev_0028` Lateral OA has two sources pulling
+down (dread accounts for eight probability-only outliers). The dread ablation is marginally worthwhile **after v35**:
+one matched B2 fold-0 student on the three-source target, the same trainer and the same best-validation checkpoint
+rule against the same validation labels as v29 fold 0, then one frozen blend changing only that component; planning
+expectation near zero, an unresolved tie funds nothing.
