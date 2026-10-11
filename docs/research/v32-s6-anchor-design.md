@@ -212,3 +212,8 @@ aggregation found correct.
 
 Found in our own check before the review: the earlier builder left `VERSION = 'v33'` and two v33 comments in the v35
 code cells; fixed, and the builder now asserts that no v33 identifiers remain in code cells.
+
+**Runtime validation result (v34 version 4, 2026-10-11).** Six-model leg per shard of 75 mock studies: 522 s / 505 s
+(two models in version 3: 400 / 387 s); all leg checks pass in S6's environment. Projection for about 1,300 studies:
+leg 1.26 h (ceiling 2.5 h), whole run about 5.2 h; launch allowance 1.5 x 1.26 h = 115 min. v35 commit run: all 11
+gates pass; submitted 2026-10-11 22:17 UTC (ref 57086653).
