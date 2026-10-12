@@ -3,6 +3,34 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-031 - 2026-10-12 - Re-plan after v40: closed anchor-probe set, shrunk ROI line, Dense-P follow-up; D-030 amended
+
+**Decision.** Adopt the merged plan in `docs/research/replan-after-v40-2026-10-12.md` (independent Claude and Codex re-plans,
+merged): (1) **D-030 amended**: X is cancelled (untested, not failed); D-030's sequence ends with its three used submissions
+(R1 = v40, A1 = v41, W); its remaining slots lapse. (2) **Closed anchor-probe set**, at most four submissions, ending
+2026-10-16, sequential, judged against the incumbent by display or rank crossing, not renewable, no per-column search, no
+stacking of all winners: reader outer weight 0.15 on v37 (as v40); 0.20 only if 0.15 beats v40 (no 0.05); one public
+per-finding reader-weight vector shrunk 50% towards uniform 0.10; fourth: v41 + reader 0.10 if v41 beats v40, else one
+qualified public model group at 0.05 with independent evidence and runtime budget, cancelled if none by 10-15. (3) **ROI
+experts** (`v42-roi-experts-design.md`, revision 2 to incorporate Codex's nine required changes): Lateral + Medial Meniscus,
+fold 0, one fixed per-column 0.5 submission on the then-incumbent; 10-13 pilot gate (>= 80% usable, <= 5% wrong, cache
+<= 13 GPU h); stop if no end-to-end submission by 10-16; no PF/ACL wave; folds 1-2 only if the package displays >= 0.956 and
+beats the incumbent. This extends D-023's acceptance of `anatomy.pt` and heliosli's anchor/geometry code to generating our
+own ROI crops; the rank-89 team's unlicensed code, annotations, coordinates and weights are not used. (4) **Dense-P** (v36
+arm D, running): one standalone LB test; < 0.944 ends it; >= 0.944 and ROI failed -> one fixed incumbent + Dense-P at outer
+0.10. (5) **Final picks**: v15 is no longer automatic as the second pick; both picks are decided on 2026-10-20 by which
+candidate is most likely to rescue a medal when the first misses; v40 replaces v37 as the first candidate after its
+persistence check. (6) Budgets: research submissions <= 7 plus 2 repairs; Kaggle <= 17 h before the 10-17 refresh, <= 12 h
+after; at most five submissions per day; model development stops 10-19. User decision 2026-10-12 ("all three agreed, execute
+the merged plan").
+
+**Reason.** v40 (public reader at 0.10) moved us from rank 524 to 235 (211 witnesses, L33): the cheapest lever with direct
+evidence is on the anchor side; the ROI route has the strongest external evidence (rank-89 team, 0.954 -> 0.957 on the same
+host) but a high engineering cost; our own single-model line (v36) moved at most +0.003.
+
+**Consequences.** D-027's v36 line closes except arm D. The leg line stays closed (D-029). Anchor candidates keep scoring one
+at a time.
+
 ## D-030 - 2026-10-12 - Two capped anchor probes on v37 (R1 reader, A1 weights) and the v36 W test
 
 **Decision.** Run `docs/research/v40-anchor-probes-design.md` revision 2 (Codex-reviewed, required changes accepted; build
