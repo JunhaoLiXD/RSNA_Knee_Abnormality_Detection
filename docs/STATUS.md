@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-12 ~19:05 UTC (v40 above v37 in the hidden digits, rank 235; W 0.936; v41 submitted)
+Last updated: 2026-10-12 ~20:45 UTC (v45 and Dense-P ready; v41 scoring; v42 full cache running; ROI pilot passed)
 
 ## Current phase
 
@@ -415,6 +415,20 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0b. **Update 2026-10-12 20:45 UTC (handover).** D-031 approved (re-plan after v40; X cancelled; closed anchor-probe set;
+   shrunk ROI line; Dense-P follow-up; v15 no longer automatic). **Ready to submit on 10-13 after the v40 persistence
+   snapshot** (`external/lb/2026-10-13a` vs `2026-10-12e/f`): (1) **v45** = v40 with reader 0.15 (commit run: 11 gates pass,
+   `results/v45/run1`, `check_v45_gates.py` in the session scratchpad); (2) **Dense-P alone** = `v36-submit` version 3, arm D
+   (commit run passes: reference byte-equal, OOF 5.6e-5; local val 0.8998 = P, gold 0.911; expect about P's 0.937; < 0.944
+   ends the dense line). v41 (0.4:0.6) scoring since 19:01 UTC, judged against v40 (before-snapshot `2026-10-12f`). Probe
+   order (D-031): reader 0.15 -> 0.20 only if 0.15 wins; one shrunk per-finding reader vector; fourth = v41 + reader 0.10 if
+   v41 beats v40. **ROI line**: design `v42-roi-experts-design.md` rev 2 + section 11; pilot gate failed once (anterior horns,
+   medial misses), user approved one extra tuning round (D-031 amendment) and pilot 3 **passed** (80.0% usable on 75 fresh
+   studies, no missing boxes; offset 18 mm, AP 72 x SI 40 mm, 10 mm inferior). **v42 full cache running on Kaggle since
+   20:40 UTC (version 4, ~5.4 h)**; then download (`--page-size 200`), build `v43-roi-experts` (local trainer: rectangular
+   160 x 288 crops, one output, convnext_nano, P target, fold 0; LM then MM), then `v44-submit` (incumbent + experts,
+   order-only per-column blend, design section 5) by 10-15, stop if not submitted by 10-16. Session scripts (scratchpad):
+   build_v42.py, v42_roi_core.py, v42_roi_worker.py, test_v42_roi_core.py, mock_s6/, build_reader_probe.py.
 0a. **Update 2026-10-12 19:05 UTC.** **v40 = 0.954 and above v37 in the hidden digits: rank 524 -> 235 of 5,853 (211 stable
    witnesses, none reversed; inside the silver cut, rank 292 at 0.954)**; adopt over v37 after the persistence check (D-030),
    then picks v40 + v15. W = 0.936 (passes 0.936; X pending the user's decision on Codex's proposal to cancel X and keep a
