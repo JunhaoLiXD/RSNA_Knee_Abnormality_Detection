@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-12 ~03:10 UTC (v37 best by rank crossing; v35 0.953 rejected; v38 pending decision; v36 finishing)
+Last updated: 2026-10-12 ~11:55 UTC (v39 no gain, leg line stopped; v36 P alone 0.937; rank 506, sliding in the 0.954 block)
 
 ## Current phase
 
@@ -63,6 +63,8 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v35 | 2026-10-11 | submit (D-024) | v32 + six-model leg (v26 + v29 folds 0-2, hierarchical rank aggregation) at w 0.15; launch allowance 115 min (v34 v4) | commit run: 11 gates pass | 0.953 | **rejected** (below v33's 0.954; gold had described +0.0008, L31) |
 | v37 | 2026-10-11 | public anchor (D-028) | heliosli blend-mine-in version 2 reproduced: old S6 bundle, CoAtNet:S6 0.5:0.5, new S6 execution path; S6 files from compact-v1 (the author's slug is non-versioned) | commit runs: outputs byte-equal to the author's | 0.954 | the 0.956 was the author's version 1 with an unavailable R6 S6 (L32); **above v33 in the hidden digits** (50 witnesses, persistence confirmed): **best public submission, provisional pick with v15** |
 | v38 | 2026-10-11 | submit candidate (D-028) | v37 + v35's six-model leg at w 0.15 | commit run: 12 gates pass | - | not submitted; prior lowered by v35 (L31) |
+| v39 | 2026-10-12 | submit (D-029) | v37 + v33's fold-0 leg at w 0.15 (replaces v38) | commit run: 11 gates pass | 0.954 | no demonstrated improvement over v37 (0 witnesses); the leg line stops |
+| v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P alone 0.937 | P passes 0.936 (v14 0.934), below 0.940: no expansion yet; W pending |
 | v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
 | v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | fold 0: val 0.8875 (v26 0.8921), gold 0.9028 (v26 0.9091); Spearman with v26 0.968; paired gold v17 + v29 vs v27 -0.0013 (CI -0.0037 to +0.0009) | - | weaker than v26 and nearly the same model; `v30_submit` decides by the D-022 table |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
@@ -400,7 +402,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-**Handover state (2026-10-12 ~03:10 UTC).** Best public: **v37 0.954** (above v33 by rank crossing, confirmed); v35 0.953 (rejected, L31); provisional picks **v37 + v15**; v38 built, not submitted (decision pending). Earlier notes below this line date from 22:45 UTC.
+**Handover state (2026-10-12 ~11:55 UTC).** Best public: **v37 0.954** (v39 0.954 with no crossing; v35 0.953); provisional picks **v37 + v15**. Rank 506 (11:53 UTC; 347 at 03:18), 687 teams at 0.954, 196 at >= 0.955, silver cut rank 290 and **bronze cut rank 581 both at 0.954**: our rank is sliding inside the 0.954 block. v36 arm P alone 0.937 (passes 0.936, below 0.940); Kaggle session A (C + W) result to download. Earlier notes below this line date from 22:45 UTC.
 57086653) and **v37** (22:35 UTC, ref 57086928). Leaderboard 22:17 UTC: rank 353 at 0.954; 144 teams >= 0.955, 493 at 0.954;
 silver cut rank 289 at 0.954, gold cut 0.961. Provisional picks **v33 + v15**, to become **v37 + v15** once v37 shows 0.956
 (D-028); v30 (0.951) non-S6 OAI backup. Team merger: not considered for now (user). The previous window
