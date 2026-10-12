@@ -116,3 +116,21 @@ own submission at 0.5 / 0.5 to 1.3e-8), different from v37, format.
 **W:** `v36-submit` rebuilt for arm W (`build_v36_submit.py W`; checkpoint cfg: v36 / W / fold 0 / 320 px / unit weights);
 `lingxd/rsna-knee-v36-weights` gets a new version with P and W. W alone cannot change the team's best score, so it may score
 while R1 or A1 is scoring (as v36 P did beside v39); R1 and A1 never score at the same time.
+
+## 7. Codex code review of v40 / v41 (GPT-6 Astra, high, read-only, 2026-10-12, after v40 was submitted)
+
+The review was started before the submission but its first launch hung on stdin (`codex exec` waits for stdin when run in
+the background; relaunched with `< /dev/null`), so it finished after v40 was submitted at 13:05 UTC. Verdict: success path
+correct (anchor cells 2-9 and the three reader sources equal to their sources; no prediction change from `sys.path`, cwd
+or fork; blend formula, average-tie ranks and alignment correct); v41: no issue (all 12 effective weights 0.4:0.6,
+failure handling unchanged). Four failure-path findings, all verified in the code:
+
+| # | Finding (severity) | Verified | Disposition |
+|---|---|---|---|
+| 1 | Cell 18 lines 40-46 and 59: directory creation, log open, `Popen` and the log read-back are outside any guard; an `OSError` there aborts the notebook instead of keeping v37 (P1) | Yes | **Accepted for future builds.** For the scored v40 the effect would be a failed submission (visible as an error), not a wrong score; the commit run exercised the same path on the same image |
+| 2 | Cell 17 lines 48-51: a write failure of the diagnostics file in `finally` replaces a successful `return`, so the reader would treat that slot as missing and could still pass the gates (P2) | Yes | **Accepted for future builds** (diagnostics writes guarded separately); needs an I/O failure on `/kaggle/working` |
+| 3 | Cell 17 line 80: a study counts as having a slot when any slice decodes (`n_raw > 0`), but the reader drops series with fewer than 3 slices (cell 16 line 43), so the 50% guard can undercount (P2) | Yes | **Accepted for future builds** (count `n >= 3`); affects only the catastrophic-decoding backstop |
+| 4 | Cell 18 lines 49-58: the process-group kill runs only on timeout and looks up the group after the fact; a dead main process can leave workers (P2) | Yes (control flow); PyTorch loader workers exit when their parent dies | **Accepted for future builds** (record the PGID at launch, clean up on every exit) |
+
+None of the four affects the success path, and a Kaggle code submission predicts the whole hidden test (public and
+private) in its one scoring run, so a v40 that scores successfully needs no re-run for these fixes.
