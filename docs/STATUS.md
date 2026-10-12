@@ -402,7 +402,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-**Handover state (2026-10-12 ~11:55 UTC).** Best public: **v37 0.954** (v39 0.954 with no crossing; v35 0.953); provisional picks **v37 + v15**. Rank 506 (11:53 UTC; 347 at 03:18), 687 teams at 0.954, 196 at >= 0.955, silver cut rank 290 and **bronze cut rank 581 both at 0.954**: our rank is sliding inside the 0.954 block. v36 arm P alone 0.937 (passes 0.936, below 0.940); Kaggle session A (C + W) result to download. Earlier notes below this line date from 22:45 UTC.
+**Handover state (2026-10-12 ~11:55 UTC).** Best public: **v37 0.954** (v39 0.954 with no crossing; v35 0.953); provisional picks **v37 + v15**. Rank 506 (11:53 UTC; 347 at 03:18), 687 teams at 0.954, 196 at >= 0.955, silver cut rank 290 and **bronze cut rank 581 both at 0.954**: our rank is sliding inside the 0.954 block. v36 arm P alone 0.937 (passes 0.936, below 0.940); Kaggle session A done: W vs C +0.0010 (not flagged; W is the rule-2(a) LB test, not yet built); Kaggle C = v13 N F0 exactly; cross-hardware noise about 0.001. No new public notebook above 0.954 (12:00 UTC); many three-way 0.954 blends (CoAtNet + S6 + goodpjw2008 reader). Strategy for the slide pending with the user. Earlier notes below this line date from 22:45 UTC.
 57086653) and **v37** (22:35 UTC, ref 57086928). Leaderboard 22:17 UTC: rank 353 at 0.954; 144 teams >= 0.955, 493 at 0.954;
 silver cut rank 289 at 0.954, gold cut 0.961. Provisional picks **v33 + v15**, to become **v37 + v15** once v37 shows 0.956
 (D-028); v30 (0.951) non-S6 OAI backup. Team merger: not considered for now (user). The previous window
