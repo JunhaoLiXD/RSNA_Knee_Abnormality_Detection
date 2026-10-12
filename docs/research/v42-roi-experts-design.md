@@ -131,3 +131,15 @@ Verdict: proceed with changes (bounded pilot worth doing; revision 1 not yet suf
 | 7 | P's target usable but not an honest host proxy; diagnostics only (medium) | Yes | **Accepted** (section 6) |
 | 8 | The v36 trainer needs real adaptation (rectangular input, one output, filtering, `min(16, n)`, physical order; runner support) (medium) | Yes (v36 cell 6, `local_v13.py`) | **Accepted** (section 6): new notebook |
 | 9 | Decision boundaries: extend D-023, Dense-P inside the new cap, compare with the then-incumbent, no stacking on v40/v41 by default (medium) | Yes | **Accepted** via D-031 (host = the then-incumbent, which may be v40) |
+
+## 11. Pilot results (2026-10-12)
+
+| Pilot | Parameters | Studies | Both boxes usable | Montage review | Timing / size |
+|---|---|---|---|---|---|
+| 1 (`results/v42/pilot1`) | offset 22 mm, AP 56 x SI 40 mm centred on the anchor | 150 (77 tuning / 73 acceptance) | 86.3% acceptance, 80.5% tuning; all 25 unusable = `slab_prior` (every SKM-TEA anchor usable) | tuning half: the joint line sat in the lower third or at the lower edge (AnchorBank's centroid is pulled up by the femoral cartilage); slab-prior boxes lay on the condyle (rule confirmed) | 8.9 s per study; full train 5.5 h with two workers; crops 2.4 GB |
+| 2 (`results/v42/pilot2`) | + box centre 10 mm inferior (the one tuning change) | same 150 | unchanged (86.3% / 80.5%) | **acceptance half (63 usable): 3 boxes missed the meniscus** (medial boxes outside the condyle, small knees), **at least 2 confirmed and about 5 more likely missing the anterior horn** (anchor posterior; 56 mm left about +-5 mm of tolerance): >= 7.9%, probably about 16% > 5%: **gate failed** | 9.1 s per study; 5.6 h; 2.4 GB |
+
+**User decision 2026-10-12 (option B): one extra tuning round with a fresh acceptance sample** instead of stopping the line:
+offset 18 mm, AP 72 mm (288 x 160 px), SI shift kept; pilot 3 = 75 never-seen studies (stratified, seed 2026; the gate is
+computed on them only) + the 10 problem studies of pilot 2 (a fix check, not counted). Same gate (>= 80% usable, <= 5% wrong
+or missing horn/body). This amends D-031's single-tuning rule once; no further rounds.

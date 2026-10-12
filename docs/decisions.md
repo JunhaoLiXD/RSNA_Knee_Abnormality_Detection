@@ -31,6 +31,11 @@ host) but a high engineering cost; our own single-model line (v36) moved at most
 **Consequences.** D-027's v36 line closes except arm D. The leg line stays closed (D-029). Anchor candidates keep scoring one
 at a time.
 
+**Amendment 2026-10-12 (user, option B).** The ROI pilot gate failed on montages (pilot 2: >= 7.9% of usable acceptance
+boxes missed the meniscus or its anterior horn, about 16% likely). One extra tuning round is allowed (offset 18 mm, AP 72
+mm) with a **fresh** acceptance sample of 75 unseen studies and the same gate; no further rounds (`v42-roi-experts-design.md`
+section 11).
+
 ## D-030 - 2026-10-12 - Two capped anchor probes on v37 (R1 reader, A1 weights) and the v36 W test
 
 **Decision.** Run `docs/research/v40-anchor-probes-design.md` revision 2 (Codex-reviewed, required changes accepted; build
