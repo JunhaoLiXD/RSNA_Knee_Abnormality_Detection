@@ -3,6 +3,25 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-029 - 2026-10-12 - v39 replaces v38 (post-result amendment to D-028); the leg line stops after it
+
+**Decision.** Post-result amendment to D-028: `v39_submit` = v37 + v33's fold-0 two-model leg (v26 F0 + v29 F0, equal-weight
+mean of branch ranks, outer w 0.15, 90 min launch allowance; v35's failure guards ported) **replaces, not supplements,
+v38's single remaining test**. Exploratory; no claim of a private-LB improvement. Frozen checkpoints, aggregation and outer
+weight; no new training or sweeps. Judged against v37 by display or rank crossing (fresh snapshots, stable witnesses, no
+other own submission scoring); a loss or unresolved tie keeps v37. **Stop rule (non-renewable):** after v39 this leg line
+stops regardless of the outcome: no fold subsets, branch or weight variants, and no renewed funding from hidden-digit wins;
+v38 is retired and reopens only through a separately reviewed decision on new independent evidence or a demonstrated
+implementation defect. D-028's premise is corrected: v37 scored 0.954, not 0.956 (the 0.956 was the author's version 1 with
+an unavailable S6, L32); v37 became the best public submission by rank crossing, so the provisional picks are **v37 + v15**.
+User decision 2026-10-12 ("option A, quick Codex review first, then v39"); Codex quick review in
+`v32-s6-anchor-design.md` section 10.
+
+**Reason.** v35 (three-fold leg on v32) displayed 0.953 below v33's fold-0 leg (0.954, above v32 by rank crossing), which
+lowers the prior for v38 (the same three-fold leg on v37); the fold-0 leg is the only leg with a demonstrated public gain.
+
+**Consequences.** One more submission for this line; D-027 (v36) and the pending D-026 are unchanged.
+
 ## D-028 - 2026-10-11 - Public 0.956 anchor (v37) and one frozen leg test on it (v38)
 
 **Decision.** (1) `v37_submit` = heliosli/blend-mine-in-private-lb-luck-to-all-upvoters (public 0.956: the v32 assets with

@@ -250,3 +250,17 @@ notebook, which used another S6 ("R6 ConvNeXt (fastMRI+ aux)", bundle `fe055406f
 reproduced, reverts to the old S6 bundle. The R6 files are gone (the dataset keeps no versions), so 0.956 is not
 reproducible from public files. Rank crossing (`2026-10-11j` -> `2026-10-12a`): 50 stable witnesses down, none up: the old
 S6 at 0.5:0.5 is above v33 in the hidden digits. Lesson: check which version a Code-page score belongs to before reproducing.
+
+## 10. v39 instead of v38 (2026-10-12, D-029)
+
+After v35 = 0.953 (L31), the user chose to test v33's fold-0 leg on v37 (v39) instead of the three-fold leg (v38). Codex
+quick review (GPT-6 Astra, high, read-only): proceed conditionally with one capped test.
+
+| # | Finding | Disposition |
+|---|---|---|
+| 1 | Adaptive public-LB selection: v35's loss lowers enthusiasm for v38 but does not show that the fold-0 leg transfers to v37 | **Accepted**: D-029 records a post-result amendment, exploratory, replacing v38; frozen settings |
+| 2 | Port the failure guards; coverage = unique ids with all 24 leg probabilities finite; prove success-path parity; test malformed files, NaN, timeout, setup failure | **Accepted**: `build_v39.py` (the leg script asserted equal to v33's), `test_v39_blend.py` (14 cases pass, aggregation equal to an independent computation) |
+| 3 | Two completed OOF comparisons (v33's reference study, branch-specific expectations), finite differences <= 1e-3, direct branch parity, blend recomputation | **Accepted**: `check_v39_gates.py` |
+| 4 | 90 min allowance supported by v34's two-model timing; v37 changes the anchor path: check anchor time and residual budget; require `used_leg` | **Accepted**: gate and receipt check |
+| 5 | v37's version-2 inputs (compact-v1), no refused dependency attached; fresh snapshots, no competing own scoring | **Accepted** |
+| 6 | Non-renewable stop rule after v39; v38 retired | **Accepted** (D-029) |
