@@ -244,3 +244,9 @@ studies and stops above 50% S6 failures.
 submission byte-equal to the author's; input hashes; 0.5/0.5 confirmed). **Submission refused**: "Your Notebook uses
 non-versioned datasets [/datasets/heliosli/rsna-knee-compact-r6cnxfsss]". **v37 version 2** reads the identical files
 from `rsna-knee-compact-v1` (three strings in the author's code; header change 4).
+
+**v37 result (2026-10-12 ~02:40 UTC): 0.954.** The Code page's "Best Score 0.956 V1" belongs to version 1 of the author's
+notebook, which used another S6 ("R6 ConvNeXt (fastMRI+ aux)", bundle `fe055406fad6a12f`) at 0.5:0.5; version 2, which we
+reproduced, reverts to the old S6 bundle. The R6 files are gone (the dataset keeps no versions), so 0.956 is not
+reproducible from public files. Rank crossing (`2026-10-11j` -> `2026-10-12a`): 50 stable witnesses down, none up: the old
+S6 at 0.5:0.5 is above v33 in the hidden digits. Lesson: check which version a Code-page score belongs to before reproducing.
