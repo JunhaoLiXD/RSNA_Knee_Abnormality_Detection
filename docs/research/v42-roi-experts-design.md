@@ -143,3 +143,8 @@ Verdict: proceed with changes (bounded pilot worth doing; revision 1 not yet suf
 offset 18 mm, AP 72 mm (288 x 160 px), SI shift kept; pilot 3 = 75 never-seen studies (stratified, seed 2026; the gate is
 computed on them only) + the 10 problem studies of pilot 2 (a fix check, not counted). Same gate (>= 80% usable, <= 5% wrong
 or missing horn/body). This amends D-031's single-tuning rule once; no further rounds.
+
+| 3 (`results/v42/pilot3`) | offset 18 mm, AP 72 x SI 40 mm, 10 mm inferior (frozen) | 75 fresh (acceptance) + 10 pilot-2 problem cases | **80.0% acceptance (60 / 75)**; 15 `slab_prior`, 1 without series/anchor/side | **acceptance (60 usable): 0 boxes missing the meniscus or a compartment (2 uncertain, at worst 3.3%)**; 11 (about 18%) place the joint line near a box edge with the meniscus still inside (reported, not counted); problem cases: the anterior-horn misses are fixed, the 3 medial boxes outside the condyle remain (anchor off in left-right) | 8.8 s per study; full train 5.4 h; crops 3.3 GB |
+
+**Gate verdict (pilot 3): passed** (usable 80.0% >= 80%; wrong or missing <= 5%; quota and size within limits), with two
+caveats: usability is exactly at the threshold, and about one box in six is off-centre. Next: the full cache (4,407 studies).
