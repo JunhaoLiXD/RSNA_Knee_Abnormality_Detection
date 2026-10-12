@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-12 ~11:55 UTC (v39 no gain, leg line stopped; v36 P alone 0.937; rank 506, sliding in the 0.954 block)
+Last updated: 2026-10-12 ~12:30 UTC (handover: v37 best; v40/v41 anchor probes and v36 W pending approval)
 
 ## Current phase
 
@@ -402,31 +402,23 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-**Handover state (2026-10-12 ~11:55 UTC).** Best public: **v37 0.954** (v39 0.954 with no crossing; v35 0.953); provisional picks **v37 + v15**. Rank 506 (11:53 UTC; 347 at 03:18), 687 teams at 0.954, 196 at >= 0.955, silver cut rank 290 and **bronze cut rank 581 both at 0.954**: our rank is sliding inside the 0.954 block. v36 arm P alone 0.937 (passes 0.936, below 0.940); Kaggle session A done: W vs C +0.0010 (not flagged; W is the rule-2(a) LB test, not yet built); Kaggle C = v13 N F0 exactly; cross-hardware noise about 0.001. No new public notebook above 0.954 (12:00 UTC); many three-way 0.954 blends (CoAtNet + S6 + goodpjw2008 reader). Strategy for the slide pending with the user. Earlier notes below this line date from 22:45 UTC.
-57086653) and **v37** (22:35 UTC, ref 57086928). Leaderboard 22:17 UTC: rank 353 at 0.954; 144 teams >= 0.955, 493 at 0.954;
-silver cut rank 289 at 0.954, gold cut 0.961. Provisional picks **v33 + v15**, to become **v37 + v15** once v37 shows 0.956
-(D-028); v30 (0.951) non-S6 OAI backup. Team merger: not considered for now (user). The previous window
-([local_bd917ada]) woke once at 20:30 UTC and committed `1c89cbf`; do not continue work there.
+**Handover state (2026-10-12 ~12:30 UTC).** Best public: **v37 0.954** (old S6 at CoAtNet:S6 0.5:0.5; above v33 by rank
+crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951) operational non-S6 backup. Rank 506 of 5,819
+(11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
+0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
-1. **v35 (D-024):** v32 + six-model leg (v26 + v29 folds 0-2), launch allowance 115 min from v34 version 4 (six-model leg
-   1.26 h projected for about 1,300 studies). Commit-run gates all pass; submitted. Judge against v33 by display or rank
-   crossing (snapshot before: `external/lb/2026-10-11h`); may become unresolvable once v37 scores (D-028).
-2. **v37 (D-028):** the public 0.956 notebook (heliosli "blend-mine-in": v32 assets, CoAtNet:S6 0.5:0.5, new S6 execution path)
-   reproduced; S6 files from `rsna-knee-compact-v1` because Kaggle refuses the author's new slug as a non-versioned dataset.
-   Gates pass (outputs byte-equal to the author's run); submitted (snapshot before: `external/lb/2026-10-11j`).
-3. **v38 (D-028):** v37 + v35's six-model leg at 0.15; commit run `lingxd/v38-submit` version 1, all 12 gates pass. **Submit
-   after v35 and v37 have scored**, with a fresh snapshot (rank-crossing against v37); 5 submissions on 2026-10-12.
-4. **v36 (D-027):** Kaggle session A (`lingxd/v36-gap-diagnostics` version 1: C + W, pushed about 19:10 UTC, about 7 h). Local
-   (RTX 3080 Ti, background chain C -> G -> P, `results/v36/local_f0_<arm>_runner.log`): C at epoch 12 of 15 (val 0.8970) at
-   22:35 UTC, G and P follow (about 04:30 UTC). W vs Kaggle C; G, P vs local C (design section 10). Then LB tests per design
-   section 5.
-5. **Pending user decision - D-026:** probe 3 superseded by v37 (public result); the other probes would now be on the v37/v38
-   base.
-6. Research: `related-work-2026-10-11.md` (no large lever from papers or past winners; forum gap evidence behind v36). New
-   public notebooks 2026-10-11: heliosli 0.956 (= v37), velci kcd25 20 0.955 (a hidden input, not usable), the rest 0.954.
-7. Kaggle: at most two GPU batch sessions at once; status checks of short commit runs are handed over to the agent (user,
-   2026-10-11); scoring is not polled. GPU quota about 20 h left after v36 session A (resets 2026-10-17). Keep the 5-hour usage
-   window below 90%; consult Codex on major decisions.
+1. **Next (awaiting the user's go-ahead):** `docs/research/v40-anchor-probes-design.md` revision 2 (Codex-reviewed, uncommitted
+   until approved; record as D-030 when approved): R1 = `v40_submit` = v37 + public goodpjw2008 2.5D ConvNeXt reader (3 folds)
+   at a uniform outer weight 0.10; A1 = `v41_submit` = original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings (including the
+   three OA overrides in `W_RAPTOR_C`); v36 W fold-0 test; conditional X. Whole-sequence cap: at most five further
+   submissions; no A2, no combinations; anchor probing closes 2026-10-17.
+2. **Closed lines:** our v26/v29 leg (D-029: v35 0.953 rejected, v39 0.954 no crossing; no more leg variants); v38 retired;
+   the public 0.956 is not reproducible (author's version 1 used an unavailable R6 S6, L32). "D-026" was never recorded.
+3. **v36 (D-027):** local C/G/P and Kaggle C/W done (`results/v36/`); P alone 0.937 (passes 0.936 vs v14 0.934, below 0.940);
+   W +0.0010 vs C (not flagged): W fold-0 LB test is next (`v36-submit` notebook, add W to `lingxd/rsna-knee-v36-weights`).
+4. Kaggle facts: at most two GPU batch sessions at once; submissions refuse non-versioned datasets (use
+   `rsna-knee-compact-v1` for S6); status checks of short commit runs are handed over to the agent, scoring is not polled.
+   GPU quota about 13 h left until 2026-10-17. The previous window (local_bd917ada) must not be used.
 
 ## Open questions
 
