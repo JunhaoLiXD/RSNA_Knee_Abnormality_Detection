@@ -404,7 +404,7 @@ if __name__ == '__main__':
     c.add_argument('--tolerance', type=float, default=0.01)
     f = sub.add_parser('fold')
     f.add_argument('fold', type=int, choices=[0, 1, 2, 3, 4])
-    f.add_argument('--arm', default='N', choices=['N', 'C', 'L', 'W', 'G', 'P'])
+    f.add_argument('--arm', default='N', choices=['N', 'C', 'L', 'W', 'G', 'P', 'D'])
     f.add_argument('--mode', default='folds', choices=['folds', 'smoke'])   # smoke: v24 arm C check (design v21-shortlist 5)
     f.add_argument('--arm-set', action='append', default=[], metavar='KEY=JSON')   # smoke diagnostics only
     f.add_argument('--tag', default='')     # smoke: suffix of the work folder, to keep diagnostic runs apart
