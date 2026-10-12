@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-11 ~22:45 UTC (v35 and v37 submitted, scores pending; v38 ready; v36 running; D-028)
+Last updated: 2026-10-12 ~03:10 UTC (v37 best by rank crossing; v35 0.953 rejected; v38 pending decision; v36 finishing)
 
 ## Current phase
 
@@ -60,6 +60,9 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v30 | 2026-10-11 | submit (B2, D-021/D-022) | v17 anchor (cells unchanged) + v29 fold-0 leg at w 0.15; the leg renders each study twice from DICOM (v07 code at 140 and 100 mm) with reference checks of both renderings | local flow test (cache-backed rendering, real fingerprints): reference 6/6 byte-equal, OOF 2.6e-5, 3/3 predicted | **0.951** | first displayed step above 0.950; rank 405 of 5,710 (03:35 UTC); gold had predicted -0.0013 vs v27 (L30). Best public submission until v32 scores. B2 qualifies for three total folds by the D-022 table (displayed 0.951) |
 | v32 | 2026-10-11 | public anchor (D-023) | heliosli/rsna-knee-blend-gold-dataset-restored unchanged: CoAtNet-384 (as v17) 0.7 + heliosli S6 (ConvNeXt-small, knee-anchored views via SKM-TEA `anatomy.pt`) 0.3; public 0.954 | commit run: S6 and final submission equal the author's (diff 0.0), CoAtNet ranks byte-equal; CoAtNet raw probabilities differ by up to 5.3e-5 (gate tolerance 1e-6 failed; ranks identical) | **0.954** | reproduces the public 0.954; our best public submission (D-024: v34 then v33). Rerun (version 2): our two runs differ by 5.8e-5 in raw probabilities, outputs byte-equal: run-to-run variation; submitted 2026-10-11 02:32 UTC (ref 57059710) before v30 was scored (user decision), so v30 is judged by display only |
 | v33 | 2026-10-11 | submit (D-024) | v32 + combined v26/v29 fold-0 leg at w 0.15 (leg after S6) | commit run: all gates pass, branch probabilities identical to v27/v30 legs; v34 projection about 5.3 h hidden runtime | **0.954** | above v32 in the hidden digits (rank 239 -> 201, 52 stable witnesses, none reverse; persistence confirmed 12:31 UTC): **best public submission, provisional pick with v15**; v35 eligible under D-024 after v29 folds 1-2 |
+| v35 | 2026-10-11 | submit (D-024) | v32 + six-model leg (v26 + v29 folds 0-2, hierarchical rank aggregation) at w 0.15; launch allowance 115 min (v34 v4) | commit run: 11 gates pass | 0.953 | **rejected** (below v33's 0.954; gold had described +0.0008, L31) |
+| v37 | 2026-10-11 | public anchor (D-028) | heliosli blend-mine-in version 2 reproduced: old S6 bundle, CoAtNet:S6 0.5:0.5, new S6 execution path; S6 files from compact-v1 (the author's slug is non-versioned) | commit runs: outputs byte-equal to the author's | 0.954 | the 0.956 was the author's version 1 with an unavailable R6 S6 (L32); **above v33 in the hidden digits** (50 witnesses, persistence confirmed): **best public submission, provisional pick with v15** |
+| v38 | 2026-10-11 | submit candidate (D-028) | v37 + v35's six-model leg at w 0.15 | commit run: 12 gates pass | - | not submitted; prior lowered by v35 (L31) |
 | v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
 | v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | fold 0: val 0.8875 (v26 0.8921), gold 0.9028 (v26 0.9091); Spearman with v26 0.968; paired gold v17 + v29 vs v27 -0.0013 (CI -0.0037 to +0.0009) | - | weaker than v26 and nearly the same model; `v30_submit` decides by the D-022 table |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
@@ -373,6 +376,16 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    validation AUC (v29 0.8875 vs v26 0.8921) favoured v26. One fold each, one display step, public-LB noise;
    with L20 and L28 this is the third case where gold ranked two legs the wrong way round on the LB.
 
+31. **More folds made our leg worse on the LB; gold said the opposite** (v35 vs v33): the leg with three folds per branch on
+   the v32 anchor displayed 0.953, v33's fold-0 leg 0.954 (and above v32 in the hidden digits), while gold-58 described the
+   six-model blend +0.0008 over the v33 type (0.9321 vs 0.9313). Fourth gold misranking (L20, L28, L30). Contrast L18, where N's
+   five folds raised the leg alone by 0.002: in a 0.15 leg, fold averaging may remove the specific disagreements that helped.
+   One display step, public-LB noise; the cause is not established.
+
+32. **A Code-page score may belong to an older notebook version** (v37): "Best Score 0.956 V1" was version 1 with a different,
+   now unavailable S6 (R6, fastMRI+ aux); the pulled latest version reverts to the old S6 and scores 0.954 for us. Check the
+   version of a public score before reproducing. The old S6 at 0.5:0.5 is above v33 in the hidden digits (rank crossing).
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -387,7 +400,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
-**Handover state (2026-10-11 ~22:45 UTC).** Best displayed: **v33 0.954**; pending scores: **v35** (22:17 UTC, ref
+**Handover state (2026-10-12 ~03:10 UTC).** Best public: **v37 0.954** (above v33 by rank crossing, confirmed); v35 0.953 (rejected, L31); provisional picks **v37 + v15**; v38 built, not submitted (decision pending). Earlier notes below this line date from 22:45 UTC.
 57086653) and **v37** (22:35 UTC, ref 57086928). Leaderboard 22:17 UTC: rank 353 at 0.954; 144 teams >= 0.955, 493 at 0.954;
 silver cut rank 289 at 0.954, gold cut 0.961. Provisional picks **v33 + v15**, to become **v37 + v15** once v37 shows 0.956
 (D-028); v30 (0.951) non-S6 OAI backup. Team merger: not considered for now (user). The previous window
