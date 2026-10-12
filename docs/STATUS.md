@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-12 ~15:15 UTC (v40 and W scoring; v41 ready; Dense-P running; ROI design under Codex review)
+Last updated: 2026-10-12 ~19:05 UTC (v40 above v37 in the hidden digits, rank 235; W 0.936; v41 submitted)
 
 ## Current phase
 
@@ -64,7 +64,9 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v37 | 2026-10-11 | public anchor (D-028) | heliosli blend-mine-in version 2 reproduced: old S6 bundle, CoAtNet:S6 0.5:0.5, new S6 execution path; S6 files from compact-v1 (the author's slug is non-versioned) | commit runs: outputs byte-equal to the author's | 0.954 | the 0.956 was the author's version 1 with an unavailable R6 S6 (L32); **above v33 in the hidden digits** (50 witnesses, persistence confirmed): **best public submission, provisional pick with v15** |
 | v38 | 2026-10-11 | submit candidate (D-028) | v37 + v35's six-model leg at w 0.15 | commit run: 12 gates pass | - | not submitted; prior lowered by v35 (L31) |
 | v39 | 2026-10-12 | submit (D-029) | v37 + v33's fold-0 leg at w 0.15 (replaces v38) | commit run: 11 gates pass | 0.954 | no demonstrated improvement over v37 (0 witnesses); the leg line stops |
-| v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P alone 0.937 | P passes 0.936 (v14 0.934), below 0.940: no expansion yet; W pending |
+| v40 | 2026-10-12 | submit (D-030 R1) | v37 cells unchanged + public goodpjw2008 2.5D ConvNeXt reader (3 folds) at a uniform outer rank weight 0.10; any reader failure keeps v37 | commit run: 11 gates pass (reader output equal to v17's reader run, 0.0) | 0.954 | **above v37 in the hidden digits: rank 524 -> 235, 211 stable witnesses, none reversed** (persistence pending); provisional pick with v15 once confirmed |
+| v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | pending | submitted 19:01 UTC; judged against v40 |
+| v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P 0.937, W 0.936 | P and W pass 0.936 (v14 0.934), both below 0.940: no expansion; X by D-030 unless amended (Codex: cancel X, keep a v15-hedge option only at W >= 0.940); arm D (Dense-P) training locally |
 | v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
 | v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | fold 0: val 0.8875 (v26 0.8921), gold 0.9028 (v26 0.9091); Spearman with v26 0.968; paired gold v17 + v29 vs v27 -0.0013 (CI -0.0037 to +0.0009) | - | weaker than v26 and nearly the same model; `v30_submit` decides by the D-022 table |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
@@ -388,6 +390,12 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    now unavailable S6 (R6, fastMRI+ aux); the pulled latest version reverts to the old S6 and scores 0.954 for us. Check the
    version of a public score before reproducing. The old S6 at 0.5:0.5 is above v33 in the hidden digits (rank crossing).
 
+33. **A small public third component gave the largest hidden-digit gain so far** (v40 vs v37): the goodpjw2008 reader (0.929
+   alone) at a uniform outer weight 0.10 on CoAtNet + S6 moved us from rank 524 to 235 (211 stable witnesses, none reversed),
+   while our own legs on the same family of anchors gave 50 (v33 over v32), 0 (v39) or a loss (v35). The reader is a different
+   public model family that already helped the CoAtNet alone (v17 0.950 vs 0.949). Still one display step: no change in the
+   displayed 0.954.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -407,6 +415,12 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0a. **Update 2026-10-12 19:05 UTC.** **v40 = 0.954 and above v37 in the hidden digits: rank 524 -> 235 of 5,853 (211 stable
+   witnesses, none reversed; inside the silver cut, rank 292 at 0.954)**; adopt over v37 after the persistence check (D-030),
+   then picks v40 + v15. W = 0.936 (passes 0.936; X pending the user's decision on Codex's proposal to cancel X and keep a
+   v15-hedge option only at W >= 0.940, D-030 cap 5 -> 4). v41 submitted 19:01 UTC (ref 57116493; before-snapshot
+   `external/lb/2026-10-12f`), judged against v40. Submissions on 2026-10-12: 5 of 5 used. Dense-P (v36 arm D) training locally.
+   Next: v42 design revision 2 (Codex review of revision 1 in hand: proceed with changes, 9 points), then D-031.
 0. **Update 2026-10-12 ~15:15 UTC.** D-030 approved and running: v40 (R1) and v36 W submitted 13:05 UTC (refs 57107964,
    57107968; commit runs pass all gates; scores pending, user reports them); v41 commit run passes all 8 gates, submit after
    v40's rank-crossing comparison; Codex code review of v40/v41 recorded (design section 7; failure-path fixes for future

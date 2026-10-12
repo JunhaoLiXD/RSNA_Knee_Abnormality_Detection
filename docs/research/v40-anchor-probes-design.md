@@ -134,3 +134,12 @@ failure handling unchanged). Four failure-path findings, all verified in the cod
 
 None of the four affects the success path, and a Kaggle code submission predicts the whole hidden test (public and
 private) in its one scoring run, so a v40 that scores successfully needs no re-run for these fixes.
+
+## 8. Results (2026-10-12)
+
+- **R1 = v40: 0.954 displayed, above v37 in the hidden digits**: rank 524 -> 235 of 5,853 between `2026-10-12e` (13:05 UTC,
+  before submission) and `2026-10-12f` (19:01 UTC); 211 stable witnesses moved from above to below, none the other way,
+  stable order unchanged. v36 W scored concurrently (0.936) and cannot change the team's best, so the crossing is v40's.
+  Silver cut rank 292 and bronze cut rank 585, both at 0.954. Adoption pending the persistence check (D-030).
+- **W = 0.936** (v36 arm W alone; D-027 rule 2(a)).
+- **A1 = v41** submitted 19:01 UTC after v40's comparison; judged against v40.
