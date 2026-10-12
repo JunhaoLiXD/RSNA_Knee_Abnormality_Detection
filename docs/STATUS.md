@@ -418,7 +418,7 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
    W +0.0010 vs C (not flagged): W fold-0 LB test is next (`v36-submit` notebook, add W to `lingxd/rsna-knee-v36-weights`).
 4. Kaggle facts: at most two GPU batch sessions at once; submissions refuse non-versioned datasets (use
    `rsna-knee-compact-v1` for S6); status checks of short commit runs are handed over to the agent, scoring is not polled.
-   GPU quota about 13 h left until 2026-10-17. The previous window (local_bd917ada) must not be used.
+   GPU quota 20.4 h left until 2026-10-17 (12:30 UTC). The previous window (local_bd917ada) must not be used.
 
 ## Open questions
 
