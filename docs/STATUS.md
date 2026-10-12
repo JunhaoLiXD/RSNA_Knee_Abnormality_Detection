@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-12 ~12:30 UTC (handover: v37 best; v40/v41 anchor probes and v36 W pending approval)
+Last updated: 2026-10-12 ~15:15 UTC (v40 and W scoring; v41 ready; Dense-P running; ROI design under Codex review)
 
 ## Current phase
 
@@ -407,6 +407,16 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0. **Update 2026-10-12 ~15:15 UTC.** D-030 approved and running: v40 (R1) and v36 W submitted 13:05 UTC (refs 57107964,
+   57107968; commit runs pass all gates; scores pending, user reports them); v41 commit run passes all 8 gates, submit after
+   v40's rank-crossing comparison; Codex code review of v40/v41 recorded (design section 7; failure-path fixes for future
+   builds only). Leaderboard snapshot `external/lb/2026-10-12e` (rank 524). New aggressive line under discussion (not yet a
+   decision): `aggressive-routes-2026-10-12.md` (independent Claude/Codex proposals, cross-review, GitHub search: rank-89 team
+   reached 0.957 on the S6 host with per-finding ROI experts; unlicensed, ideas only), `roi-experts-feasibility-2026-10-12.md`,
+   and design `v42-roi-experts-design.md` revision 1 (Codex review running; record D-031 after it). User go-ahead: step 0
+   (design + review) and **Dense-P = v36 arm D running locally** (commit 591a717: P target, K_train 16, head LR 1e-3, stem +
+   stages 0-1 frozen; 216 img/s, ~6 h; log `results/v36/local_f0/v36/v36_log_fold0_D.txt`). Next: Codex verdict -> D-031 ->
+   v42 pilot on Kaggle (150 studies) on 10-13. Team merger: the user is contacting a solo team (their own step).
 1. **Next (awaiting the user's go-ahead):** `docs/research/v40-anchor-probes-design.md` revision 2 (Codex-reviewed, uncommitted
    until approved; record as D-030 when approved): R1 = `v40_submit` = v37 + public goodpjw2008 2.5D ConvNeXt reader (3 folds)
    at a uniform outer weight 0.10; A1 = `v41_submit` = original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings (including the
