@@ -3,6 +3,29 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-030 - 2026-10-12 - Two capped anchor probes on v37 (R1 reader, A1 weights) and the v36 W test
+
+**Decision.** Run `docs/research/v40-anchor-probes-design.md` revision 2 (Codex-reviewed, required changes accepted; build
+notes in section 6): (1) R1 = `v40_submit` = v37 unchanged + the public goodpjw2008 2.5D ConvNeXt reader (3 folds),
+`final = rank(0.90 * rank(v37) + 0.10 * rank(reader))`, uniform over the 12 findings; any reader failure keeps v37's output.
+(2) A1 = `v41_submit` = original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings (including the three OA overrides in
+`W_RAPTOR_C`); independent of R1, never combined with it. (3) The v36 arm-W fold-0 LB test (D-027 rule 2(a)); X = W + P
+fold 0 only if W displays >= 0.936; one expansion only at >= 0.940. **Non-renewable cap:** at most five further submissions
+in total for R1, A1, W, the conditional X and one separately reviewed non-OAI hedge blend (only after a >= 0.940 fold-0
+result funds an expansion); no A2, no winner combinations, no further OAI-leg blends. Adoption: execution gates passed, then
+a higher displayed score or >= 20 stable crossings with none reversed and later persistence; R1 and A1 never score at the
+same time (W may, as it cannot change the team score); an unresolved comparison keeps the incumbent. Anchor probing closes
+2026-10-17; model development stops 2026-10-19; 2026-10-20/21 verify the final artifacts. Picks stay **v37 + v15** unless a
+probe wins (v30 remains the operational non-S6 backup). The undocumented "D-026" is superseded. User decision 2026-10-12
+("approved, execute in order").
+
+**Reason.** Rank 506 and sliding inside the 0.954 block (687 teams; silver cut rank 290 and bronze cut rank 581 both at
+0.954); nothing usable above 0.954 is public; our own leg line has stopped (D-029). The reader helped the CoAtNet before
+(v17 0.950 vs 0.949) and three-way blends populate the 0.954 block; 0.5:0.5 beat 0.7:0.3 in the hidden digits (v37 > v33),
+a confounded but cheap direction to test once. Both are public-LB searches with uncertain private value (Codex).
+
+**Consequences.** Up to five submissions and about 1-2 GPU hours of commit runs; the v36 weights dataset gets W.
+
 ## D-029 - 2026-10-12 - v39 replaces v38 (post-result amendment to D-028); the leg line stops after it
 
 **Decision.** Post-result amendment to D-028: `v39_submit` = v37 + v33's fold-0 two-model leg (v26 F0 + v29 F0, equal-weight
