@@ -420,7 +420,7 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
    88 teams rose to >= 0.955 within hours). D-032 (user accepted the fastMRI rule risk): **v46** = that notebook reproduced
    (= v37 with the R7 bundle `8c7b666e27dc0e8f`); commit run: all gates pass, R7 output and submission byte-equal to the
    author's (`results/v46/run1`, `check_v46_gates.py`); **submit only after v45 has scored and its crossing is read**. **v47** =
-   v46 + reader 0.10, commit run running; submit after v46 is judged. Remaining D-031 probes dropped. Picks on 10-20: best of
+   v46 + reader 0.10, commit run passes all 11 gates (`results/v47/run1`, `check_v47_gates.py`); submit after v46 is judged. Remaining D-031 probes dropped. Picks on 10-20: best of
    v46/v47 + the old-S6 winner (v40/v45). v42 full cache (version 5) running since 01:42 UTC (version 4 failed at launch:
    Errno 7, arguments now passed as a file).
 0c. **Update 2026-10-13 01:45 UTC.** v41 = 0.953 (rejected); v40 persistence confirmed (incumbent). **Silver cut moved to 0.955**
