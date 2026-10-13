@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-13 ~02:05 UTC (D-032: v46 R7 reproduction passes gates; v47 commit run; v45 and Dense-P scoring; v42 full cache running)
+Last updated: 2026-10-13 ~12:30 UTC (v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 submission awaits the user's go-ahead)
 
 ## Current phase
 
@@ -66,8 +66,11 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v39 | 2026-10-12 | submit (D-029) | v37 + v33's fold-0 leg at w 0.15 (replaces v38) | commit run: 11 gates pass | 0.954 | no demonstrated improvement over v37 (0 witnesses); the leg line stops |
 | v40 | 2026-10-12 | submit (D-030 R1) | v37 cells unchanged + public goodpjw2008 2.5D ConvNeXt reader (3 folds) at a uniform outer rank weight 0.10; any reader failure keeps v37 | commit run: 11 gates pass (reader output equal to v17's reader run, 0.0) | 0.954 | **above v37 in the hidden digits: rank 524 -> 235, 211 stable witnesses, none reversed; persistence confirmed 10-13 01:40 UTC (146 still below, none reversed)**: the incumbent |
 | v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | 0.953 | **rejected** (below v40) |
-| v45 | 2026-10-13 | submit (D-031 probe 1) | v40 with the reader at 0.15 | commit run: 11 gates pass | pending | submitted 01:41 UTC; judged against v40 |
-| v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P 0.937, W 0.936 | P and W pass 0.936 (v14 0.934), both below 0.940: no expansion; X by D-030 unless amended (Codex: cancel X, keep a v15-hedge option only at W >= 0.940); arm D (Dense-P) training locally |
+| v45 | 2026-10-13 | submit (D-031 probe 1) | v40 with the reader at 0.15 | commit run: 11 gates pass | 0.954 | **above v40 in the hidden digits, small margin** (6 stable witnesses, none reversed; `2026-10-13a` -> `13b`): the old-S6 incumbent and the second pick candidate |
+| v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | not submitted | **due now** (v45 judged); the submit call needs the user's go-ahead |
+| v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | not submitted | after v46 is judged |
+| v42 | 2026-10-12/13 | ROI cache (D-031) | meniscus ROI crops for per-finding experts, all 4,407 training studies | 0 errors; both compartments usable 84.4%; 3.14 GB in 24 shards | - | done (`results/v42/full2`); next `v43-roi-experts` (local trainer) |
+| v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P 0.937, W 0.936 | P and W pass 0.936 (v14 0.934), both below 0.940: no expansion; X by D-030 unless amended (Codex: cancel X, keep a v15-hedge option only at W >= 0.940); **arm D (Dense-P) 0.934 alone (2026-10-13): below P and W, the dense line ends (D-031)** |
 | v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
 | v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | fold 0: val 0.8875 (v26 0.8921), gold 0.9028 (v26 0.9091); Spearman with v26 0.968; paired gold v17 + v29 vs v27 -0.0013 (CI -0.0037 to +0.0009) | - | weaker than v26 and nearly the same model; `v30_submit` decides by the D-022 table |
 | ref | 2026-10-01 | public notebook | pjmathematician d4-blend (private datasets, not reproducible) | - | 0.946 | reference |
@@ -396,6 +399,16 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    while our own legs on the same family of anchors gave 50 (v33 over v32), 0 (v39) or a loss (v35). The reader is a different
    public model family that already helped the CoAtNet alone (v17 0.950 vs 0.949). Still one display step: no change in the
    displayed 0.954.
+34. **The reader weight curve is flat near 0.10-0.15** (v45 vs v40): 0.15 moved us above v40 by only 6 stable witnesses
+   (v40 over v37: 211). A further step to 0.20 is unlikely to be worth a submission; the reader's value is mostly captured.
+35. **Denser training tokens with frozen early stages did not lift our own model** (Dense-P 0.934 vs P 0.937, W 0.936): with
+   v13 0.936, v14 0.934 and v24 0.934, five variants of our single-model recipe sit within 0.934-0.937 on the LB. Our own
+   training recipe is not the lever at this stage; the public anchors are.
+36. **A public notebook at the next display step moves the cut lines within hours** (2026-10-13): after heliosli's R7 0.956
+   one-click notebook, 310 teams rose to 0.956 in ten hours (the 0.956 block grew from 122 to 434 teams); bronze moved to
+   0.955 and silver to 0.956, and we fell from rank 328 to 636 at an unchanged score. The new 0.956 notebooks (Jenil Langaliya,
+   mercurydust RSNA-V3) are code-identical copies of it. Where a late copy lands inside the 0.956 block (ranks 130-563 at
+   12:01 UTC) is not predictable: the block is not ordered by last-submission time, so the copies' hidden digits differ.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -416,6 +429,15 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0e. **Update 2026-10-13 12:30 UTC.** Scores: **v45 0.954, above v40 by 6 stable witnesses** (none reversed; `2026-10-13a` ->
+   `2026-10-13b`): v45 is the old-S6 incumbent (L34); **Dense-P 0.934**: the dense line ends (L35). Rank 328 -> **636 of 5,909**
+   at an unchanged 0.954: 310 teams rose to 0.956 after heliosli's public R7 notebook (L36); bronze cut rank 590 at 0.955,
+   silver rank 295 at 0.956, 129 teams >= 0.957; top public notebook score still 0.956 (Jenil Langaliya and mercurydust
+   0.956 notebooks are code copies of R7; varshithakolupuri's "one unused checkpoint" adds nartaa's 224-px 0.8-crop CoAtNet
+   at 0.35 of the Raptor slot, not scored, and its metadata lacks that checkpoint's dataset). **v46 is now due (D-032)**:
+   the submit call was refused by the agent's permission check, so it waits for the user (before-snapshot `2026-10-13b`).
+   v42 full cache (version 5) complete and verified: 4,407 studies, 0 errors, 84.4% usable in both compartments (pilot 3:
+   80.0%), 3.14 GB (`results/v42/full2`). Next on the ROI line: `v43-roi-experts` (D-031: submit by 10-15, stop by 10-16).
 0d. **Update 2026-10-13 02:05 UTC (D-032).** Cause of the slide: heliosli's public R7 one-click notebook (0.956, version 1;
    88 teams rose to >= 0.955 within hours). D-032 (user accepted the fastMRI rule risk): **v46** = that notebook reproduced
    (= v37 with the R7 bundle `8c7b666e27dc0e8f`); commit run: all gates pass, R7 output and submission byte-equal to the
