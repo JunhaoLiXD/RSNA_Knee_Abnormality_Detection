@@ -435,6 +435,11 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0h. **Update 2026-10-13 20:30 UTC (public check, `docs/research/public-landscape-2026-10-13.md`).** No public notebook
+   above 0.956; every R7-based 0.956 notebook is a code copy. The only new public component we can use: nartaa's 224-px
+   CoAtNet (R224, in the dataset v47 already attaches; public recipe 0.35 of the Raptor slot; its author claims a rank gain
+   inside the 0.956 block). jingshuifu's R7 flip-TTA is unscored. OAI host statement found (Open questions). A v48 probe
+   (v47 + R224) needs a decision and a runtime guard; it would score after v44.
 0g. **Update 2026-10-13 19:30 UTC.** **v47 = 0.956, above v46**: rank 522 -> **332 of 5,938**, 191 stable witnesses
    (all 0.956), none reversed (L37). Position 178 of 595 in the 0.956 block (ranks 155-749); silver cut rank 296 (36 places
    above), bronze cut rank 593. v47 is the incumbent, the first-pick candidate and **v44's host**; the second pick stays the
@@ -452,7 +457,8 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
    at an unchanged 0.954: 310 teams rose to 0.956 after heliosli's public R7 notebook (L36); bronze cut rank 590 at 0.955,
    silver rank 295 at 0.956, 129 teams >= 0.957; top public notebook score still 0.956 (Jenil Langaliya and mercurydust
    0.956 notebooks are code copies of R7; varshithakolupuri's "one unused checkpoint" adds nartaa's 224-px 0.8-crop CoAtNet
-   at 0.35 of the Raptor slot, not scored, and its metadata lacks that checkpoint's dataset). **v46 submitted 12:09 UTC**
+   at 0.35 of the Raptor slot, not scored; **corrected 10-13 20:30**: the checkpoint is in the CoAtNet dataset we already
+   attach, so that notebook does run it). **v46 submitted 12:09 UTC**
    (ref 57143117, D-032; before-snapshot `2026-10-13c`, rank 642); v47 follows after v46 is judged. Submissions on 10-13: 3 used, 2 left.
    v42 full cache (version 5) complete and verified: 4,407 studies, 0 errors, 84.4% usable in both compartments (pilot 3:
    80.0%), 3.14 GB (`results/v42/full2`). Next on the ROI line: `v43-roi-experts` (D-031: submit by 10-15, stop by 10-16).
@@ -511,7 +517,10 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 
 ## Open questions
 
-- Is the OAI-trained CoAtNet allowed? No host answer (topic 743416); D-019 accepted the risk.
+- Is the OAI-trained CoAtNet allowed? D-019 accepted the risk. **Host statement found 2026-10-13** (topic 741819, 09-21,
+  Po-Hao "Howard" Chen): OAI does not violate the rules if generally accessible to all without institutional review or a
+  legal team, and free; participants report individual Login.gov access ("Institutional Approval Required: No") but also
+  country blocks (China). No explicit yes/no (topic 743416). Lower risk than assumed, not settled. fastMRI (R7) unchanged.
 - Hidden-test DICOM transfer syntaxes are unknown (all training and placeholder test files are
   uncompressed); the v17 image has PIL 12.3 with JPEG 2000 but no pylibjpeg/gdcm, and the reader's
   pylibjpeg-libjpeg wheel does not install there.
