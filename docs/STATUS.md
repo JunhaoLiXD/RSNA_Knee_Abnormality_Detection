@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-13 ~16:10 UTC (v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-13 ~19:30 UTC (v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -68,7 +68,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | 0.953 | **rejected** (below v40) |
 | v45 | 2026-10-13 | submit (D-031 probe 1) | v40 with the reader at 0.15 | commit run: 11 gates pass | 0.954 | **above v40 in the hidden digits, small margin** (6 stable witnesses, none reversed; `2026-10-13a` -> `13b`): the old-S6 incumbent and the second pick candidate |
 | v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | **0.956** | **reproduces the public 0.956: rank 642 -> 522 of 5,926, 144 stable witnesses, none reversed (`2026-10-13c` -> `13d`)**; lower part of the 0.956 block (ranks 144-662; bronze cut rank 592 and silver cut rank 296 both at 0.956): **best public submission** |
-| v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | pending | submitted 16:04 UTC (ref 57149295); judged against v46 (before-snapshot `2026-10-13d`) |
+| v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | **0.956** | **above v46 in the hidden digits: rank 522 -> 332 of 5,938, 191 stable witnesses (all 0.956), none reversed** (`2026-10-13d` -> `13e`); 36 places below the silver cut (rank 296): **best public submission, first-pick candidate and v44's host** |
 | v43 | 2026-10-13 | ROI experts, local (D-031) | LM and MM single-finding experts on the v42 crops (convnext_nano, P target), fold 0 | val (usable, leaky) LM 0.872 / MM 0.899 vs N 0.887 / 0.919; order-only blend into N OOF: LM +0.0046 (CI -0.007 to +0.016), MM +0.0012 (CI -0.005 to +0.007); gold blend -0.002 for both | - | weak positive signal for LM, none shown for MM; v44 next on the then-incumbent |
 | v42 | 2026-10-12/13 | ROI cache (D-031) | meniscus ROI crops for per-finding experts, all 4,407 training studies | 0 errors; both compartments usable 84.4%; 3.14 GB in 24 shards | - | done (`results/v42/full2`); v43 trained on it |
 | v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P 0.937, W 0.936 | P and W pass 0.936 (v14 0.934), both below 0.940: no expansion; X by D-030 unless amended (Codex: cancel X, keep a v15-hedge option only at W >= 0.940); **arm D (Dense-P) 0.934 alone (2026-10-13): below P and W, the dense line ends (D-031)** |
@@ -410,6 +410,10 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    0.955 and silver to 0.956, and we fell from rank 328 to 636 at an unchanged score. The new 0.956 notebooks (Jenil Langaliya,
    mercurydust RSNA-V3) are code-identical copies of it. Where a late copy lands inside the 0.956 block (ranks 130-563 at
    12:01 UTC) is not predictable: the block is not ordered by last-submission time, so the copies' hidden digits differ.
+37. **The public reader's gain carried over to the stronger R7 host** (v47 vs v46): the same goodpjw2008 reader at a
+   uniform outer weight 0.10 moved us above 191 stable teams at 0.956 (rank 522 -> 332), about as much as on the old S6 host
+   (v40 over v37: 211). A third, different model family keeps adding hidden-digit gains on top of CoAtNet + S6/R7; the
+   display stays at 0.956.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -430,6 +434,10 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0g. **Update 2026-10-13 19:30 UTC.** **v47 = 0.956, above v46**: rank 522 -> **332 of 5,938**, 191 stable witnesses
+   (all 0.956), none reversed (L37). Position 178 of 595 in the 0.956 block (ranks 155-749); silver cut rank 296 (36 places
+   above), bronze cut rank 593. v47 is the incumbent, the first-pick candidate and **v44's host**; the second pick stays the
+   old-S6 winner v45 (D-032 hedge). Persistence check with the next snapshot. Submissions on 10-13: 4 used, 1 left.
 0f. **Update 2026-10-13 16:10 UTC.** **v46 = 0.956** (public R7 reproduced): rank 642 -> **522 of 5,926**, 144 stable
    witnesses, none reversed; inside bronze (cut rank 592 at 0.956; silver cut rank 296 at 0.956; the 0.956 block spans
    ranks 144-662). **v47 submitted 16:04 UTC** (ref 57149295; R7 + reader 0.10; before-snapshot `2026-10-13d`); judged
