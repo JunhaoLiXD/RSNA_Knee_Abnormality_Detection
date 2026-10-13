@@ -148,3 +148,39 @@ or missing horn/body). This amends D-031's single-tuning rule once; no further r
 
 **Gate verdict (pilot 3): passed** (usable 80.0% >= 80%; wrong or missing <= 5%; quota and size within limits), with two
 caveats: usability is exactly at the threshold, and about one box in six is off-centre. Next: the full cache (4,407 studies).
+
+## 12. Full cache and v43 implementation (2026-10-13)
+
+**Full cache** (`lingxd/v42-roi-cache` version 5, 5.37 h on 2xT4; `results/v42/full2`): 4,407/4,407 studies indexed, 4,397
+ok, 10 without a usable series/anchor/side, 0 errors; both compartments usable for **84.4%** (681 `slab_prior` anchors
+excluded by the rule); usable rates differ by fold (fold 0 91%, fold 3 72%: the folds are scanner-grouped); 24 shards,
+8,782 crops, 68,074 slices of 160 x 288 uint8 (3.14 GB); offsets tile every shard exactly once; median 8 slices (4-13).
+
+**v43 as built** (`notebooks/v43-roi-experts.ipynb`, local runner `--version v43 experts`), against section 6:
+
+| Item | Section 6 | As built | Why |
+|---|---|---|---|
+| Input size | 160 x 224 | 160 x 288 | pilot 3 widened the box to AP 72 mm (section 11) |
+| Windows | up to `min(16, n)` triplets | same; every slice is a centre (n <= 13) | - |
+| Head | gated attention pooling | v36's pooling with one output, no slot embedding | one compartment, one series |
+| Epochs | 20 max | 20 max, **patience 6** on the validation AUC | added; selection is by validation AUC anyway |
+| Batch | effective 16 studies | 8 per micro-batch, accumulation 2; windows padded with zero images to a multiple of 16 | each new batch shape cost about 10 s of cuDNN set-up on the local GPU (benchmark: 10 img/s on new shapes, about 980 img/s on cached ones); the padding is cut off before the pooling and ConvNeXt has no cross-sample layers. A micro-batch of 16 reserved 10.4 GB, close to the GPU's 12 GB with other applications |
+| Target | P round-3 | P round-3; the file is byte-equal to the one v36 arm D trained on and equal to an independent recomputation (1.1e-16) | - |
+| Counts (fold 0) | - | train 2,802 usable of 3,402; validation 863 of 947; gold 53 of 58 (both experts) | - |
+
+Smoke runs (one epoch each; `results/v43/local_smoke_run1` before the padding, `results/v43/local_smoke` after): the
+pipeline, the target checks and the diagnostics cell work; 68 -> 268 images/s, peak 10.4 -> 4.7 GB.
+
+**v43 results** (`results/v43/local_f0`, 45 min for both on the 3080 Ti; checkpoints `models/v43/v43/fold0_{LM,MM}`):
+
+| Expert | Best epoch | Val AUC usable 863 (expert / N OOF / rank mean) | All 947 fold-0 rows: N -> order-only blend (paired bootstrap) | Gold 58: N -> blend (expert / N on 53 usable) |
+|---|---|---|---|---|
+| LM | 16 | 0.872 / 0.887 / 0.892 | 0.8837 -> 0.8881, +0.0046 (95% CI -0.0070 to +0.0162; P(<=0) 0.22) | 0.8373 -> 0.8348 (0.836 / 0.853) |
+| MM | 17 | 0.899 / 0.919 / 0.920 | 0.9254 -> 0.9265, +0.0012 (CI -0.0049 to +0.0072; P 0.35) | 0.9808 -> 0.9784 (0.943 / 0.978) |
+
+Reading (diagnostics only, as pre-registered): each expert alone is weaker than our own N model on its finding, and their
+order-only blend into N adds a small, uncertain amount for LM and about nothing for MM; gold (23 and 26 positives) moves
+slightly down for both. Two biases pull in opposite directions: fold-0 validation is leaky in the expert's favour (its target
+contains N OOF from models that saw fold 0), while N is a much weaker stand-in than the incumbent (our N alone 0.936 on the
+LB against 0.954-0.956), so the blend's effect on the incumbent cannot be read from here. Expected effect on the LB: at most
+a hidden-digit change (two columns of twelve). Per D-031 v44 goes ahead unchanged (both experts, weight 0.5, no selection).
