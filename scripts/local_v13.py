@@ -14,6 +14,8 @@ Run in the conda env `kaggle-gpu` (environment-gpu.yml):
   python scripts/local_v13.py --version v36 targets  # v36: build and check both training targets (no training)
   python scripts/local_v13.py --version v36 fold 0 --arm W   # a v36 arm (C, W, G, P) on fold 0
   python scripts/local_v13.py --version v24 fold 0 --arm C                # v24 arm C on fold 0
+  python scripts/local_v13.py --version v43 experts --smoke   # v43 ROI experts: one epoch each (pipeline check)
+  python scripts/local_v13.py --version v43 experts           # v43 ROI experts (LM, MM) on fold 0
 
 Before anything is trained the training targets are checked: v13's and v24's must equal those of the
 Kaggle v13 F0 run; v22's must equal T3 recomputed here independently from the inputs. The peak Windows
@@ -37,11 +39,14 @@ import pandas as pd
 
 REPO = Path(__file__).resolve().parents[1]
 NOTEBOOKS = {'v13': 'v13-round2-mri.ipynb', 'v22': 'v22-n-gemini-target.ipynb', 'v24': 'v24-coatnet-own.ipynb',
-             'v26': 'v26-local-views.ipynb', 'v29': 'v29-local-views-native.ipynb', 'v36': 'v36-gap-diagnostics.ipynb'}
+             'v26': 'v26-local-views.ipynb', 'v29': 'v29-local-views-native.ipynb', 'v36': 'v36-gap-diagnostics.ipynb',
+             'v43': 'v43-roi-experts.ipynb'}
 KAGGLE_F0_TARGETS = ('v13', 'v24', 'v36')                # versions trained on v13's round-2 target (v36: arms C, W, G)
 REPORT_ONLY = ('v26', 'v29')                             # versions trained on the v06 soft target alone
 SMOKE_VERSIONS = ('v24', 'v26', 'v29')
 LOCAL_CACHE_RUN = REPO / 'results' / 'v28' / 'full1'     # lingxd/v28-local-cache-100mm output (v29)
+ROI_CACHE_RUN = REPO / 'results' / 'v42' / 'full2'       # lingxd/v42-roi-cache version 5 output (v43)
+V36_P_TARGET = REPO / 'results' / 'v36' / 'local_f0' / 'v36' / 'v36_train_targets_P.csv'   # arm P's target as trained (v43)
 VERSION = 'v13'                                          # set from --version in __main__
 NB = REPO / 'notebooks' / NOTEBOOKS[VERSION]
 INPUT = REPO / 'results' / 'v13' / 'local_input'          # shared by all versions
@@ -187,6 +192,21 @@ def ensure_local_cache_link():
         _winapi.CreateJunction(str(LOCAL_CACHE_RUN), str(link))
 
 
+def ensure_roi_inputs():
+    """v43: link the downloaded v42 ROI cache into the shared input tree and add arm N's fold-0 gold predictions
+    (diagnostics) as their own input folder (idempotent)."""
+    link = INPUT / 'v42-roi-cache'
+    if not link.exists():
+        assert (ROI_CACHE_RUN / 'v42' / 'index_0.csv').is_file(), f'download the v42 output to {ROI_CACHE_RUN}'
+        import _winapi
+        _winapi.CreateJunction(str(ROI_CACHE_RUN), str(link))
+    d = INPUT / 'rsna-knee-v13n-gold'
+    d.mkdir(exist_ok=True)
+    src = F0 / 'fold0_N' / 'v13_gold_fold0_N_k16.csv'
+    if not (d / src.name).is_file() or sha256(d / src.name) != sha256(src):
+        shutil.copy(src, d / src.name)
+
+
 def run_cells(work_root, override, stop_after=None):
     """Execute the notebook's code cells with local paths; `override(ns)` runs after the config cell.
     Before anything is trained, the training targets are checked (v13: equal to the Kaggle F0 run;
@@ -209,6 +229,12 @@ def run_cells(work_root, override, stop_after=None):
                 local, kaggle = targets_sha256_lf(ns['PATHS']['train_targets']), kaggle_f0_targets_sha256()
                 assert local == kaggle, f'training targets differ from the Kaggle F0 run: {local} vs {kaggle}'
                 print('training targets equal to the Kaggle F0 run (sha256 with LF endings)', flush=True)
+            elif VERSION == 'v43':
+                diff = p_independent(ns['PATHS']['train_targets'])
+                assert diff <= 1e-12, f'v43 target differs from arm P recomputed independently: max abs diff {diff}'
+                same = targets_sha256_lf(ns['PATHS']['train_targets']) == targets_sha256_lf(V36_P_TARGET)
+                assert same, 'v43 target file differs from the P target file v36 arm D trained on'
+                print(f'v43 target equal to arm P (independent max abs diff {diff:.2e}; file equal to v36 arm D target)', flush=True)
             elif VERSION in REPORT_ONLY:
                 diff = soft_independent(ns['PATHS']['train_targets'])
                 assert diff <= 1e-12, f'training targets differ from the v06 soft target: max abs diff {diff}'
@@ -315,6 +341,49 @@ def fold(args):
     print('targets check:', check, '| checkpoints moved to', dest)
 
 
+def experts(args):
+    """v43: run the notebook (both experts on fold 0, one after the other) with local paths; --smoke trains one epoch
+    each into a separate folder. Checkpoints of a full run move to models/v43/v43/fold0_<tag>/."""
+    assert VERSION == 'v43', 'experts is for v43'
+    work_root = REPO / 'results' / 'v43' / ('local_smoke' if args.smoke else 'local_f0')
+    out = work_root / 'v43'
+    if out.exists() and any(out.glob('fold0_*')):
+        raise SystemExit(f'{out} has fold folders; move them away before a rerun')
+
+    def override(ns):
+        ns['CFG']['num_workers'] = args.workers
+        if args.smoke:
+            ns['CFG'].update(epochs=1, eval_from_epoch=1, warmup_epochs=1)
+        print(f'local overrides: workers {args.workers}, smoke {args.smoke}', flush=True)
+
+    record = {'started': time.strftime('%Y-%m-%d %H:%M:%S'), 'version': VERSION, 'smoke': args.smoke,
+              'workers': args.workers, **env_record()}
+    state = {'done': False, 'killed': None, 'commit_peak_gb': 0.0}
+    threading.Thread(target=watchdog, args=(out / 'v43_log.txt', args.stall_min * 60, state), daemon=True).start()
+    threading.Thread(target=commit_sampler, args=(state,), daemon=True).start()
+    try:
+        ensure_n_oof_input()
+        ensure_roi_inputs()
+        ns = run_cells(work_root, override)
+    finally:
+        state['done'] = True
+    record.update(finished=time.strftime('%Y-%m-%d %H:%M:%S'), killed=state['killed'],
+                  windows_commit_peak_gb=round(state['commit_peak_gb'], 2), results=ns.get('results'),
+                  targets_p_max_abs_diff_independent=p_independent(out / 'v43_train_targets_P.csv'))
+    (out / f'v43_local_run{"_smoke" if args.smoke else ""}.json').write_text(json.dumps(record, indent=2, default=float))
+    print(json.dumps(record['results'], indent=1, default=float))
+    bad = [t for t, r in (ns.get('results') or {}).items() if r.get('status') != 'done' or r.get('exit_code') != 0]
+    if bad or state['killed'] or not ns.get('results'):
+        raise SystemExit(f'experts did not complete: {bad}, killed {state["killed"]}')
+    if not args.smoke:
+        for tag in ns['results']:
+            dest = REPO / 'models' / 'v43' / 'v43' / f'fold0_{tag}'
+            dest.mkdir(parents=True, exist_ok=True)
+            for p in (out / f'fold0_{tag}').glob('*.pt'):
+                shutil.move(str(p), dest / p.name)
+            print('checkpoints moved to', dest)
+
+
 def commit_sampler(state):
     """Peak Windows commit charge (total page file minus available) while training runs (L19)."""
     import ctypes
@@ -399,6 +468,10 @@ if __name__ == '__main__':
     sub = ap.add_subparsers(dest='cmd', required=True)
     sub.add_parser('prepare')
     sub.add_parser('targets')
+    e = sub.add_parser('experts')
+    e.add_argument('--smoke', action='store_true')
+    e.add_argument('--workers', type=int, default=2)    # L19, L25: few loader workers on Windows
+    e.add_argument('--stall-min', type=float, default=15.0)
     c = sub.add_parser('check')
     c.add_argument('--n-val', type=int, default=100)
     c.add_argument('--tolerance', type=float, default=0.01)
@@ -414,4 +487,4 @@ if __name__ == '__main__':
     VERSION, NB = a.version, REPO / 'notebooks' / NOTEBOOKS[a.version]
     if a.cmd == 'check' and VERSION != 'v13':
         raise SystemExit('check re-infers the Kaggle v13 fold-0 checkpoint; run it with --version v13')
-    {'prepare': prepare, 'check': check, 'fold': fold, 'targets': targets}[a.cmd](a)
+    {'prepare': prepare, 'check': check, 'fold': fold, 'targets': targets, 'experts': experts}[a.cmd](a)
