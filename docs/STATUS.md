@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-13 ~12:30 UTC (v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 submission awaits the user's go-ahead)
+Last updated: 2026-10-13 ~12:30 UTC (v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 submitted 12:09 UTC)
 
 ## Current phase
 
@@ -67,7 +67,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v40 | 2026-10-12 | submit (D-030 R1) | v37 cells unchanged + public goodpjw2008 2.5D ConvNeXt reader (3 folds) at a uniform outer rank weight 0.10; any reader failure keeps v37 | commit run: 11 gates pass (reader output equal to v17's reader run, 0.0) | 0.954 | **above v37 in the hidden digits: rank 524 -> 235, 211 stable witnesses, none reversed; persistence confirmed 10-13 01:40 UTC (146 still below, none reversed)**: the incumbent |
 | v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | 0.953 | **rejected** (below v40) |
 | v45 | 2026-10-13 | submit (D-031 probe 1) | v40 with the reader at 0.15 | commit run: 11 gates pass | 0.954 | **above v40 in the hidden digits, small margin** (6 stable witnesses, none reversed; `2026-10-13a` -> `13b`): the old-S6 incumbent and the second pick candidate |
-| v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | not submitted | **due now** (v45 judged); the submit call needs the user's go-ahead |
+| v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | pending | submitted 2026-10-13 12:09 UTC (ref 57143117); before-snapshot `2026-10-13c` |
 | v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | not submitted | after v46 is judged |
 | v42 | 2026-10-12/13 | ROI cache (D-031) | meniscus ROI crops for per-finding experts, all 4,407 training studies | 0 errors; both compartments usable 84.4%; 3.14 GB in 24 shards | - | done (`results/v42/full2`); next `v43-roi-experts` (local trainer) |
 | v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P 0.937, W 0.936 | P and W pass 0.936 (v14 0.934), both below 0.940: no expansion; X by D-030 unless amended (Codex: cancel X, keep a v15-hedge option only at W >= 0.940); **arm D (Dense-P) 0.934 alone (2026-10-13): below P and W, the dense line ends (D-031)** |
@@ -434,8 +434,8 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
    at an unchanged 0.954: 310 teams rose to 0.956 after heliosli's public R7 notebook (L36); bronze cut rank 590 at 0.955,
    silver rank 295 at 0.956, 129 teams >= 0.957; top public notebook score still 0.956 (Jenil Langaliya and mercurydust
    0.956 notebooks are code copies of R7; varshithakolupuri's "one unused checkpoint" adds nartaa's 224-px 0.8-crop CoAtNet
-   at 0.35 of the Raptor slot, not scored, and its metadata lacks that checkpoint's dataset). **v46 is now due (D-032)**:
-   the submit call was refused by the agent's permission check, so it waits for the user (before-snapshot `2026-10-13b`).
+   at 0.35 of the Raptor slot, not scored, and its metadata lacks that checkpoint's dataset). **v46 submitted 12:09 UTC**
+   (ref 57143117, D-032; before-snapshot `2026-10-13c`, rank 642); v47 follows after v46 is judged. Submissions on 10-13: 3 used, 2 left.
    v42 full cache (version 5) complete and verified: 4,407 studies, 0 errors, 84.4% usable in both compartments (pilot 3:
    80.0%), 3.14 GB (`results/v42/full2`). Next on the ROI line: `v43-roi-experts` (D-031: submit by 10-15, stop by 10-16).
 0d. **Update 2026-10-13 02:05 UTC (D-032).** Cause of the slide: heliosli's public R7 one-click notebook (0.956, version 1;
