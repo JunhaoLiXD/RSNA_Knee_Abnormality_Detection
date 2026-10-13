@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-13 ~01:45 UTC (v41 0.953 rejected; v40 confirmed; silver cut at 0.955; v45 and Dense-P scoring; v42 full cache running)
+Last updated: 2026-10-13 ~02:05 UTC (D-032: v46 R7 reproduction passes gates; v47 commit run; v45 and Dense-P scoring; v42 full cache running)
 
 ## Current phase
 
@@ -416,6 +416,13 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0d. **Update 2026-10-13 02:05 UTC (D-032).** Cause of the slide: heliosli's public R7 one-click notebook (0.956, version 1;
+   88 teams rose to >= 0.955 within hours). D-032 (user accepted the fastMRI rule risk): **v46** = that notebook reproduced
+   (= v37 with the R7 bundle `8c7b666e27dc0e8f`); commit run: all gates pass, R7 output and submission byte-equal to the
+   author's (`results/v46/run1`, `check_v46_gates.py`); **submit only after v45 has scored and its crossing is read**. **v47** =
+   v46 + reader 0.10, commit run running; submit after v46 is judged. Remaining D-031 probes dropped. Picks on 10-20: best of
+   v46/v47 + the old-S6 winner (v40/v45). v42 full cache (version 5) running since 01:42 UTC (version 4 failed at launch:
+   Errno 7, arguments now passed as a file).
 0c. **Update 2026-10-13 01:45 UTC.** v41 = 0.953 (rejected); v40 persistence confirmed (incumbent). **Silver cut moved to 0.955**
    (310 teams >= 0.955; we are rank 328 at 0.954, inside bronze). Submitted 01:41 UTC: v45 (reader 0.15) and Dense-P alone.
    The fourth anchor probe (v41 + reader) is void; the per-finding reader vector is the next probe if v45 does not win.
