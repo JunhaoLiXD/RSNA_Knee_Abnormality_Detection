@@ -184,3 +184,38 @@ slightly down for both. Two biases pull in opposite directions: fold-0 validatio
 contains N OOF from models that saw fold 0), while N is a much weaker stand-in than the incumbent (our N alone 0.936 on the
 LB against 0.954-0.956), so the blend's effect on the incumbent cannot be read from here. Expected effect on the LB: at most
 a hidden-digit change (two columns of twelve). Per D-031 v44 goes ahead unchanged (both experts, weight 0.5, no selection).
+
+## 13. v44 as built (2026-10-13)
+
+`notebooks/v44-submit.ipynb` = v47's cells 2-18 unchanged (host; v47 above v46 by 191 witnesses, L37) + the stage of
+section 5. Build facts: the seven S6 sources embedded in v47 and the mainline code hashes are byte-identical to v37's, from
+which v42 took them; the R7 manifest's geometry parameters, side model and `anatomy.pt` hashes equal compact-v1's (asserted
+in the notebook); expert weights in the private dataset `lingxd/rsna-knee-v43-experts`.
+
+**Deviation from section 5 (deliberate):** the ROI stage launches with at least 20 min before its stop time (8.25 h
+notebook-elapsed) instead of 1.5 x the projected full time; studies not reached by the stop time keep the host's values
+through the same row fallback as unusable boxes (test.csv order is unrelated to the labels). Reason: an all-or-nothing launch
+rule throws away the stage whenever v47's own runtime on the hidden test (unknown) leaves less than about 2.4 h.
+
+**Local tests** (`test_v44_stage.py`, mock S6 CStudies, real v43 checkpoints, real ROI code): commit mode, scoring mode,
+missing checkpoints, no time left, corrupt checkpoint, R7/v42 setup mismatch; the blend is recomputed independently and the
+ten other columns are compared as strings. Two bugs found and fixed by these tests: pandas' default float parser changed the
+last digit of host values (now `float_precision='round_trip'`; the byte-equality guard had caught it and fallen back), and the
+source files' hash check on Windows newlines (sources now written as bytes).
+
+**Codex code review** (GPT-6 Astra, high, read-only; the code and design were passed inline because the Windows sandbox
+helper could not start): no blocker.
+
+| # | Codex finding | Disposition |
+|---|---|---|
+| 1 | a partially written host backup could be restored over v47's intact submission | accepted: no restore copy at all (submission.csv is only ever replaced by `os.replace` of a fully checked blend); the backup is verified by hash |
+| 2 | `%%writefile` cells and the final receipt can still stop the notebook (e.g. disk full) | accepted: sources are strings written inside the guarded stage with SHA-256 checks; the receipt is best-effort |
+| 3 | the 20-min launch allowance contradicts section 5 (1.5 x projected) | rejected with reason: partial coverage is handled by the row fallback; recorded above as a deliberate deviation |
+| 4 | the commit-run self-check has no in-notebook gate | partly accepted: the R7 setup is now asserted equal to v42's (geometry parameters, side-model and anchor hashes); the parity gates stay offline by design (`check_v44_gates.py` G5, G8) |
+| 5 | float64 vs float32 sigmoid could change ties | rejected: float64 keeps the logit order more faithfully; float32 saturation would only add ties |
+
+**Commit run 1** (`results/v44/run1`, 3 placeholder test studies, 0.14 h; `check_v44_gates.py`): all gates pass. Host part
+byte-equal to v47's commit run; 4 ROI workers and the experts exit 0; local re-inference equals Kaggle's expert outputs
+(max 1.2e-4); blend recomputed exactly; ten other columns byte-equal; **self-check: 7 training studies re-cut inside v44 are
+pixel-identical to the v42 cache** (status, anchor method, side, usability, slice counts equal; joint 0 mm). The placeholder
+test set has 2 usable studies per compartment and 1 slab-prior study; with 2 valid rows the order did not change.
