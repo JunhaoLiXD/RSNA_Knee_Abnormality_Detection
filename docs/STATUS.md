@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-12 ~20:45 UTC (v45 and Dense-P ready; v41 scoring; v42 full cache running; ROI pilot passed)
+Last updated: 2026-10-13 ~01:45 UTC (v41 0.953 rejected; v40 confirmed; silver cut at 0.955; v45 and Dense-P scoring; v42 full cache running)
 
 ## Current phase
 
@@ -64,8 +64,9 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v37 | 2026-10-11 | public anchor (D-028) | heliosli blend-mine-in version 2 reproduced: old S6 bundle, CoAtNet:S6 0.5:0.5, new S6 execution path; S6 files from compact-v1 (the author's slug is non-versioned) | commit runs: outputs byte-equal to the author's | 0.954 | the 0.956 was the author's version 1 with an unavailable R6 S6 (L32); **above v33 in the hidden digits** (50 witnesses, persistence confirmed): **best public submission, provisional pick with v15** |
 | v38 | 2026-10-11 | submit candidate (D-028) | v37 + v35's six-model leg at w 0.15 | commit run: 12 gates pass | - | not submitted; prior lowered by v35 (L31) |
 | v39 | 2026-10-12 | submit (D-029) | v37 + v33's fold-0 leg at w 0.15 (replaces v38) | commit run: 11 gates pass | 0.954 | no demonstrated improvement over v37 (0 witnesses); the leg line stops |
-| v40 | 2026-10-12 | submit (D-030 R1) | v37 cells unchanged + public goodpjw2008 2.5D ConvNeXt reader (3 folds) at a uniform outer rank weight 0.10; any reader failure keeps v37 | commit run: 11 gates pass (reader output equal to v17's reader run, 0.0) | 0.954 | **above v37 in the hidden digits: rank 524 -> 235, 211 stable witnesses, none reversed** (persistence pending); provisional pick with v15 once confirmed |
-| v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | pending | submitted 19:01 UTC; judged against v40 |
+| v40 | 2026-10-12 | submit (D-030 R1) | v37 cells unchanged + public goodpjw2008 2.5D ConvNeXt reader (3 folds) at a uniform outer rank weight 0.10; any reader failure keeps v37 | commit run: 11 gates pass (reader output equal to v17's reader run, 0.0) | 0.954 | **above v37 in the hidden digits: rank 524 -> 235, 211 stable witnesses, none reversed; persistence confirmed 10-13 01:40 UTC (146 still below, none reversed)**: the incumbent |
+| v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | 0.953 | **rejected** (below v40) |
+| v45 | 2026-10-13 | submit (D-031 probe 1) | v40 with the reader at 0.15 | commit run: 11 gates pass | pending | submitted 01:41 UTC; judged against v40 |
 | v36 | 2026-10-11/12 | training + LB test (D-027) | fold-0 diagnostics: C control, W unit weights (Kaggle), G 224 px + K8, P round-3 target | local val vs C: G -0.0005, P +0.0025 (leaky); gold C 0.918, G 0.911, P 0.920 | P 0.937, W 0.936 | P and W pass 0.936 (v14 0.934), both below 0.940: no expansion; X by D-030 unless amended (Codex: cancel X, keep a v15-hedge option only at W >= 0.940); arm D (Dense-P) training locally |
 | v28 | 2026-10-10 | cache (B2, D-021) | v07 cache notebook with a 100 mm field at 320 px (JPEG quality 92 from a 120-study pilot) | 4,407 studies, 0 errors, 14.44 GB, 0.88 h CPU; audit: index facts and slice arrays equal v07, v28 vs central v07 crop correlation median 0.979 (min 0.82), no systematic clipping | - | done (downloaded to `results/v28/full1`) |
 | v29 | 2026-10-10 | training (B2, D-021) | v26 with the local view read from the v28 cache (v07/v28 alignment checked) | fold 0: val 0.8875 (v26 0.8921), gold 0.9028 (v26 0.9091); Spearman with v26 0.968; paired gold v17 + v29 vs v27 -0.0013 (CI -0.0037 to +0.0009) | - | weaker than v26 and nearly the same model; `v30_submit` decides by the D-022 table |
@@ -415,6 +416,9 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0c. **Update 2026-10-13 01:45 UTC.** v41 = 0.953 (rejected); v40 persistence confirmed (incumbent). **Silver cut moved to 0.955**
+   (310 teams >= 0.955; we are rank 328 at 0.954, inside bronze). Submitted 01:41 UTC: v45 (reader 0.15) and Dense-P alone.
+   The fourth anchor probe (v41 + reader) is void; the per-finding reader vector is the next probe if v45 does not win.
 0b. **Update 2026-10-12 20:45 UTC (handover).** D-031 approved (re-plan after v40; X cancelled; closed anchor-probe set;
    shrunk ROI line; Dense-P follow-up; v15 no longer automatic). **Ready to submit on 10-13 after the v40 persistence
    snapshot** (`external/lb/2026-10-13a` vs `2026-10-12e/f`): (1) **v45** = v40 with reader 0.15 (commit run: 11 gates pass,
