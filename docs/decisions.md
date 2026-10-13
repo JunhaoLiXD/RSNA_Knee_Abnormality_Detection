@@ -3,6 +3,28 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-032 - 2026-10-13 - Public R7 anchor (v46) and the reader on it (v47); remaining D-031 probes dropped; fastMRI risk accepted
+
+**Decision.** (1) `v46_submit` = heliosli/0-957-latest-dataset-score-in-one-click version 1 (public 0.956; = v37 with the R7
+ConvNeXt-small bundle `8c7b666e27dc0e8f` from `heliosli/rsna-knee-compact-r7cnxfsss`: two setup lines differ, the author's other
+cells and embedded sources are byte-identical to v37) reproduced unchanged except our provenance, configuration and receipt
+cells. Commit-run gates: CoAtNet ranks byte-equal to v17; R7 output and submission equal to the author's run on the 3
+placeholder studies; input hashes; four fold models and both stackers active; zero fallback studies; coverage recorded. It is
+submitted only after v45 has scored and its crossing test is read. (2) `v47_submit` = v46 + the goodpjw2008 reader at outer
+weight 0.10 (v45 code), submitted only after v46 is judged; 0.15 is not transferred automatically. (3) The remaining D-031
+anchor probes (reader 0.20, the per-finding vector, the fourth probe) are dropped; D-031's budgets and the 10-16 cutoff stand.
+(4) Final picks (decided on 10-20): first = the credible winner of v46/v47; second = the old-S6 winner (v40 or v45) as a hedge
+against R7's new training and stackers on the private set. (5) **Rule risk accepted by the user**: R7 was trained with fastMRI
+auxiliary data, whose NYU terms require an application with institutional information and restrict redistribution of data and
+derived files; this is beyond D-019 (OAI) and D-023 (SKM-TEA) and has no host ruling; the R7 dataset licence is "other". User
+decision 2026-10-13 ("agree, accept the risk, push v46's commit run"); Codex quick review: proceed with changes (all accepted).
+
+**Reason.** Between 19:01 and 01:40 UTC 88 teams rose to >= 0.955 (75 to 0.956) after this public notebook appeared; the
+silver cut moved to 0.955 and our 0.954 (v40) fell to rank 328.
+
+**Consequences.** If R7's dataset is refused at submission as non-versioned (as r6cnxfsss was for v37 version 1), v46/v47 stop
+unless a byte-identical versioned source exists. Picks no longer default to v15.
+
 ## D-031 - 2026-10-12 - Re-plan after v40: closed anchor-probe set, shrunk ROI line, Dense-P follow-up; D-030 amended
 
 **Decision.** Adopt the merged plan in `docs/research/replan-after-v40-2026-10-12.md` (independent Claude and Codex re-plans,
