@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-14 ~11:40 UTC (v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-14 ~17:15 UTC (v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -427,6 +427,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    at outer 0.10 dropped the display to 0.955, while goodpjw2008's reader (0.929) at the same weight gained 211 and 191
    witnesses (L33, L37). "Different family at 0.10" is not a rule by itself; each addition needs its own test.
 
+40. **The same-family R224 helped on the strong host, unlike the weaker experts** (v53 vs v48): nartaa's 224-px CoAtNet (0.945
+   alone) at 0.35 of the Raptor slot (final weight 0.175) moved us above 187 stable teams. Unlike L38, it covers all 12
+   findings, is only slightly weaker than the R384 it joins, and differs in input resolution and crop. L38 is about weak
+   single-finding models at a large weight, not about every same-family addition.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -446,6 +451,9 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0m. **Update 2026-10-14 17:15 UTC.** **v53 (v47 + flip-TTA + R224) = 0.956, above v48 by 187 witnesses: rank 567 -> 323 of
+   5,990** (silver cut rank 299, 24 places above; bronze 599): **the incumbent** (L40). **v54 = v53 + mirror TTA on R224**
+   submitted 17:11 UTC (ref 57189966; before-snapshot `2026-10-14f`). Submissions on 10-14: 4 used, 1 left.
 0l. **Update 2026-10-14 11:40 UTC.** v48 (flip-TTA) 0.956, above v47 by 6 witnesses (our best now). **v49 (MaViT) 0.955:
    rejected** (L39). Rank 565 of 5,968 (bronze cut 596, silver 298, all 0.956): the public "One Free Flip, 68 Ranks Up"
    (varshithakolupuri, 10-14) and R224 notebooks are being copied. Codex review recorded in D-033 (v50 failure-path fix,
