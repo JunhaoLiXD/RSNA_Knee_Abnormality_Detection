@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-14 ~21:10 UTC (public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-14 ~22:40 UTC (v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -432,6 +432,9 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    findings, is only slightly weaker than the R384 it joins, and differs in input resolution and crop. L38 is about weak
    single-finding models at a large weight, not about every same-family addition.
 
+41. **Matching a component's TTA to its sibling helped** (v54 vs v53): the anatomical mirror the CoAtNet-384 already used,
+   applied to the 224-px CoAtNet as well, moved us above 44 stable teams; a public notebook claimed the same on the R7 + R224 host.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -451,6 +454,9 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0o. **Update 2026-10-14 22:40 UTC.** **v54 (v53 + mirror TTA on R224) = 0.956, above v53 by 44 witnesses: rank 323 -> 273 of
+   6,010, inside silver** (cut rank 300 at 0.956; bronze 601). The mirror on R224 helps (L41); v57 applies it to the 0.957 base
+   (auto-submit after 00:00 UTC). v56 (public 0.957 recipe) submitted 21:13 UTC, scoring.
 0n. **Update 2026-10-14 21:10 UTC.** New public notebook heliosli "=0.9573 Latest public dataset score in one click!"
    (18:13 UTC, displays **0.957**): R7 (no flip-TTA) + R384 + R224 at 0.35 of the Raptor half, no reader: our v53's components
    without flip and reader, yet one display step higher (so flip and/or the reader do not add on top of R224; to be tested).
