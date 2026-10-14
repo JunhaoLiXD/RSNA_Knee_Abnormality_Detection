@@ -442,6 +442,10 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0j. **Update 2026-10-14 02:30 UTC (silver push proposal, `docs/research/silver-push-2026-10-14.md`).** Claude's and
+   Codex's independent proposals converge on three inference-only probes on v47, each judged alone by rank crossing: A = R7
+   flip-TTA (label-safe, matches R7's training mirror, verified), B = hengck23 MaViT-288 at outer 0.10, C = R224 in the
+   Raptor slot; then combine the winners. Runtime headroom: v47 scores within 3.4 h. Awaiting the user's go-ahead (D-033).
 0i. **Update 2026-10-14 01:30 UTC.** **v44 = 0.955: rejected** (v47 0.956 stays the incumbent and first-pick candidate;
    rank 417 of 5,952 after other teams' gains; silver cut rank 297, bronze cut rank 595, both 0.956). The ROI line ends
    (D-031: no expansion). L38. Open: the v48 probe (incumbent v47 + R224, section 0h), awaiting the user's go-ahead.
