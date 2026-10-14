@@ -3,6 +3,25 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-033 - 2026-10-14 - Silver push: three inference-only probes on v47 (flip-TTA, MaViT, R224); the agent runs the project
+
+**Decision.** The user asked for a silver push and handed the agent full control (local GPU, Kaggle GPU, submissions)
+until further notice; Codex is unavailable for about 4 h, so the agent decides alone meanwhile and records Codex's later
+review here. Plan (`docs/research/silver-push-2026-10-14.md`, independent Claude and Codex proposals): three probes on v47,
+each one submission, each judged alone by rank crossing (>= 20 stable witnesses, none reversed; persistence), at most one
+submission that can change the best scoring at a time:
+(A) `v48_submit` = v47 with R7's own flip-TTA (`--flip-tta`: the anatomical mirror R7 was trained with, `mirror` 0.5;
+outputs permuted medial <-> lateral; MCL plain pass); (B) `v49_submit` = v47 + hengck23's MaViT-288 as a fourth outer
+component at rank weight 0.10 (the reader rule, own process group, deadline, fallback); (C) `v50_submit` = v47 + nartaa's
+224-px CoAtNet at 0.35 of the Raptor slot (the public recipe). Winners are then combined by the same fixed rules (new version
+numbers, D-017). No weights are fitted on the public board; no new training.
+
+**Reason.** The only large hidden-digit gains came from a different public family at a small weight (L33, L37); weaker
+same-family or same-target models hurt (L38). v47 scores within 3.4 h, leaving at least 5 h of runtime.
+
+**Consequences.** Daily: build, commit run with gates, submit, rank-crossing read, docs. Final picks on 10-20 with the
+user (second pick: v45 or v15 hedge).
+
 ## D-032 - 2026-10-13 - Public R7 anchor (v46) and the reader on it (v47); remaining D-031 probes dropped; fastMRI risk accepted
 
 **Decision.** (1) `v46_submit` = heliosli/0-957-latest-dataset-score-in-one-click version 1 (public 0.956; = v37 with the R7
