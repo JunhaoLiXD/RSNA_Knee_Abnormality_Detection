@@ -219,3 +219,12 @@ byte-equal to v47's commit run; 4 ROI workers and the experts exit 0; local re-i
 (max 1.2e-4); blend recomputed exactly; ten other columns byte-equal; **self-check: 7 training studies re-cut inside v44 are
 pixel-identical to the v42 cache** (status, anchor method, side, usability, slice counts equal; joint 0 mm). The placeholder
 test set has 2 usable studies per compartment and 1 slab-prior study; with 2 valid rows the order did not change.
+
+## 14. Result (2026-10-14)
+
+**v44 = 0.955, below v47 (0.956): rejected; the ROI line ends (D-031, section 7: no expansion).** The stage ran in the
+scoring run (a fallback would have reproduced v47's 0.956), so the two expert columns lowered the public AUC by enough to
+cross a display step. Reading: each expert was weaker than our own N on its finding, and the host's meniscus columns are
+stronger than N's; a rank weight of 0.5 gave the weaker model too much say. Of the pre-registered diagnostics, the fold-0
+blend into N (LM +0.0046, CI crossing zero) pointed the wrong way and the gold blend (both columns slightly down) pointed
+the right way (STATUS L38).
