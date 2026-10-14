@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-14 ~01:30 UTC (v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-14 ~02:40 UTC (D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -442,6 +442,10 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0k. **Update 2026-10-14 02:40 UTC (D-033 running; the agent has full control).** Probe A **v48 submitted 02:01 UTC** (ref
+   57163377, R7 flip-TTA; before-snapshot `2026-10-14b`, rank 422). Probes B **v49** (MaViT, outer 0.10) and C **v50** (R224 in
+   the Raptor slot) built and commit runs pass all gates (`results/v49/run1`, `results/v50/run1`); submitted one at a time after
+   the previous is judged. Then the winners are combined.
 0j. **Update 2026-10-14 02:30 UTC (silver push proposal, `docs/research/silver-push-2026-10-14.md`).** Claude's and
    Codex's independent proposals converge on three inference-only probes on v47, each judged alone by rank crossing: A = R7
    flip-TTA (label-safe, matches R7's training mirror, verified), B = hengck23 MaViT-288 at outer 0.10, C = R224 in the
