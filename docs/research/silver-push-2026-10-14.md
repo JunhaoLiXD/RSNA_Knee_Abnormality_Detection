@@ -61,3 +61,21 @@ OAI). Not doing: weight searches on the public board, own-model training, ROI ex
 Honest odds: silver needs about 120 ranks inside the block on public, and the private board decides. With one or two
 successful probes of the reader's size the public silver line is within reach; the private outcome is far less certain.
 Rough estimate: about 25-35% for a private silver with the plan, under 10% without it.
+
+## Update 2026-10-14 12:00 UTC: results and new public recipes
+
+Results: v48 (A, R7 flip-TTA) 0.956, above v47 by 6 witnesses (Kaggle's best since); v49 (B, MaViT) **0.955, rejected**
+(L39); v53 (A + C: flip + R224 with the failure-path fix) submitted 11:40 UTC as "R224 on top of v48".
+
+Recipe analysis (sub-agent, notebooks pulled to `external/kernels/*_20261014/`, scored versions read from Kaggle's version
+pages):
+- Several displayed scores belong to older versions: jingshuifu's "a224 topview/multiview" 0.956 and "raptor
+  topview/multiview" 0.954 are V1 copies of other notebooks; their view-arm code (dreaddevelopment CoAtNet checkpoints v5/v8/v10,
+  0.926-0.928 alone, probably fed nartaa's 96-slice pipeline instead of their own 64-slice one) is unscored. Not used.
+- Measured weight variants: R7 with W_RAPTOR 0.3 -> 0.955 and A224 blend with W_RAPTOR 0.3 -> 0.955 (both one step below
+  0.956); A224 = 0.35 -> 0.956. Confirms: no weight search.
+- varshithakolupuri "One Free Flip, 68 Ranks Up" (10-14, unscored on the API; the rank claim is the author's): **not** R7's
+  flip; it adds nartaa's anatomical mirror TTA (the one the R384 model already uses) to the R224 stage. New to our stack:
+  **v54 = v53 + that mirror on R224** (the three `[s9]` hunks, asserted verbatim).
+- rudrpratapsingh "Four public models, one rank blend" (unscored): R7 + old S6 at 0.5/0.5 in the ConvNeXt slot, R224 in the
+  Raptor slot; same-family addition (L38 risk), about 1.6 h more runtime. Possible later probe, not now.
