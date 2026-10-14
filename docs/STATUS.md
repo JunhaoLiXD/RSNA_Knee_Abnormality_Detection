@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-14 ~02:40 UTC (D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-14 ~11:40 UTC (v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -423,6 +423,10 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    host it joins, not against a weaker stand-in; a new model needs to be at least as good as the host column, or a much
    smaller weight, unless it is a different family like the reader (L33, L37).
 
+39. **A second public reader-like model hurt where the first helped** (v49 vs v47/v48): hengck23's MaViT-288 (0.935 alone)
+   at outer 0.10 dropped the display to 0.955, while goodpjw2008's reader (0.929) at the same weight gained 211 and 191
+   witnesses (L33, L37). "Different family at 0.10" is not a rule by itself; each addition needs its own test.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -442,6 +446,11 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0l. **Update 2026-10-14 11:40 UTC.** v48 (flip-TTA) 0.956, above v47 by 6 witnesses (our best now). **v49 (MaViT) 0.955:
+   rejected** (L39). Rank 565 of 5,968 (bronze cut 596, silver 298, all 0.956): the public "One Free Flip, 68 Ranks Up"
+   (varshithakolupuri, 10-14) and R224 notebooks are being copied. Codex review recorded in D-033 (v50 failure-path fix,
+   combination rules). **v53 = v47 + flip-TTA + R224** (fixed) built, commit run started; to be submitted as "R224 on top of
+   v48". v52 (B+C) is moot.
 0k. **Update 2026-10-14 02:40 UTC (D-033 running; the agent has full control).** Probe A **v48 submitted 02:01 UTC** (ref
    57163377, R7 flip-TTA; before-snapshot `2026-10-14b`, rank 422). Probes B **v49** (MaViT, outer 0.10) and C **v50** (R224 in
    the Raptor slot) built and commit runs pass all gates (`results/v49/run1`, `results/v50/run1`); submitted one at a time after
