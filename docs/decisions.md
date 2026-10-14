@@ -22,6 +22,17 @@ same-family or same-target models hurt (L38). v47 scores within 3.4 h, leaving a
 **Consequences.** Daily: build, commit run with gates, submit, rank-crossing read, docs. Final picks on 10-20 with the
 user (second pick: v45 or v15 hedge).
 
+**Codex review (2026-10-14 ~08:00 UTC, GPT-6 Astra, read-only) and disposition.** (1) Execution sound; caveat accepted:
+Kaggle now counts v48 (above v47 by 6) as our best, so later probes cross only if they beat v48, and a missing crossing does
+not show a loss to v47. (2) Flip-TTA (+6, below the bar, R7 GPU time 9.1 -> 19.1 s/study) is not added automatically:
+accepted; at most one later comparison against the winning combination. (3) If B and C both qualify, test B+C at once and
+compare it with the best single probe; no subset search: accepted. (4) v50 defect: a study whose preprocessing failed
+reached the R224 model as a zero volume and escaped the 0.5 failure sentinel (inherited from the author's R384 script, which
+stays unchanged): accepted and fixed in v50 (inference skipped on an empty mask). (5) v49's 50% unread allowance is weak:
+the submitted probe is left unchanged; combinations use 10%. (6) Reserve 10-20/21 for final checks: accepted. (7) R384 raw
+probabilities differ from v47's by up to 9e-5 (ranks equal): wording corrected. Codex also notes the 25-35% silver estimate
+is not calibrated: agreed, it was a rough guess.
+
 ## D-032 - 2026-10-13 - Public R7 anchor (v46) and the reader on it (v47); remaining D-031 probes dropped; fastMRI risk accepted
 
 **Decision.** (1) `v46_submit` = heliosli/0-957-latest-dataset-score-in-one-click version 1 (public 0.956; = v37 with the R7
