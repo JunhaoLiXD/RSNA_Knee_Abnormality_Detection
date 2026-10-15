@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-15 ~04:30 UTC (handover doc; v57 not above v54; v55 scoring; rank 293; v56 0.956, not 0.957; v54 still best; v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-15 ~14:20 UTC (v55 0.956 not above v54, rank 392, silver cut 0.957; v61 submitted; handover doc; v57 not above v54; v55 scoring; rank 293; v56 0.956, not 0.957; v54 still best; v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -68,6 +68,8 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | 0.953 | **rejected** (below v40) |
 | v45 | 2026-10-13 | submit (D-031 probe 1) | v40 with the reader at 0.15 | commit run: 11 gates pass | 0.954 | **above v40 in the hidden digits, small margin** (6 stable witnesses, none reversed; `2026-10-13a` -> `13b`): the old-S6 incumbent and the second pick candidate |
 | v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | **0.956** | **reproduces the public 0.956: rank 642 -> 522 of 5,926, 144 stable witnesses, none reversed (`2026-10-13c` -> `13d`)**; lower part of the 0.956 block (ranks 144-662; bronze cut rank 592 and silver cut rank 296 both at 0.956): **best public submission** |
+| v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run: other stages byte-equal to v54; S6F used | pending | submitted 14:16 UTC |
+| v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
 | v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | **0.956** | **above v46 in the hidden digits: rank 522 -> 332 of 5,938, 191 stable witnesses (all 0.956), none reversed** (`2026-10-13d` -> `13e`); 36 places below the silver cut (rank 296): **best public submission, first-pick candidate and v44's host** |
 | v44 | 2026-10-13 | submit (D-031) | v47 (host, unchanged) + v43 LM/MM experts by the order-only per-column blend (w 0.5, row fallback); test crops through the same S6 path as v42 | commit runs 1-2: all gates pass; 7 training studies re-cut inside v44 pixel-identical to the v42 cache; Codex code review: no blocker, 2 fixes accepted (design section 13) | 0.955 | **rejected**: one display step below v47; the experts lowered the two meniscus columns (a fallback would have scored v47's 0.956); ROI line ends (D-031, L38) |
 | v43 | 2026-10-13 | ROI experts, local (D-031) | LM and MM single-finding experts on the v42 crops (convnext_nano, P target), fold 0 | val (usable, leaky) LM 0.872 / MM 0.899 vs N 0.887 / 0.919; order-only blend into N OOF: LM +0.0046 (CI -0.007 to +0.016), MM +0.0012 (CI -0.005 to +0.007); gold blend -0.002 for both | - | weak positive signal for LM, none shown for MM; v44 next on the then-incumbent |
@@ -440,6 +442,10 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    non-versioned and refused in submissions), scored 0.956. As in L32, check that a displayed score is reproducible before
    building on it or drawing conclusions from it.
 
+43. **A second ConvNeXt of the same S6 lineage did not help on v54** (v55): heliosli's old S6 at 0.35 of the ConvNeXt slot
+   (final weight 0.175) moved no stable team either way. Unlike R224 (L40), the old S6 is weaker than R7 and close to it;
+   whether the all-data S6F0 (v61) differs is being tested.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -459,6 +465,11 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0s. **Update 2026-10-15 14:20 UTC.** **v55 (v54 + old S6 at 0.35) = 0.956, not above v54** (`15b` -> `15c`, 0 witnesses):
+   rejected (L43). Other teams moved: we are **rank 392 of 6,042; the silver cut is now rank 302 at 0.957** (bronze 604 at
+   0.956, gold 22 at 0.963), so silver now needs a displayed 0.957, not hidden-digit gains. v61 commit run checked (other
+   stages byte-equal to v54, S6F used, reader used) and **submitted 14:16 UTC** (ref 57233540; before-snapshot `15d`); the
+   nartaa dataset was accepted. Submissions on 10-15: 3 used, 2 left. v54 stays the best.
 0r. **Update 2026-10-15 04:30 UTC: handover to Codex**, see `docs/HANDOVER-2026-10-15.md` (architecture, in-flight items,
    plan). v61 (v54 + nartaa's all-data S6 at 0.35) built, commit run started; v55 scoring. Tools in `scripts/d033/`.
 0q. **Update 2026-10-15 03:30 UTC.** v57 (v56 + R224 mirror) = 0.956, not above v54: flip-TTA and the reader stay. **v55 (v54
