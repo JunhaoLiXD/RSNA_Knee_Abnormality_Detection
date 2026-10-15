@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-14 ~22:40 UTC (v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-15 ~00:45 UTC (v56 0.956, not 0.957; v54 still best; v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -435,6 +435,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
 41. **Matching a component's TTA to its sibling helped** (v54 vs v53): the anatomical mirror the CoAtNet-384 already used,
    applied to the 224-px CoAtNet as well, moved us above 44 stable teams; a public notebook claimed the same on the R7 + R224 host.
 
+42. **A displayed public score can depend on inputs a copy cannot load** (v56): heliosli's "=0.9573" notebook, reproduced
+   byte-equal on the placeholder studies with the same R7 bundle read from the versioned dataset (its own dataset is
+   non-versioned and refused in submissions), scored 0.956. As in L32, check that a displayed score is reproducible before
+   building on it or drawing conclusions from it.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -454,6 +459,11 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0p. **Update 2026-10-15 00:45 UTC.** **v56 (the public "0.9573" recipe, reproduced byte-equal with the versioned R7 bundle) =
+   0.956** and not above v54 (0 witnesses): our v54 stays the best (rank 279 of 6,014; silver cut 300; 0.957 block ranks
+   116-241, 126 teams; 908 teams at 0.956). The inference that flip-TTA or the reader hurt on that base is withdrawn (L42). v57
+   (v56 + R224 mirror) scoring; then v55 (v54 + old S6, commit run passed) unless v57 beats v54. Built and checked: v58 (v57 +
+   reader), v59 (v57 + flip), v60 (v57 + old S6).
 0o. **Update 2026-10-14 22:40 UTC.** **v54 (v53 + mirror TTA on R224) = 0.956, above v53 by 44 witnesses: rank 323 -> 273 of
    6,010, inside silver** (cut rank 300 at 0.956; bronze 601). The mirror on R224 helps (L41); v57 applies it to the 0.957 base
    (auto-submit after 00:00 UTC). v56 (public 0.957 recipe) submitted 21:13 UTC, scoring.
