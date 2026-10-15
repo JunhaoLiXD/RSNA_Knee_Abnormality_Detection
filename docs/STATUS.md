@@ -461,9 +461,11 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 
 0p. **Update 2026-10-15 00:45 UTC.** **v56 (the public "0.9573" recipe, reproduced byte-equal with the versioned R7 bundle) =
    0.956** and not above v54 (0 witnesses): our v54 stays the best (rank 279 of 6,014; silver cut 300; 0.957 block ranks
-   116-241, 126 teams; 908 teams at 0.956). The inference that flip-TTA or the reader hurt on that base is withdrawn (L42). v57
-   (v56 + R224 mirror) scoring; then v55 (v54 + old S6, commit run passed) unless v57 beats v54. Built and checked: v58 (v57 +
-   reader), v59 (v57 + flip), v60 (v57 + old S6).
+   116-241, 126 teams; 908 teams at 0.956). The inference that flip-TTA or the reader hurt on that base is withdrawn (L42).
+   **Plan change: the base is v54 again.** Public check 01:00 UTC: the only 0.957 notebooks are not reproducible (bliverrigpdoge:
+   private input; heliosli: L42); goodpjw2008's new version (0.956) blends CoAtNet + R7 + old S6 + reader (a v55-like recipe).
+   Automation: when v57 (v56 + R224 mirror) has scored, rank crossing; if it does not beat v54 (< 20 witnesses), **v55 = v54 +
+   old S6** (commit run passed) is submitted automatically; otherwise stop and decide. v58/v59/v60 (built on v57) shelved.
 0o. **Update 2026-10-14 22:40 UTC.** **v54 (v53 + mirror TTA on R224) = 0.956, above v53 by 44 witnesses: rank 323 -> 273 of
    6,010, inside silver** (cut rank 300 at 0.956; bronze 601). The mirror on R224 helps (L41); v57 applies it to the 0.957 base
    (auto-submit after 00:00 UTC). v56 (public 0.957 recipe) submitted 21:13 UTC, scoring.
