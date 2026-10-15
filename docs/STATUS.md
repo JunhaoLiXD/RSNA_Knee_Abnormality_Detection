@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-15 ~03:30 UTC (v57 not above v54; v55 scoring; rank 293; v56 0.956, not 0.957; v54 still best; v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-15 ~04:30 UTC (handover doc; v57 not above v54; v55 scoring; rank 293; v56 0.956, not 0.957; v54 still best; v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
 
 ## Current phase
 
@@ -459,6 +459,8 @@ crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951)
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
 0.954). Submissions on 2026-10-12: 2 used (v39, v36 P), 3 left (reset 00:00 UTC). Team merger: not considered (user).
 
+0r. **Update 2026-10-15 04:30 UTC: handover to Codex**, see `docs/HANDOVER-2026-10-15.md` (architecture, in-flight items,
+   plan). v61 (v54 + nartaa's all-data S6 at 0.35) built, commit run started; v55 scoring. Tools in `scripts/d033/`.
 0q. **Update 2026-10-15 03:30 UTC.** v57 (v56 + R224 mirror) = 0.956, not above v54: flip-TTA and the reader stay. **v55 (v54
    + old S6 at 0.35 of the ConvNeXt slot) submitted 03:25 UTC** (ref 57214581). Rank 293 of 6,015, silver cut 300: **7 places
    of margin**. Submissions on 10-15: 2 used, 3 left.
