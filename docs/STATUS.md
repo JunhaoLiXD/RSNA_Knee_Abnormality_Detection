@@ -460,6 +460,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
+0t. **Codex takeover verification, 2026-10-15 20:14 EDT (2026-10-16 00:14 UTC).** The handover's first two actions had
+   already advanced in commits `245697b` and `a1c8074`; do not repeat the v61 submission. Kaggle confirms v55 ref
+   `57214581` COMPLETE at 0.956. Re-running the requested `15b` -> `15c` comparison gives 4,959 stable teams, 0 positive
+   crossings, 0 reverse crossings and 0 stable-order differences: v55 does not qualify for adoption. Preserve the existing
+   `15c` snapshot (2026-10-15 14:15:56 UTC); overwriting it now would mix in v61's later result. v61 result audit follows.
+
 **Handover state (2026-10-12 ~12:30 UTC).** Best public: **v37 0.954** (old S6 at CoAtNet:S6 0.5:0.5; above v33 by rank
 crossing, 50 witnesses, confirmed). Provisional picks **v37 + v15**; v30 (0.951) operational non-S6 backup. Rank 506 of 5,819
 (11:53 UTC), sliding inside the 0.954 block (687 teams; 196 at >= 0.955; silver cut rank 290 and bronze cut rank 581 both at
