@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-15 20:20 EDT / 2026-10-16 00:20 UTC (Codex takeover: v61 COMPLETE 0.957, adopted with 37 positive / 0 reverse witnesses; rank 441/6,047, outside silver; v55 rejected; persistence pending).
+Last updated: 2026-10-16 00:23 UTC (October 15 EDT: public audit found accessible R6 and a 0.958 reproduction candidate; v61 remains incumbent, persistence pending).
 
 ## Current phase
 
@@ -15,7 +15,7 @@ Last updated: 2026-10-15 20:20 EDT / 2026-10-16 00:20 UTC (Codex takeover: v61 C
 positive crossings, none reversed; adoption gate passed, later persistence still required. Rank **441/6,047** at
 2026-10-16 00:13:35 UTC; silver cut **302 at 0.957**: outside silver despite the score gain. No submissions remain
 in flight. v55 failed its gate, so the handover's conditional v62 combination is not authorized by its both-win condition.
-Next: persistence of the original 37 witnesses, daily public-source verification until the probe stop on October 18,
+Next: persistence of the original 37 witnesses; review the newly found public R6 0.958 candidate (block 0v); daily public-source verification until the probe stop on October 18,
 and final-two discussion with the user on October 20. No new training or weight search. A six-hour chat heartbeat
 `rsna` is active through the deadline; notify only of meaningful changes or required decisions.
 
@@ -477,6 +477,19 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+0v. **Public audit, 2026-10-16 ~00:25 UTC / October 15 EDT.** User requested a public-solution check. Saved overlapping
+   100-item score/recent inventories and inspected 14 sources. **New actionable evidence:** heliosli's reweighted R6 blend
+   now displays **0.958** (one visible V1, run 358751289). Its exact `rsna-knee-r6-frozen-fe055406-w1` input is API-accessible
+   and attached as a dataset version (20761842); its manifest is byte-equal to rostigor's newly published versioned mirror
+   (20763353), SHA `6508ce6921eda986c885b2226fa55dd4d2aa8e5fc570b4c007c9a60c05bfc648`. This is R6 `fe055406fad6a12f`,
+   not our R7 or S6F0. Author commit receipts PASS (3/3, no failures); published per-finding blend independently recomputed
+   to 2.4e-8. **Not our score reproduction:** model binary hashes, notebook license, our commit inference and hidden-test
+   score/runtime remain unchecked. Detailed audit: `docs/research/public-landscape-2026-10-16.md`; source analysis:
+   `kernel-heliosli-blend-mine-in-private-lb-luck-to-all-upvoters.md`. Recommend an unchanged reproduction as the next
+   candidate, after design discussion and remote-action approval; do not automatically transfer v61's added stages or
+   tune weights. No build/GPU run/submission performed. Kiyoshi's logic and bliverrigpdoge's leg still return 403;
+   the other leading sources offer copies or already-used components. v61 remains incumbent; October 18 probe stop stands.
 
 0u. **v61 result, 2026-10-15 20:20 EDT / 2026-10-16 00:20 UTC.** Kaggle API confirms ref `57233540` COMPLETE **0.957**;
    commit status COMPLETE. The submission already existed from Claude (14:16:44 UTC on October 15), so no duplicate was
