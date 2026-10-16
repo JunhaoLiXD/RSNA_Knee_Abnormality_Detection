@@ -6,9 +6,20 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-15 ~14:20 UTC (v55 0.956 not above v54, rank 392, silver cut 0.957; v61 submitted; handover doc; v57 not above v54; v55 scoring; rank 293; v56 0.956, not 0.957; v54 still best; v54 rank 273, inside silver; public 0.957 recipe reproduced as v56; v57 queued; v53 incumbent, rank 323; v54 scoring; v49 0.955 rejected; v53 flip+R224 next; D-033 probes: v48 scoring, v49/v50 ready; v44 0.955 rejected, ROI line closed; v44 submitted; v47 0.956 above v46: rank 332, 191 witnesses; v45 0.954 above v40 by 6 witnesses: incumbent; Dense-P 0.934 ends the dense line; v42 full cache complete; rank 636 after 310 teams copied the public R7 0.956; v46 0.956 rank 522; v47 submitted 16:04 UTC)
+Last updated: 2026-10-15 20:20 EDT / 2026-10-16 00:20 UTC (Codex takeover: v61 COMPLETE 0.957, adopted with 37 positive / 0 reverse witnesses; rank 441/6,047, outside silver; v55 rejected; persistence pending).
 
 ## Current phase
+
+**Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best is now
+**v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
+positive crossings, none reversed; adoption gate passed, later persistence still required. Rank **441/6,047** at
+2026-10-16 00:13:35 UTC; silver cut **302 at 0.957**: outside silver despite the score gain. No submissions remain
+in flight. v55 failed its gate, so the handover's conditional v62 combination is not authorized by its both-win condition.
+Next: persistence of the original 37 witnesses, daily public-source verification until the probe stop on October 18,
+and final-two discussion with the user on October 20. No new training or weight search. A six-hour chat heartbeat
+`rsna` is active through the deadline; notify only of meaningful changes or required decisions.
+
+The paragraphs below preserve the earlier Phase 5 history; the state above and newest handover blocks take precedence.
 
 **Phase 5 - OAI-based public anchor plus our leg** (2026-10-08). Phase 4 (v13 round-2 teacher)
 finished: our 5-fold arm-N leg scores 0.936 alone (v13_submit) and 0.944 blended into the old v05
@@ -68,7 +79,8 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v41 | 2026-10-12 | submit (D-030 A1) | original v37 with CoAtNet:S6 0.4:0.6 for all 12 findings | commit run: 8 gates pass | 0.953 | **rejected** (below v40) |
 | v45 | 2026-10-13 | submit (D-031 probe 1) | v40 with the reader at 0.15 | commit run: 11 gates pass | 0.954 | **above v40 in the hidden digits, small margin** (6 stable witnesses, none reversed; `2026-10-13a` -> `13b`): the old-S6 incumbent and the second pick candidate |
 | v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | **0.956** | **reproduces the public 0.956: rank 642 -> 522 of 5,926, 144 stable witnesses, none reversed (`2026-10-13c` -> `13d`)**; lower part of the 0.956 block (ranks 144-662; bronze cut rank 592 and silver cut rank 296 both at 0.956): **best public submission** |
-| v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run: other stages byte-equal to v54; S6F used | pending | submitted 14:16 UTC |
+| v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
+| v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
 | v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | **0.956** | **above v46 in the hidden digits: rank 522 -> 332 of 5,938, 191 stable witnesses (all 0.956), none reversed** (`2026-10-13d` -> `13e`); 36 places below the silver cut (rank 296): **best public submission, first-pick candidate and v44's host** |
 | v44 | 2026-10-13 | submit (D-031) | v47 (host, unchanged) + v43 LM/MM experts by the order-only per-column blend (w 0.5, row fallback); test crops through the same S6 path as v42 | commit runs 1-2: all gates pass; 7 training studies re-cut inside v44 pixel-identical to the v42 cache; Codex code review: no blocker, 2 fixes accepted (design section 13) | 0.955 | **rejected**: one display step below v47; the experts lowered the two meniscus columns (a fallback would have scored v47's 0.956); ROI line ends (D-031, L38) |
@@ -446,6 +458,12 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    (final weight 0.175) moved no stable team either way. Unlike R224 (L40), the old S6 is weaker than R7 and close to it;
    whether the all-data S6F0 (v61) differs is being tested.
 
+44. **The all-data S6F0 improved v54 where the old S6 did not** (v61 vs v55): v61 displays 0.957 and crosses above
+   37 stable teams (21 at 0.956, 16 at 0.957), with no reverse crossings or stable-order changes; v55 had zero crossings.
+   This supports this fixed S6F0 blend, not a general same-family or all-data-training rule. Commit outputs confirm the
+   component ran and was used on all three placeholder studies; hidden-test receipts were not available in this audit.
+   The gain is not enough for public silver: rank 441 versus cut 302. Persistence is still pending.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -459,6 +477,21 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+0u. **v61 result, 2026-10-15 20:20 EDT / 2026-10-16 00:20 UTC.** Kaggle API confirms ref `57233540` COMPLETE **0.957**;
+   commit status COMPLETE. The submission already existed from Claude (14:16:44 UTC on October 15), so no duplicate was
+   sent. Refreshed outputs in `results/v61/run1`; `scripts/d033/check_v61_gates.py` passes: 20 inherited cells identical
+   (builder's header/config/blend exceptions remain documented), R384/R224/R7 stage outputs byte-equal to v54, S6F0
+   launched and used at 0.35, 3/3 scored with zero fallback, reader used at 0.10, official columns and IDs matched,
+   final blend recomputation max difference 0.0. S6F's aggregate stage has no `rc` field: PASS and successful part receipts
+   establish completion; the older shorthand `rc 0` is not a literal field assertion. Notebook validator passes.
+   `external/lb/2026-10-15e` contains a snapshot actually captured **2026-10-16 00:13:35 UTC** (October 15 EDT).
+   Versus pre-v61 `15d`: 5,112 stable teams, **37 positive / 0 reverse crossings**, stable order unchanged; score
+   0.956 -> 0.957, rank 392 -> 441 of 6,047 due to other teams improving. Silver cut 302 at 0.957; bronze 604 at 0.956.
+   **Adopt v61 as incumbent, persistence pending.** At the next six-hour heartbeat, track these original 37 witnesses,
+   excluding changed teams, rather than expecting new crossings in a later pairwise test. No v62: v55 did not win.
+   On October 18 stop new probes; October 18-19 verify persistence; October 20 prepare v61 (or a later verified winner)
+   plus a justified v45/v15 hedge for the user's decision. Final Kaggle selections have not been changed.
 
 0t. **Codex takeover verification, 2026-10-15 20:14 EDT (2026-10-16 00:14 UTC).** The handover's first two actions had
    already advanced in commits `245697b` and `a1c8074`; do not repeat the v61 submission. Kaggle confirms v55 ref
