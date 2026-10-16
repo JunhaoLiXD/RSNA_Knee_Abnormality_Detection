@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 13:50 UTC (v62 0.958 best, rank 435/6,090; v64, v67, v65 scoring; no slots left today).
+Last updated: 2026-10-16 17:10 UTC (v62 0.958 best, rank 507/6,098; v64 0.957 not adopted (L47); v67, v65 scoring).
 
 ## Current phase
 
@@ -85,7 +85,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
 | v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS | **0.958** | **adopted over v61: 191 stable witnesses, 0 reverse (`16a` -> `16c`); rank 449 -> 195 of 6,065, inside silver (cut rank 303)**; ref 57249396 |
 | v67 | 2026-10-16 | public copy (D-034) | goodpjw2008's public 0.958 notebook (V26) unchanged: per-finding weights, mirrored R224, R6 0.6 + R7 0.4, tiny reader | provenance cell only; author cells identical; validator passes | - | commit run audited (byte-equal to the author's); **submitted 2026-10-16 12:15:13 UTC (ref 57268665)**, before-snapshot `16e` (12:15 UTC: we are rank 383, 0 / 0 crossings 16d -> 16e) |
-| v64 | 2026-10-16 | submit candidate (D-034) | v63 with anchor weight 0: v62 recipe (R384 + mirrored R224 + R6, per-finding weights) then the reader at 0.10; v61 fallback | built from the v63 builder; 3 cells differ from v63; validator passes; sub-agent review: no blocker | - | commit run v1 COMPLETE and audited (stages byte-equal to v63's run, output = offline expectation); **submitted 2026-10-16 10:48:44 UTC (ref 57266285)**, before-snapshot `16d` |
+| v64 | 2026-10-16 | submit candidate (D-034) | v63 with anchor weight 0: v62 recipe (R384 + mirrored R224 + R6, per-finding weights) then the reader at 0.10; v61 fallback | built from the v63 builder; 3 cells differ from v63; validator passes; sub-agent review: no blocker | 0.957 | **not above v62** (`16f` -> `16g`: 0 / 0); ref 57266285; reader 0.10 suspected (L47) |
 | v63 | 2026-10-16 | submit candidate (D-033) | v61 + R6 (v62's bundle, flip-TTA): mix = 0.5 v61 anchor + 0.5 v62 recipe (R384 + v61's mirrored R224 + R6, v62's per-finding weights), then v61's reader at 0.10; any R6 problem = v61 byte for byte | local: recipe parity with v62 2.4e-8, v61 formula reproduced 0.0, synthetic fallback tests pass; reviewed by an independent sub-agent (Codex CLI not installed) | 0.957 | **not above v62** (`16c` -> `16d`: 0 / 0 witnesses); ref 57253670 |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
 | v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | **0.956** | **above v46 in the hidden digits: rank 522 -> 332 of 5,938, 191 stable witnesses (all 0.956), none reversed** (`2026-10-13d` -> `13e`); 36 places below the silver cut (rank 296): **best public submission, first-pick candidate and v44's host** |
@@ -482,6 +482,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    0.958 (no crossings either way). Which part lowered it (the uniform weights, R7/S6F0, or the reader) is not separated;
    v64-v66 keep v62's per-finding weights whole.
 
+47. **The reader at 0.10 did not carry over to the per-finding R6 host** (v64 vs v62): v62 + R224 mirror + goodpjw2008's reader
+   at a uniform 0.10 displays 0.957, while goodpjw2008's V25 (the same plus mirror with the reader at 0.008-0.035) displays
+   0.958. Unlike L37 (0.10 helped on the R7 host), on this stronger host the reader at 0.10 cost a display step; mirror and
+   reader are not separated by our own runs.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -496,6 +501,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
+1e. **v64 = 0.957 (2026-10-16 ~16:30 UTC), not adopted.** `16f` -> `16g`: 0 / 0. We are rank 507 of 6,098 (v62's score);
+   0.958 block ranks 123-557, silver cut 304. Public scan 17:05 UTC: no notebook above 0.958; goodpjw2008's latest (V27 = V25
+   recipe: v62 weights + R224 mirror + R6 alone + reader 0.008-0.035) and heliosli's are the only 0.958s. v64 differs from V25
+   mainly by the reader weight (0.10 vs <= 0.035), so the 0.10 reader is the likely cost (L47); v65 carries it too. v67 (V26
+   copy, tiny reader) and v65 still scoring. Oct 17 plan: copy of V25/V27 as v68 (prepared now), then decide by v67/v65.
+
 1d. **All of today's slots used (2026-10-16 13:45 UTC).** Scoring: v64 (57266285, 10:48), v67 (57268665, 12:15), v65
    (57271086, 13:45); snapshots `16d` (before v64), `16e` (before v67), `16f` (before v65). `16f`: 6,090 teams, the 0.958
    block is now ranks 115-475 (silver cut rank 304 at 0.958); we are rank 435 (v62's score, tie ordered by time). Each result
@@ -507,8 +518,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 1c. **Plan after v63 (2026-10-16 ~11:10 UTC, sub-agent reviewed).** Leaderboard `16d`: heliosli's exact 0.958 notebook team
    rank 298, degnonguidi's exact copy 299, us (v62 copy) 336 (ties ordered by time); **goodpjw2008 rank 213** with their public
    V26 = v62's per-finding weights + mirrored R224 + compact slot R6 0.6 / R7 0.4 + their reader at 0.008-0.035 (checked in
-   code: `R7W = 0.4`, `W_RAPTOR_C`, `OWN_W_PER_TARGET`). So a second compact model (R7) on the per-finding recipe gained about
-   85 places in hidden digits. **v67 = unchanged copy of V26** (provenance cell only; author's inputs and docker image):
+   code: `R7W = 0.4`, `W_RAPTOR_C`, `OWN_W_PER_TARGET`). **Correction (17:05 UTC):** their V25 (same without R7) also shows
+   0.958 and the team rank (195 per their notes) is the better of V25/V26, so the gain is not attributable to R7; it may come
+   from the mirror and the tiny reader. **v67 = unchanged copy of V26** (provenance cell only; author's inputs and docker image):
    commit run pushed; compare with the author's output in `external/kernels/goodpjw2008__rsna-knee-coatnet-r6-2-5d-mil-lb-0-957_20261016c/output/`.
    v67 commit run audited: submission.csv byte-equal to the author's. Today's 2 slots, staggered for attribution: **v67 at
    ~12:15 UTC** (first: the surest silver re-entry, and among identical-score copies the earlier submission ranks higher),
