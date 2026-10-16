@@ -4,6 +4,8 @@ v61/v62-recipe rank blend.  Design: docs/research/v63-v61-v62-blend-design.md.
 
     python build_v63.py              # v63: anchor weight 0.5
     python build_v63.py v64 0.0      # v64: the v62 recipe alone (with R224 mirror) + the reader; same cells, header_v64.md
+    python build_v63.py v65 0.0 r7   # v65: v64 with the compact slot = 0.65 rank(R6) + 0.35 rank(R7) (v61's [s6f] rule); header_v65.md
+    python build_v63.py v66 0.0 s6f  # v66: v64 with the compact slot = 0.65 rank(R6) + 0.35 rank(S6F0); header_v66.md
 """
 import hashlib
 import json
@@ -15,6 +17,10 @@ CELLS = Path(__file__).parent / "v63_cells"
 VER = sys.argv[1] if len(sys.argv) > 1 else "v63"
 W_ANCHOR = sys.argv[2] if len(sys.argv) > 2 else "0.5"
 assert float(W_ANCHOR) in (0.0, 0.5), W_ANCHOR
+M2 = sys.argv[3] if len(sys.argv) > 3 else None   # second model of the compact slot (stage_blend_m2.py); None = R6 alone (v63, v64)
+assert M2 in (None, 'r7', 's6f'), M2
+assert M2 is None or (VER not in ('v63', 'v64') and float(W_ANCHOR) == 0.0), (VER, W_ANCHOR, M2)
+M2_NAME = {'r7': "R7 (v61's own compact model, ours_sub.csv)", 's6f': "S6F0 (v61's [s6f] model, ours_s6f_sub.csv)"}.get(M2)
 sha = lambda b: hashlib.sha256(b).hexdigest()
 src = lambda c: "".join(c["source"])
 
@@ -54,12 +60,29 @@ header = replace_once(header, "__BASE_BODY__", src(bc[0]).split("\n", 1)[1].lstr
 cfg = src(bc[1])
 for old, new in (("# v61 configuration", f"# {VER} configuration"), ("VERSION = 'v61'", f"VERSION = '{VER}'"),
                  ("S6F0 in the ConvNeXt slot'", "S6F0 in the ConvNeXt slot; then R6 + the v62 recipe, rank-blended 0.5/0.5 with v61'" if VER == "v63" else
-                  "S6F0 in the ConvNeXt slot (fallback only); then R6 + the v62 recipe alone, the reader at 0.10'")):
+                  "S6F0 in the ConvNeXt slot (fallback only); then R6 + the v62 recipe alone, the reader at 0.10'" if M2 is None else
+                  "S6F0 in the ConvNeXt slot (fallback only); then R6 + 0.35 %s in the compact slot + the v62 recipe alone, the reader at 0.10'" % M2_NAME.split(' ')[0])):
     cfg = replace_once(cfg, old, new)
 stage = replace_once((CELLS / "stage_launch.py").read_text(encoding="utf-8"), "__R6_SETUP_SHA256__", SETUP_SHA)
 blend = (CELLS / "stage_blend.py").read_text(encoding="utf-8")
 blend = replace_once(blend, "V63_W_ANCHOR = 0.5\n", f"V63_W_ANCHOR = {W_ANCHOR}\n" if VER == "v63" else
                      f"V63_W_ANCHOR = {W_ANCHOR}   # [{VER}] the v62 recipe alone (mix = pct(v62 recipe)); the v61 anchor is read and validated but not mixed\n")
+if M2 is not None:   # [v65, v66] the compact slot of v62_recipe becomes (1 - A2) rank(R6) + A2 rank(M2); every other line as v64
+    m2_src = (CELLS / "stage_blend_m2.py").read_text(encoding="utf-8")
+    m2_src = m2_src.replace("__VER__", VER).replace("__M2_NAME__", M2_NAME)
+    m2_src = replace_once(m2_src, "V63_M2 = '__M2__'\n", f"V63_M2 = '{M2}'\n")
+    assert "__" not in m2_src.replace("__name__", ""), "unfilled placeholder"
+    blend = replace_once(blend, "def v63_blend(", m2_src + "def v63_blend(")
+    blend = replace_once(blend, "def v62_recipe(raw, raw224, ours, our_fail, labels):\n",
+                         f"def v62_recipe(raw, raw224, ours, our_fail, labels, slot=None):   # [{VER}] slot: precomputed compact-slot ranks (n x L)\n")
+    blend = replace_once(blend, "        ro = _v63_pct_on(ours[c].values, ~our_fail)\n",
+                         f"        ro = _v63_pct_on(ours[c].values, ~our_fail) if slot is None else slot[:, j]   # [{VER}] R6 + M2 ranks, not re-ranked\n")
+    blend = replace_once(blend, "    v62r, rec['v62_recipe'] = v62_recipe(raw, raw224, r6, r6_fail, labels)\n",
+                         f"    _m2_slot, rec['m2'] = v63_m2(work, test_ids, labels, r6, r6_fail, aligned, rd)   # [{VER}] None: the slot is R6 alone (v64)\n"
+                         "    if _m2_slot is None:\n"
+                         "        v62r, rec['v62_recipe'] = v62_recipe(raw, raw224, r6, r6_fail, labels)\n"
+                         "    else:\n"
+                         "        v62r, rec['v62_recipe'] = v62_recipe(raw, raw224, r6, r6_fail & _m2_slot[1], labels, slot=_m2_slot[0])\n")
 for t in (stage, blend):
     compile(t, "<cell>", "exec")
 
@@ -78,5 +101,5 @@ nb = {**v61, "cells": cells}
 assert len(json.dumps(nb, indent=1, ensure_ascii=False).encode("utf-8")) < 950_000, "Kaggle kernel source limit is 1 MB"
 out = REPO / f"notebooks/{VER}-submit.ipynb"
 out.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-print(f"{VER} built (anchor weight {W_ANCHOR}): {len(cells)} cells (v61 cells 2-24 identical); R6 setup sha256 {SETUP_SHA}")
+print(f"{VER} built (anchor weight {W_ANCHOR}, compact-slot M2 {M2}): {len(cells)} cells (v61 cells 2-24 identical); R6 setup sha256 {SETUP_SHA}")
 print("R6 vs R7 asset-cell diff lines:", len(diff))

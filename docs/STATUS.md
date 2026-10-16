@@ -494,6 +494,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    449 -> **195 of 6,065, inside silver** (cut rank 303 at 0.957; the 0.958 block is ranks 105-200, so we sit near its
    bottom; gold cut rank 22 at 0.963). v63 (57253670) still scoring; `16c` was taken before it scored, so v63 is judged
    `16c` -> next. Per the 0z table, v64 is submitted after v63's snapshot. Public scan 06:18 UTC: nothing new at >= 0.958.
+   **Prepared (sub-agent build, verified):** v65 = v64 + R7 as a second compact model at 0.35 of the slot; v66 = v64 + S6F0
+   at 0.35 (`build_v63.py v65 0.0 r7` / `v66 0.0 s6f`; only header, config and blend cell differ from v64; any M2 problem =
+   v64 exactly; S6F prediction layout checked against v61 cell 14). Evidence: L44 (S6F0 +37 on v54), L43 (old S6: 0),
+   goodpjw2008's notes (second compact model lifted their 0.956 rank 549 -> 325; author's claim). Commit runs v1 pushed.
+   **Queue:** v63 scores -> snapshot -> v64 -> snapshot -> then v66 or v65 on v64's base (v66 first if v63 shows the v61
+   components add on R6, since S6F0 is the measured one; else v65/v66 by the same reasoning), one at a time, before Oct 18.
 
 0z. **v64 built, reviewed, commit run pushed (2026-10-16 ~04:20 UTC).** Public scan 04:02 UTC: still one 0.958 (v62's
    source); goodpjw2008's R6 + R224 mirror + tiny reader (0.008-0.035 per finding, uniform 0.5) versions show 0.957, as does
