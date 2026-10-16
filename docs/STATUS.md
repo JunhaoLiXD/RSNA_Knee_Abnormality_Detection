@@ -6,11 +6,11 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 17:10 UTC (v62 0.958 best, rank 507/6,098; v64 0.957 not adopted (L47); v67, v65 scoring).
+Last updated: 2026-10-16 17:50 UTC (v67 0.958 adopted, rank 291/6,100, inside silver; v65 scoring; v68 at 00:01 UTC Oct 17).
 
 ## Current phase
 
-**2026-10-16 06:17 UTC: best is v62, public 0.958, rank 195 of 6,065, inside silver (cut 303); see block 1a.**
+**2026-10-16 17:45 UTC: best is v67 (goodpjw2008 V26 copy), public 0.958, rank 291 of 6,100, inside silver (cut 305); see block 1f.**
 
 **Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best was
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
@@ -84,7 +84,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
 | v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS | **0.958** | **adopted over v61: 191 stable witnesses, 0 reverse (`16a` -> `16c`); rank 449 -> 195 of 6,065, inside silver (cut rank 303)**; ref 57249396 |
-| v67 | 2026-10-16 | public copy (D-034) | goodpjw2008's public 0.958 notebook (V26) unchanged: per-finding weights, mirrored R224, R6 0.6 + R7 0.4, tiny reader | provenance cell only; author cells identical; validator passes | - | commit run audited (byte-equal to the author's); **submitted 2026-10-16 12:15:13 UTC (ref 57268665)**, before-snapshot `16e` (12:15 UTC: we are rank 383, 0 / 0 crossings 16d -> 16e) |
+| v67 | 2026-10-16 | public copy (D-034) | goodpjw2008's public 0.958 notebook (V26) unchanged: per-finding weights, mirrored R224, R6 0.6 + R7 0.4, tiny reader | provenance cell only; author cells identical; validator passes | **0.958** | **adopted over v62: 213 stable witnesses, 0 reverse (`16g` -> `16h`); rank 507 -> 291 of 6,100, inside silver (cut 305)**; ref 57268665 |
 | v64 | 2026-10-16 | submit candidate (D-034) | v63 with anchor weight 0: v62 recipe (R384 + mirrored R224 + R6, per-finding weights) then the reader at 0.10; v61 fallback | built from the v63 builder; 3 cells differ from v63; validator passes; sub-agent review: no blocker | 0.957 | **not above v62** (`16f` -> `16g`: 0 / 0); ref 57266285; reader 0.10 suspected (L47) |
 | v63 | 2026-10-16 | submit candidate (D-033) | v61 + R6 (v62's bundle, flip-TTA): mix = 0.5 v61 anchor + 0.5 v62 recipe (R384 + v61's mirrored R224 + R6, v62's per-finding weights), then v61's reader at 0.10; any R6 problem = v61 byte for byte | local: recipe parity with v62 2.4e-8, v61 formula reproduced 0.0, synthetic fallback tests pass; reviewed by an independent sub-agent (Codex CLI not installed) | 0.957 | **not above v62** (`16c` -> `16d`: 0 / 0 witnesses); ref 57253670 |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
@@ -500,6 +500,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1f. **v67 = 0.958, adopted (2026-10-16 17:45 UTC): rank 291 of 6,100, inside silver (cut rank 305 at 0.958).** `16g` ->
+   `16h`: 213 stable witnesses (all 0.958), 0 reverse. Team ranks in `16h`: goodpjw2008 247, us 291, heliosli 457 (exact v62
+   recipe), degnonguidi 458. So V26's recipe sits far above the exact v62 recipe in hidden digits; the 44 places to goodpjw2008
+   are earlier submissions with equal or higher hidden scores (V25 vs V26 still unresolved). v65 still scoring; v68 (V25
+   copy, audited) submits at 00:01 UTC Oct 17 (timer set), before-snapshot then. Final-pick candidates now: A = v67 (or v68 if
+   it crosses above), B = hedge v61 (uniform weights, reader 0.10 validated on its R7 host; v63 also carries reader 0.10).
 
 1e. **v64 = 0.957 (2026-10-16 ~16:30 UTC), not adopted.** `16f` -> `16g`: 0 / 0. We are rank 507 of 6,098 (v62's score);
    0.958 block ranks 123-557, silver cut 304. Public scan 17:05 UTC: no notebook above 0.958; goodpjw2008's latest (V27 = V25
