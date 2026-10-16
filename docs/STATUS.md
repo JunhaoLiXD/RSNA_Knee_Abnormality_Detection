@@ -6,11 +6,13 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 04:25 UTC (D-034 takeover: v62 and v63 scoring; v64 commit run pushed; v61 remains incumbent).
+Last updated: 2026-10-16 06:25 UTC (v62 = 0.958 adopted, rank 195/6,065, inside silver; v63 scoring; v64 ready).
 
 ## Current phase
 
-**Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best is now
+**2026-10-16 06:17 UTC: best is v62, public 0.958, rank 195 of 6,065, inside silver (cut 303); see block 1a.**
+
+**Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best was
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
 positive crossings, none reversed; adoption gate passed, later persistence still required. Rank **441/6,047** at
 2026-10-16 00:13:35 UTC; silver cut **302 at 0.957**: outside silver despite the score gain. **v62** (heliosli's public
@@ -81,7 +83,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | **0.956** | **reproduces the public 0.956: rank 642 -> 522 of 5,926, 144 stable witnesses, none reversed (`2026-10-13c` -> `13d`)**; lower part of the 0.956 block (ranks 144-662; bronze cut rank 592 and silver cut rank 296 both at 0.956): **best public submission** |
 | v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
-| v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS, 0 failures; format ok | pending | ref 57249396 submitted 2026-10-16 00:48 UTC; adopt over v61 only with >= 20 stable witnesses and 0 reverse (`16a` -> next snapshot) |
+| v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS | **0.958** | **adopted over v61: 191 stable witnesses, 0 reverse (`16a` -> `16c`); rank 449 -> 195 of 6,065, inside silver (cut rank 303)**; ref 57249396 |
 | v64 | 2026-10-16 | submit candidate (D-034) | v63 with anchor weight 0: v62 recipe (R384 + mirrored R224 + R6, per-finding weights) then the reader at 0.10; v61 fallback | built from the v63 builder; 3 cells differ from v63; validator passes; sub-agent review: no blocker | - | commit run v1 COMPLETE and audited (stages byte-equal to v63's run, output = offline expectation); submission by the 0z table |
 | v63 | 2026-10-16 | submit candidate (D-033) | v61 + R6 (v62's bundle, flip-TTA): mix = 0.5 v61 anchor + 0.5 v62 recipe (R384 + v61's mirrored R224 + R6, v62's per-finding weights), then v61's reader at 0.10; any R6 problem = v61 byte for byte | local: recipe parity with v62 2.4e-8, v61 formula reproduced 0.0, synthetic fallback tests pass; reviewed by an independent sub-agent (Codex CLI not installed) | pending | commit run v1 audited (R6 = v62's output byte-equal, v61 stages byte-equal, recompute 3.3e-8); **submitted 2026-10-16 03:46:57 UTC (ref 57253670) by user decision before v62's score (D-034)**; before-snapshot `16b` |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
@@ -467,6 +469,13 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    component ran and was used on all three placeholder studies; hidden-test receipts were not available in this audit.
    The gain is not enough for public silver: rank 441 versus cut 302. Persistence is still pending.
 
+45. **A public score that depends on fixed per-finding weights reproduced exactly, and moved us into silver** (v62 vs v61):
+   heliosli's R6 recipe with per-finding Raptor weights (Lateral OA 0.2, PF OA 0.6, Synovitis 0.8, Baker's 0.35) displays
+   0.958 for us as for the author and crosses above 191 stable teams over v61; the same R6 recipe with uniform weights and
+   goodpjw2008's uniform R6 + mirror + tiny reader display 0.957. Unlike L32/L42, the exact input (versioned R6 `-w1`) was
+   available and checked byte-equal. The weights' selection method is unknown (possibly leaderboard-fitted, so private-LB
+   transfer is unverified).
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -480,6 +489,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1a. **v62 = 0.958, adopted (2026-10-16 06:17 UTC).** `16a` -> `16c`: 191 stable witnesses (all 0.957), 0 reverse; rank
+   449 -> **195 of 6,065, inside silver** (cut rank 303 at 0.957; the 0.958 block is ranks 105-200, so we sit near its
+   bottom; gold cut rank 22 at 0.963). v63 (57253670) still scoring; `16c` was taken before it scored, so v63 is judged
+   `16c` -> next. Per the 0z table, v64 is submitted after v63's snapshot. Public scan 06:18 UTC: nothing new at >= 0.958.
 
 0z. **v64 built, reviewed, commit run pushed (2026-10-16 ~04:20 UTC).** Public scan 04:02 UTC: still one 0.958 (v62's
    source); goodpjw2008's R6 + R224 mirror + tiny reader (0.008-0.035 per finding, uniform 0.5) versions show 0.957, as does
