@@ -6,15 +6,15 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 00:23 UTC (October 15 EDT: public audit found accessible R6 and a 0.958 reproduction candidate; v61 remains incumbent, persistence pending).
+Last updated: 2026-10-16 01:15 UTC (v62 = public 0.958 notebook reproduced byte-equal and submitted, ref 57249396, score pending; v61 remains incumbent, persistence pending).
 
 ## Current phase
 
 **Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best is now
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
 positive crossings, none reversed; adoption gate passed, later persistence still required. Rank **441/6,047** at
-2026-10-16 00:13:35 UTC; silver cut **302 at 0.957**: outside silver despite the score gain. No submissions remain
-in flight. v55 failed its gate, so the handover's conditional v62 combination is not authorized by its both-win condition.
+2026-10-16 00:13:35 UTC; silver cut **302 at 0.957**: outside silver despite the score gain. **v62** (heliosli's public
+0.958 notebook reproduced unchanged, outputs byte-equal to the author's) is submitted (ref 57249396) and scoring (block 0w).
 Next: persistence of the original 37 witnesses; review the newly found public R6 0.958 candidate (block 0v); daily public-source verification until the probe stop on October 18,
 and final-two discussion with the user on October 20. No new training or weight search. A six-hour chat heartbeat
 `rsna` is active through the deadline; notify only of meaningful changes or required decisions.
@@ -81,6 +81,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v46 | 2026-10-13 | public anchor (D-032) | heliosli R7 one-click notebook (public 0.956) reproduced: v37 with the R7 ConvNeXt-small bundle `8c7b666e27dc0e8f` (fluid/state stackers, fastMRI auxiliary training per the author) | commit run: R7 output and submission byte-equal to the author's | **0.956** | **reproduces the public 0.956: rank 642 -> 522 of 5,926, 144 stable witnesses, none reversed (`2026-10-13c` -> `13d`)**; lower part of the 0.956 block (ranks 144-662; bronze cut rank 592 and silver cut rank 296 both at 0.956): **best public submission** |
 | v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
+| v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS, 0 failures; format ok | pending | ref 57249396 submitted 2026-10-16 00:48 UTC; adopt over v61 only with >= 20 stable witnesses and 0 reverse (`16a` -> next snapshot) |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
 | v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | **0.956** | **above v46 in the hidden digits: rank 522 -> 332 of 5,938, 191 stable witnesses (all 0.956), none reversed** (`2026-10-13d` -> `13e`); 36 places below the silver cut (rank 296): **best public submission, first-pick candidate and v44's host** |
 | v44 | 2026-10-13 | submit (D-031) | v47 (host, unchanged) + v43 LM/MM experts by the order-only per-column blend (w 0.5, row fallback); test crops through the same S6 path as v42 | commit runs 1-2: all gates pass; 7 training studies re-cut inside v44 pixel-identical to the v42 cache; Codex code review: no blocker, 2 fixes accepted (design section 13) | 0.955 | **rejected**: one display step below v47; the experts lowered the two meniscus columns (a fallback would have scored v47's 0.956); ROI line ends (D-031, L38) |
@@ -477,6 +478,17 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+0w. **v62 audit, 2026-10-16 ~01:15 UTC.** `lingxd/v62-submit` version 1 COMPLETE; output in `results/v62/run1`.
+   raptor_sub, raptor224_sub, ours_sub and submission.csv are SHA-256 equal to the author's run
+   (`external/kernels/heliosli__blend-mine-in-private-lb-luck-to-all-upvoters_20261016/output/`); the raw CoAtNet files
+   differ only by float noise (max 6.4e-5) with identical ranks. blend_receipt has zero failures and the author's weights;
+   submission_receipt PASS for both workers with bundle `fe055406fad6a12f` and model/stacker/code hashes equal to the
+   author's. Columns and IDs match the sample submission. **The submission already existed** (ref 57249396, 2026-10-16
+   00:48:17 UTC, PENDING at audit), sent right after snapshot `external/lb/2026-10-16a` (00:48:15 UTC); no duplicate sent.
+   The dataset-version refusal did not occur, so the rostigor-mirror fallback is unused. **Next:** when the user reports the
+   score, take a new snapshot and run `python scripts/d033/rank_cross.py external/lb/2026-10-16a <new>`; adopt v62 over
+   v61 only with >= 20 stable witnesses and 0 reverse. v61 persistence check still pending.
 
 0v. **Public audit, 2026-10-16 ~00:25 UTC / October 15 EDT.** User requested a public-solution check. Saved overlapping
    100-item score/recent inventories and inspected 14 sources. **New actionable evidence:** heliosli's reweighted R6 blend
