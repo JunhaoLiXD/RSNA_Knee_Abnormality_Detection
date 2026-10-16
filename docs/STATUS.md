@@ -505,7 +505,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    0.958 block ranks 123-557, silver cut 304. Public scan 17:05 UTC: no notebook above 0.958; goodpjw2008's latest (V27 = V25
    recipe: v62 weights + R224 mirror + R6 alone + reader 0.008-0.035) and heliosli's are the only 0.958s. v64 differs from V25
    mainly by the reader weight (0.10 vs <= 0.035), so the 0.10 reader is the likely cost (L47); v65 carries it too. v67 (V26
-   copy, tiny reader) and v65 still scoring. Oct 17 plan: copy of V25/V27 as v68 (built: provenance cell only, author's inputs/docker; commit run pushed 17:15 UTC), then decide by v67/v65.
+   copy, tiny reader) and v65 still scoring. Oct 17 plan: copy of V25/V27 as v68 (built; commit run audited: submission byte-equal to the author's latest run), then decide by v67/v65.
 
 1d. **All of today's slots used (2026-10-16 13:45 UTC).** Scoring: v64 (57266285, 10:48), v67 (57268665, 12:15), v65
    (57271086, 13:45); snapshots `16d` (before v64), `16e` (before v67), `16f` (before v65). `16f`: 6,090 teams, the 0.958
