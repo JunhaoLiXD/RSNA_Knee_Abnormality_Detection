@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 17:50 UTC (v67 0.958 adopted, rank 291/6,100, inside silver; v65 scoring; v68 at 00:01 UTC Oct 17).
+Last updated: 2026-10-16 20:50 UTC (v67 0.958 best but rank 352, outside silver (cut 305); v65 0.957; v68 at 00:01 UTC Oct 17).
 
 ## Current phase
 
@@ -500,6 +500,14 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1h. **v65 = 0.957 (not adopted, L47); we fell back out of silver (2026-10-16 20:46 UTC).** `16h` -> `16i`: rank 291 -> 352
+   of 6,100+; silver cut rank 305 at 0.958; 0.958 block ranks 126-669; 125 teams at >= 0.959. 61 teams moved above us (59 at
+   0.958, 2 at 0.959), mostly submitted 12:00-16:00 UTC, i.e. after v67; identical V26 copies would rank below us on time, so
+   they carry higher hidden digits (most likely V25/V27 copies; GPU noise alone is unlikely to move 61 places). goodpjw2008's
+   team is at 286, heliosli's at 534. Public scan 20:46 UTC: nothing above 0.958; lavinwins = exact heliosli copy; heliosli's
+   19:05 run ("V2": more extreme per-finding weights 0.15/0.65/0.85/0.30 + tiny reader, unversioned R6 slug, unscored).
+   **v68 (V25 copy) submits at 00:01 UTC Oct 17.**
 
 1g. **Plan adjustment after v67 (2026-10-16 18:00 UTC).** Our silver margin is thin (rank 291 vs cut 305) and ties inside the
    0.958 block are ordered by submission time: later identical copies of V26 fall below us, but copies of a recipe with higher
