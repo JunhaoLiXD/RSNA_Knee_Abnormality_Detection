@@ -501,6 +501,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
+1g. **Plan adjustment after v67 (2026-10-16 18:00 UTC).** Our silver margin is thin (rank 291 vs cut 305) and ties inside the
+   0.958 block are ordered by submission time: later identical copies of V26 fall below us, but copies of a recipe with higher
+   hidden digits rise above. The main risk is V25 (goodpjw2008's current public version, 221 votes) if it beats V26, so v68 (V25
+   copy) stays first at 00:01 UTC Oct 17 as a defensive move. Added an hourly public watcher (scratchpad `watch_public.sh`,
+   top-5 by score as a set) so a new higher public recipe is copied early. No more own-component probes (L46, L47); v66 shelved;
+   Oct 17 slots only for v68 and verified higher public recipes.
+
 1f. **v67 = 0.958, adopted (2026-10-16 17:45 UTC): rank 291 of 6,100, inside silver (cut rank 305 at 0.958).** `16g` ->
    `16h`: 213 stable witnesses (all 0.958), 0 reverse. Team ranks in `16h`: goodpjw2008 247, us 291, heliosli 457 (exact v62
    recipe), degnonguidi 458. So V26's recipe sits far above the exact v62 recipe in hidden digits; the 44 places to goodpjw2008
