@@ -1,0 +1,74 @@
+"""Build notebooks/v63-submit.ipynb = v61 (all 25 cells, byte-identical except header and configuration) + four appended cells: a
+markdown cell, v62's R6 asset cell written to /tmp/v63_r6_setup.py (temp folder 'probe' -> 'probe_r6'), the R6 stage and the final
+v61/v62-recipe rank blend.  Design: docs/research/v63-v61-v62-blend-design.md.
+
+    python build_v63.py
+"""
+import hashlib
+import json
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[2]
+CELLS = Path(__file__).parent / "v63_cells"
+sha = lambda b: hashlib.sha256(b).hexdigest()
+src = lambda c: "".join(c["source"])
+
+
+def replace_once(text, old, new):
+    assert text.count(old) == 1, (old, text.count(old))
+    return text.replace(old, new)
+
+
+v61 = json.loads((REPO / "notebooks/v61-submit.ipynb").read_text(encoding="utf-8"))
+v62 = json.loads((REPO / "notebooks/v62-submit.ipynb").read_text(encoding="utf-8"))
+bc = v61["cells"]
+assert len(bc) == 25 and src(bc[0]).startswith("# v61 - ") and src(bc[1]).startswith("# v61 configuration")
+
+# v62's R6 asset cell: identical to v61's R7 asset cell except bundle id, dataset slug and the flip switch
+r6_cell = src(v62["cells"][7])
+assert r6_cell.startswith("ARM = 'E_lrprior'\nBUNDLE_ID = 'fe055406fad6a12f'")
+r7_cell = src(bc[6])
+import difflib
+diff = [l for l in difflib.unified_diff(r7_cell.splitlines(), r6_cell.splitlines(), lineterm="", n=0)
+        if l[:1] in "+-" and not l.startswith(("+++", "---"))]
+removed = sorted(l[1:].split(" ")[0] for l in diff if l[0] == "-")
+added = sorted(l[1:].split(" ")[0] for l in diff if l[0] == "+")
+assert removed == ["BUNDLE_ID", "C_SLUG", "if", "print('ASSETS_READY',"], removed
+assert added == ["", "BUNDLE_ID", "C_SLUG", "FLIP_TTA", "if", "print('ASSETS_READY',"], added   # "" = one indented comment line
+setup = replace_once(r6_cell, "TMP = TMP / 'probe'\n", "TMP = TMP / 'probe_r6'   # [v63] own temp folder: no file of the R7 stage is touched\n")
+# Kaggle limits the kernel source to 1 MB: the 382 kB SOURCES line of the R6 cell is byte-identical to the R7 cell's (cell 6), so the
+# R6 setup takes the dict the R7 cell defined (passed in as R7_SOURCES); the cell still checks every written file against SOURCE_SHA.
+src_line = [l for l in r6_cell.splitlines() if l.startswith("SOURCES = ")]
+assert len(src_line) == 1 and src_line == [l for l in r7_cell.splitlines() if l.startswith("SOURCES = ")]
+setup = replace_once(setup, src_line[0] + "\n", "SOURCES = R7_SOURCES   # [v63] the identical dict of the R7 asset cell (size limit); each file is checked against SOURCE_SHA below\n")
+setup = setup if setup.endswith("\n") else setup + "\n"
+SETUP_SHA = sha(setup.rstrip("\n").encode("utf-8"))   # trailing newlines are not trusted to survive %%writefile
+
+header = (CELLS / "header.md").read_text(encoding="utf-8").rstrip("\n")
+header = replace_once(header, "__BASE_BODY__", src(bc[0]).split("\n", 1)[1].lstrip("\n"))
+cfg = src(bc[1])
+for old, new in (("# v61 configuration", "# v63 configuration"), ("VERSION = 'v61'", "VERSION = 'v63'"),
+                 ("S6F0 in the ConvNeXt slot'", "S6F0 in the ConvNeXt slot; then R6 + the v62 recipe, rank-blended 0.5/0.5 with v61'")):
+    cfg = replace_once(cfg, old, new)
+stage = replace_once((CELLS / "stage_launch.py").read_text(encoding="utf-8"), "__R6_SETUP_SHA256__", SETUP_SHA)
+blend = (CELLS / "stage_blend.py").read_text(encoding="utf-8")
+for t in (stage, blend):
+    compile(t, "<cell>", "exec")
+
+mk = lambda ctype, text: ({"cell_type": "markdown", "metadata": {}, "source": text.splitlines(keepends=True)} if ctype == "markdown" else
+                          {"cell_type": "code", "metadata": {}, "execution_count": None, "outputs": [], "source": text.splitlines(keepends=True)})
+cells = [dict(bc[0], source=header.splitlines(keepends=True)), dict(bc[1], source=cfg.splitlines(keepends=True))] + bc[2:]
+cells += [mk("markdown", (CELLS / "stage_md.md").read_text(encoding="utf-8").rstrip("\n")),
+          mk("code", "%%writefile /tmp/v63_r6_setup.py\n" + setup),
+          mk("code", stage.rstrip("\n")),
+          mk("code", blend.rstrip("\n"))]
+for i in range(2, 25):
+    assert cells[i] == bc[i] and src(cells[i]) == src(bc[i]), i
+# what %%writefile writes is the cell body after the magic line
+assert src(cells[26]).split("\n", 1)[1] == setup
+nb = {**v61, "cells": cells}
+assert len(json.dumps(nb, indent=1, ensure_ascii=False).encode("utf-8")) < 950_000, "Kaggle kernel source limit is 1 MB"
+out = REPO / "notebooks/v63-submit.ipynb"
+out.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+print(f"v63 built: {len(cells)} cells (v61 cells 2-24 identical); R6 setup sha256 {SETUP_SHA}")
+print("R6 vs R7 asset-cell diff lines:", len(diff))

@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 01:15 UTC (v62 = public 0.958 notebook reproduced byte-equal and submitted, ref 57249396, score pending; v61 remains incumbent, persistence pending).
+Last updated: 2026-10-16 02:10 UTC (v62 submitted, score pending; v63 = v61 + v62 recipe built, reviewed and commit run pushed, not submitted; v61 remains incumbent).
 
 ## Current phase
 
@@ -82,6 +82,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
 | v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS, 0 failures; format ok | pending | ref 57249396 submitted 2026-10-16 00:48 UTC; adopt over v61 only with >= 20 stable witnesses and 0 reverse (`16a` -> next snapshot) |
+| v63 | 2026-10-16 | submit candidate (D-033) | v61 + R6 (v62's bundle, flip-TTA): mix = 0.5 v61 anchor + 0.5 v62 recipe (R384 + v61's mirrored R224 + R6, v62's per-finding weights), then v61's reader at 0.10; any R6 problem = v61 byte for byte | local: recipe parity with v62 2.4e-8, v61 formula reproduced 0.0, synthetic fallback tests pass; reviewed by an independent sub-agent (Codex CLI not installed) | - | commit run version 1 pushed 2026-10-16 ~02:05 UTC; **submit only if v62 >= v61 displayed with 0 reverse crossings** (pre-registered) |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
 | v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | **0.956** | **above v46 in the hidden digits: rank 522 -> 332 of 5,938, 191 stable witnesses (all 0.956), none reversed** (`2026-10-13d` -> `13e`); 36 places below the silver cut (rank 296): **best public submission, first-pick candidate and v44's host** |
 | v44 | 2026-10-13 | submit (D-031) | v47 (host, unchanged) + v43 LM/MM experts by the order-only per-column blend (w 0.5, row fallback); test crops through the same S6 path as v42 | commit runs 1-2: all gates pass; 7 training studies re-cut inside v44 pixel-identical to the v42 cache; Codex code review: no blocker, 2 fixes accepted (design section 13) | 0.955 | **rejected**: one display step below v47; the experts lowered the two meniscus columns (a fallback would have scored v47's 0.956); ROI line ends (D-031, L38) |
@@ -478,6 +479,18 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+0x. **v63 built and pushed, 2026-10-16 ~02:05 UTC (user: build and push without waiting for v62, after a sub-agent review).**
+   Design `docs/research/v63-v61-v62-blend-design.md`: v61 cells unchanged + an R6 stage after v61's output (launch guard
+   1.3 x this run's R7 time, hard cut-off 8.65 h, own process group) + final `mix = pct(0.5 pct(v61 anchor) + 0.5 pct(v62
+   recipe))`, `final = pct(0.9 pct(mix) + 0.1 pct(reader))`. The Codex gate (D-004) could not run (Codex CLI not installed);
+   an independent Claude sub-agent found no blocker; its 2 medium findings (reader halved; pre-register the v62 condition) and
+   lows are accepted and fixed (table in the design). Kaggle's 1 MB source limit: the R6 setup reuses the R7 cell's identical
+   SOURCES dict (still checked against SOURCE_SHA). Commit run `lingxd/v63-submit` version 1 pushed; **not submitted**.
+   **Next:** when the user reports the commit run done: download to `results/v63/run1`; check R6 receipt PASS with bundle
+   `fe055406fad6a12f`, `ours_r6_sub.csv` equal to v62's `ours_sub.csv`, v61 stage files equal to `results/v61/run1`,
+   `v63_receipt.json` used_r6 true, offline recomputation. Submit v63 only after v62 has scored, the snapshot is taken, and
+   v62 displays >= v61 with 0 reverse crossings; before the October 18 probe stop.
 
 0w. **v62 audit, 2026-10-16 ~01:15 UTC.** `lingxd/v62-submit` version 1 COMPLETE; output in `results/v62/run1`.
    raptor_sub, raptor224_sub, ours_sub and submission.csv are SHA-256 equal to the author's run
