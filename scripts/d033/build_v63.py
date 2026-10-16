@@ -2,14 +2,19 @@
 markdown cell, v62's R6 asset cell written to /tmp/v63_r6_setup.py (temp folder 'probe' -> 'probe_r6'), the R6 stage and the final
 v61/v62-recipe rank blend.  Design: docs/research/v63-v61-v62-blend-design.md.
 
-    python build_v63.py
+    python build_v63.py              # v63: anchor weight 0.5
+    python build_v63.py v64 0.0      # v64: the v62 recipe alone (with R224 mirror) + the reader; same cells, header_v64.md
 """
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 CELLS = Path(__file__).parent / "v63_cells"
+VER = sys.argv[1] if len(sys.argv) > 1 else "v63"
+W_ANCHOR = sys.argv[2] if len(sys.argv) > 2 else "0.5"
+assert float(W_ANCHOR) in (0.0, 0.5), W_ANCHOR
 sha = lambda b: hashlib.sha256(b).hexdigest()
 src = lambda c: "".join(c["source"])
 
@@ -44,14 +49,17 @@ setup = replace_once(setup, src_line[0] + "\n", "SOURCES = R7_SOURCES   # [v63] 
 setup = setup if setup.endswith("\n") else setup + "\n"
 SETUP_SHA = sha(setup.rstrip("\n").encode("utf-8"))   # trailing newlines are not trusted to survive %%writefile
 
-header = (CELLS / "header.md").read_text(encoding="utf-8").rstrip("\n")
+header = (CELLS / ("header.md" if VER == "v63" else f"header_{VER}.md")).read_text(encoding="utf-8").rstrip("\n")
 header = replace_once(header, "__BASE_BODY__", src(bc[0]).split("\n", 1)[1].lstrip("\n"))
 cfg = src(bc[1])
-for old, new in (("# v61 configuration", "# v63 configuration"), ("VERSION = 'v61'", "VERSION = 'v63'"),
-                 ("S6F0 in the ConvNeXt slot'", "S6F0 in the ConvNeXt slot; then R6 + the v62 recipe, rank-blended 0.5/0.5 with v61'")):
+for old, new in (("# v61 configuration", f"# {VER} configuration"), ("VERSION = 'v61'", f"VERSION = '{VER}'"),
+                 ("S6F0 in the ConvNeXt slot'", "S6F0 in the ConvNeXt slot; then R6 + the v62 recipe, rank-blended 0.5/0.5 with v61'" if VER == "v63" else
+                  "S6F0 in the ConvNeXt slot (fallback only); then R6 + the v62 recipe alone, the reader at 0.10'")):
     cfg = replace_once(cfg, old, new)
 stage = replace_once((CELLS / "stage_launch.py").read_text(encoding="utf-8"), "__R6_SETUP_SHA256__", SETUP_SHA)
 blend = (CELLS / "stage_blend.py").read_text(encoding="utf-8")
+blend = replace_once(blend, "V63_W_ANCHOR = 0.5\n", f"V63_W_ANCHOR = {W_ANCHOR}\n" if VER == "v63" else
+                     f"V63_W_ANCHOR = {W_ANCHOR}   # [{VER}] the v62 recipe alone (mix = pct(v62 recipe)); the v61 anchor is read and validated but not mixed\n")
 for t in (stage, blend):
     compile(t, "<cell>", "exec")
 
@@ -68,7 +76,7 @@ for i in range(2, 25):
 assert src(cells[26]).split("\n", 1)[1] == setup
 nb = {**v61, "cells": cells}
 assert len(json.dumps(nb, indent=1, ensure_ascii=False).encode("utf-8")) < 950_000, "Kaggle kernel source limit is 1 MB"
-out = REPO / "notebooks/v63-submit.ipynb"
+out = REPO / f"notebooks/{VER}-submit.ipynb"
 out.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-print(f"v63 built: {len(cells)} cells (v61 cells 2-24 identical); R6 setup sha256 {SETUP_SHA}")
+print(f"{VER} built (anchor weight {W_ANCHOR}): {len(cells)} cells (v61 cells 2-24 identical); R6 setup sha256 {SETUP_SHA}")
 print("R6 vs R7 asset-cell diff lines:", len(diff))
