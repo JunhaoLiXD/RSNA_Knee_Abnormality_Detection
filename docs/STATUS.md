@@ -84,7 +84,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
 | v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS | **0.958** | **adopted over v61: 191 stable witnesses, 0 reverse (`16a` -> `16c`); rank 449 -> 195 of 6,065, inside silver (cut rank 303)**; ref 57249396 |
-| v67 | 2026-10-16 | public copy (D-034) | goodpjw2008's public 0.958 notebook (V26) unchanged: per-finding weights, mirrored R224, R6 0.6 + R7 0.4, tiny reader | provenance cell only; author cells identical; validator passes | - | commit run v1 pushed ~11:05 UTC; author's team rank 213 with it |
+| v67 | 2026-10-16 | public copy (D-034) | goodpjw2008's public 0.958 notebook (V26) unchanged: per-finding weights, mirrored R224, R6 0.6 + R7 0.4, tiny reader | provenance cell only; author cells identical; validator passes | - | commit run v1 audited: submission byte-equal to the author's; author's team rank 213 with it |
 | v64 | 2026-10-16 | submit candidate (D-034) | v63 with anchor weight 0: v62 recipe (R384 + mirrored R224 + R6, per-finding weights) then the reader at 0.10; v61 fallback | built from the v63 builder; 3 cells differ from v63; validator passes; sub-agent review: no blocker | - | commit run v1 COMPLETE and audited (stages byte-equal to v63's run, output = offline expectation); **submitted 2026-10-16 10:48:44 UTC (ref 57266285)**, before-snapshot `16d` |
 | v63 | 2026-10-16 | submit candidate (D-033) | v61 + R6 (v62's bundle, flip-TTA): mix = 0.5 v61 anchor + 0.5 v62 recipe (R384 + v61's mirrored R224 + R6, v62's per-finding weights), then v61's reader at 0.10; any R6 problem = v61 byte for byte | local: recipe parity with v62 2.4e-8, v61 formula reproduced 0.0, synthetic fallback tests pass; reviewed by an independent sub-agent (Codex CLI not installed) | 0.957 | **not above v62** (`16c` -> `16d`: 0 / 0 witnesses); ref 57253670 |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
@@ -502,8 +502,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    code: `R7W = 0.4`, `W_RAPTOR_C`, `OWN_W_PER_TARGET`). So a second compact model (R7) on the per-finding recipe gained about
    85 places in hidden digits. **v67 = unchanged copy of V26** (provenance cell only; author's inputs and docker image):
    commit run pushed; compare with the author's output in `external/kernels/goodpjw2008__rsna-knee-coatnet-r6-2-5d-mil-lb-0-957_20261016c/output/`.
-   Today's 2 slots, staggered for attribution: **v65 at ~12:15 UTC** (close to V26 with reader 0.10 and flip-R7), **v67 at
-   ~13:45 UTC** after its audit. Then: reader-weight isolation (v62 + mirror without reader, or reader ~0.02) depending on
+   v67 commit run audited: submission.csv byte-equal to the author's. Today's 2 slots, staggered for attribution: **v67 at
+   ~12:15 UTC** (first: the surest silver re-entry, and among identical-score copies the earlier submission ranks higher),
+   **v65 at ~13:45 UTC** (close to V26 with reader 0.10 and flip-R7). Then: reader-weight isolation (v62 + mirror without reader, or reader ~0.02) depending on
    v64/v65 vs v67; v66 only if a slot remains. Final picks (sub-agent): A = best per-finding entry by hidden order; B = a
    hedge not relying on the possibly fitted per-finding weights (v63 or v61).
 
