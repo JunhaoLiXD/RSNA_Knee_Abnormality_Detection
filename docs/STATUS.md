@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 10:55 UTC (v62 0.958 best; v63 0.957 not adopted; rank 336/6,075, silver cut 303 at 0.958; v64 scoring).
+Last updated: 2026-10-16 13:50 UTC (v62 0.958 best, rank 435/6,090; v64, v67, v65 scoring; no slots left today).
 
 ## Current phase
 
@@ -495,6 +495,14 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1d. **All of today's slots used (2026-10-16 13:45 UTC).** Scoring: v64 (57266285, 10:48), v67 (57268665, 12:15), v65
+   (57271086, 13:45); snapshots `16d` (before v64), `16e` (before v67), `16f` (before v65). `16f`: 6,090 teams, the 0.958
+   block is now ranks 115-475 (silver cut rank 304 at 0.958); we are rank 435 (v62's score, tie ordered by time). Each result
+   is judged from the latest snapshot before it to the first after it; if two land in one 30-min window, read displayed
+   scores only. v65/v66 rows: see `experiments.md` (v66 built and audited, not submitted). Next slots: 5 on Oct 17 (reset
+   00:00 UTC). Candidates for Oct 17 depend on v64/v65/v67: reader-weight isolation, v66, or a further public recipe;
+   public scan each round.
 
 1c. **Plan after v63 (2026-10-16 ~11:10 UTC, sub-agent reviewed).** Leaderboard `16d`: heliosli's exact 0.958 notebook team
    rank 298, degnonguidi's exact copy 299, us (v62 copy) 336 (ties ordered by time); **goodpjw2008 rank 213** with their public
