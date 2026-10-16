@@ -3,6 +3,22 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-034 - 2026-10-16 - Full agent takeover; v63 submitted before v62's score; Claude sub-agents replace Codex reviews
+
+**Decision.** The user (2026-10-16 ~03:45 UTC) told the agent to submit v63 at once, to check every 30 minutes whether v62
+has scored and decide the next step, and handed over full control, asking the agent to use sub-agents for tasks and reviews
+because the Codex quota is exhausted (the Codex CLI is also not installed). Consequences:
+- v63 submitted 2026-10-16 03:46:57 UTC (ref 57253670) while v62 (ref 57249396) is still scoring. This overrides the
+  pre-registered v63 condition (submit only if v62 >= v61 with 0 reverse crossings). Before-snapshot `external/lb/2026-10-16b`
+  (03:46:46 UTC). v62 and v63 are judged separately: v62 by `16a` -> the first snapshot after v62 scores (taken before v63
+  scores); v63 by that snapshot -> the first snapshot after v63 scores, against whichever of v61/v62 is the incumbent then.
+  If both score before a snapshot can separate them, the pair is read from our displayed best and rank only (no attribution).
+- A background watcher checks our submissions every 30 min and wakes the agent when one leaves PENDING (the D-033/no-polling
+  default is suspended for this hand-over only).
+- D-004's Codex gate is replaced by an independent read-only Claude sub-agent review for this hand-over; findings are verified
+  and recorded in each design note, as with Codex.
+- Unchanged: rank-crossing adoption rule (>= 20 stable witnesses, 0 reverse), October 18 probe stop, final-pair decision with the user.
+
 ## D-033 - 2026-10-14 - Silver push: three inference-only probes on v47 (flip-TTA, MaViT, R224); the agent runs the project
 
 **Decision.** The user asked for a silver push and handed the agent full control (local GPU, Kaggle GPU, submissions)

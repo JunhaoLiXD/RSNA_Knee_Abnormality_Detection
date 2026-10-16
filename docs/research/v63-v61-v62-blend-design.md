@@ -73,6 +73,8 @@ The R6 stage runs last, after v61 has written its complete `submission.csv`, so 
 
 ## 6. Decision rule and submission order
 
+- **Overridden by the user (D-034, 2026-10-16 03:46 UTC):** v63 was submitted before v62 scored (ref 57253670,
+  before-snapshot `16b`); the conditions below were not applied.
 - Submit v63 only after v62 has scored and its rank-crossing snapshot is taken, so the two results stay separable.
 - **Pre-registered (review finding 2):** submit v63 only if v62 displays at least v61's score with 0 reverse crossings against
   the v61 snapshot. Otherwise the premise "two recipes of similar score" fails (v62's per-finding weights have an unknown,

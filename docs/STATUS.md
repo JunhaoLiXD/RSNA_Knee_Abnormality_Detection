@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 02:45 UTC (v62 submitted, score pending; v63 commit run audited, all checks pass, held for the v62 condition; v61 remains incumbent).
+Last updated: 2026-10-16 03:50 UTC (D-034 takeover: v63 submitted by user decision, v62 and v63 both scoring; v61 remains incumbent).
 
 ## Current phase
 
@@ -82,7 +82,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
 | v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS, 0 failures; format ok | pending | ref 57249396 submitted 2026-10-16 00:48 UTC; adopt over v61 only with >= 20 stable witnesses and 0 reverse (`16a` -> next snapshot) |
-| v63 | 2026-10-16 | submit candidate (D-033) | v61 + R6 (v62's bundle, flip-TTA): mix = 0.5 v61 anchor + 0.5 v62 recipe (R384 + v61's mirrored R224 + R6, v62's per-finding weights), then v61's reader at 0.10; any R6 problem = v61 byte for byte | local: recipe parity with v62 2.4e-8, v61 formula reproduced 0.0, synthetic fallback tests pass; reviewed by an independent sub-agent (Codex CLI not installed) | - | commit run v1 COMPLETE and audited (R6 = v62's output byte-equal, v61 stages byte-equal, recompute 3.3e-8); **submit only if v62 >= v61 displayed with 0 reverse crossings** (pre-registered) |
+| v63 | 2026-10-16 | submit candidate (D-033) | v61 + R6 (v62's bundle, flip-TTA): mix = 0.5 v61 anchor + 0.5 v62 recipe (R384 + v61's mirrored R224 + R6, v62's per-finding weights), then v61's reader at 0.10; any R6 problem = v61 byte for byte | local: recipe parity with v62 2.4e-8, v61 formula reproduced 0.0, synthetic fallback tests pass; reviewed by an independent sub-agent (Codex CLI not installed) | pending | commit run v1 audited (R6 = v62's output byte-equal, v61 stages byte-equal, recompute 3.3e-8); **submitted 2026-10-16 03:46:57 UTC (ref 57253670) by user decision before v62's score (D-034)**; before-snapshot `16b` |
 | v55 | 2026-10-15 | submit (D-033) | v54 + heliosli's old S6 at 0.35 of the ConvNeXt slot | commit run: S6 used | 0.956 | not above v54 (0 witnesses); rejected |
 | v47 | 2026-10-13 | submit (D-032) | v46 + goodpjw2008 reader at outer weight 0.10 | commit run: 11 gates pass | **0.956** | **above v46 in the hidden digits: rank 522 -> 332 of 5,938, 191 stable witnesses (all 0.956), none reversed** (`2026-10-13d` -> `13e`); 36 places below the silver cut (rank 296): **best public submission, first-pick candidate and v44's host** |
 | v44 | 2026-10-13 | submit (D-031) | v47 (host, unchanged) + v43 LM/MM experts by the order-only per-column blend (w 0.5, row fallback); test crops through the same S6 path as v42 | commit runs 1-2: all gates pass; 7 training studies re-cut inside v44 pixel-identical to the v42 cache; Codex code review: no blocker, 2 fixes accepted (design section 13) | 0.955 | **rejected**: one display step below v47; the experts lowered the two meniscus columns (a fallback would have scored v47's 0.956); ROI line ends (D-031, L38) |
@@ -479,6 +479,14 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+0y. **D-034 full takeover, 2026-10-16 03:47 UTC.** User: submit v63 now, check v62 every 30 min, decide next steps, use
+   sub-agents (Codex quota exhausted). Snapshot `external/lb/2026-10-16b` (03:46:46 UTC: 6,056 teams, 155 at >= 0.958,
+   silver cut rank 302 at 0.957). v63 submitted (ref 57253670); v62 (57249396) still PENDING. Submissions today: 2 used, 3 left.
+   A background watcher (scratchpad `watch_subs.sh`, every 30 min) wakes the agent when either leaves PENDING.
+   **Plan:** v62 scores -> snapshot at once -> `rank_cross.py 16a <new>` (v62 vs v61) -> adopt if >= 20 witnesses, 0 reverse.
+   v63 scores -> snapshot -> rank_cross from the post-v62 snapshot -> adopt over the incumbent by the same rule. Then decide
+   (with sub-agent review) whether a last probe before the October 18 stop is justified (candidates: v62 + reader 0.10).
 
 0x. **v63 built and pushed, 2026-10-16 ~02:05 UTC (user: build and push without waiting for v62, after a sub-agent review).**
    Design `docs/research/v63-v61-v62-blend-design.md`: v61 cells unchanged + an R6 stage after v61's output (launch guard
