@@ -84,3 +84,24 @@ whether anything from v61 transfers. Do not automatically add the reader/S6F0/mi
 Evidence: L32/L42 require version/input identity checks; v56/v57 failed despite a displayed public claim. L40/L41/L44
 support evaluating concrete new evidence, while L43's old-S6 failure does not test R6. L38/L39 argue against adding
 unverified weak models merely for diversity. A higher public badge is a reason to reproduce, not proof of our future score.
+
+## Addendum: re-scan 2026-10-16 ~01:30 UTC
+
+Method: Kaggle web `ListKernels` (competition 154281, `bestPublicScore`), 100 notebooks sorted by score and 100 by
+last run, from the built-in browser. Two notebooks pulled unchanged to `external/kernels/<owner>__<slug>_20261016b/`.
+
+- **Still exactly one public notebook at 0.958**: heliosli `blend-mine-in-private-lb-luck-to-all-upvoters` (V1), which
+  v62 reproduces. Nothing scores above it.
+- Ten notebooks at 0.957 (all listed in the table above or copies of them), plus one change:
+  **prvsiyan `the-bee-s-knees-final-rsna-push`** now shows 0.957 (0.949 in the earlier audit). Its latest active path
+  (151 cells, run 358804172) is a packed reproduction of heliosli's uniform-weight 0.957 recipe on the rostigor R6 mirror
+  (dataset version 20763353) with R6 0.50 / R384 0.325 / R224 0.175, a R224 mirror stage and a "fixed 55/45 family
+  weight" experiment. Its own text claims no new score. No component beyond what v61/v62 already use.
+- ltcsmokeboi `rsna-knee-gp958e` (0.956, run 2026-10-15 20:29 UTC): another copy of the heliosli recipe; it attaches
+  the non-versioned `heliosli/rsna-knee-r6-frozen-fe055406`, consistent with the R6/R7 version issue of L42.
+- Recently run notebooks without a score (13 checked by title) include no new strong-model release.
+- Leaderboard context (`external/lb/2026-10-16a`, 6,050 teams): 151 teams at >= 0.958 (ranks 1-151), the 0.957 block
+  spans ranks 152-505, silver cut rank 302 at 0.957, bronze cut rank 605 at 0.956. A displayed 0.958 would currently be
+  inside silver; the block may grow as copies of the 0.958 notebook land (L36).
+
+Conclusion: no new candidate above or tied with v62. Wait for v62's score.

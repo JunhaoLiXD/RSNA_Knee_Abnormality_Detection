@@ -489,6 +489,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    The dataset-version refusal did not occur, so the rostigor-mirror fallback is unused. **Next:** when the user reports the
    score, take a new snapshot and run `python scripts/d033/rank_cross.py external/lb/2026-10-16a <new>`; adopt v62 over
    v61 only with >= 20 stable witnesses and 0 reverse. v61 persistence check still pending.
+   Public re-scan ~01:30 UTC: still one public 0.958 (the v62 source), none higher; prvsiyan's notebook now 0.957 but is a
+   copy of the heliosli 0.957 recipe (addendum in `public-landscape-2026-10-16.md`). 151 teams >= 0.958 (`16a`).
 
 0v. **Public audit, 2026-10-16 ~00:25 UTC / October 15 EDT.** User requested a public-solution check. Saved overlapping
    100-item score/recent inventories and inspected 14 sources. **New actionable evidence:** heliosli's reweighted R6 blend
