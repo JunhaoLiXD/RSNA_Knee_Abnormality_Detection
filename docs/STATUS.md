@@ -513,6 +513,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    0.425), a hedge-B candidate next to v71. Not pursued: small R7/S6F0 adds (v67 R7 0.4 below V25; goodpjw2008's S6-next-to-R6
    0.957), byte-equal resubmission of v68 (a re-draw of float noise that ranks later on ties). Order: v71 scores -> snapshot ->
    v72 (last Oct 17 slot) -> v73 after the 00:00 UTC reset.
+   Both commit runs audited 17:04 UTC (stage files byte-equal to their bases; weights verified in receipts). Timer set for v73 at 00:01 UTC.
 
 1o. **User: keep trying (2026-10-17 ~12:45 UTC); Codex unavailable (no CLI), sub-agent stand-in reviewed options.** The user
    asked about pushing the per-finding weights further ("the author's extreme parameters"; already tested: v69 = V2 copy, 0
