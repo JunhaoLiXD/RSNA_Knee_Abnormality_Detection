@@ -502,6 +502,15 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
+1l. **v70 and the Oct 17 plan (sub-agent reviewed, 2026-10-17 06:05 UTC).** v70 = v68 (V25) with heliosli's V2 Raptor weights
+   (one line; reader stays at V25's 0.008-0.035), commit run pushed. Review: sound as a probe (V2 most likely above V25: heliosli
+   submitted after goodpjw2008 yet ranks above; mirror + V2 weights not shown to add), weaker as a final pick (two public-fitted
+   choices stacked; a few-hundred-study public split). Plan: submit v70 after its audit (result ~1 h after v69, separable).
+   Hold the other 2 slots until v69/v70 resolve; use them only for a verified higher public recipe or, if v69 > v68 and v70 is
+   not > v69, v69 + R224 mirror. No more extreme weights. Our own probes stop Oct 18; verified public copies allowed to Oct 20.
+   Final picks (proposal for Oct 20 with the user): A = best of v68/v69/v70 by witnesses (v68 on a tie: fewer fitted steps);
+   B = v61 (uniform weights, hedge against per-finding overfit).
+
 1k. **v68 = 0.958, adopted over v67 (2026-10-17 06:02 UTC).** `17c` -> `17d`: 74 stable witnesses (all 0.958), 0 reverse; so
    goodpjw2008's V25 recipe (no R7) is above V26 (with R7) in hidden digits. Rank 452 -> 387 of 6,121; still outside silver
    (cut ~306); 0.958 block ranks 135-826; 134 teams at >= 0.959. goodpjw2008's team 319, heliosli's 277 (V2). v69 (V2) scoring,
