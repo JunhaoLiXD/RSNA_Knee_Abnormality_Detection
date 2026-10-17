@@ -6,11 +6,11 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-17 11:10 UTC (v68 0.958 best, rank 447/6,133, outside silver (cut 306); v69 0.958 not above v68; v70 scoring).
+Last updated: 2026-10-17 12:30 UTC (v68 0.958 best, rank 461, outside silver (cut 306), inside bronze; v70 0.957 (L48); own probes end).
 
 ## Current phase
 
-**2026-10-16 17:45 UTC: best is v67 (goodpjw2008 V26 copy), public 0.958, rank 291 of 6,100, inside silver (cut 305); see block 1f.**
+**2026-10-17 12:30 UTC: best is v68 (goodpjw2008 V25 copy), public 0.958, rank 461 of ~6,135; silver cut 306 and bronze cut 613 both at 0.958; see block 1n.**
 
 **Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best was
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
@@ -488,6 +488,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    0.958. Unlike L37 (0.10 helped on the R7 host), on this stronger host the reader at 0.10 cost a display step; mirror and
    reader are not separated by our own runs.
 
+48. **Two public tweaks that each helped did not add up** (v70 vs v68): heliosli's V2 Raptor weights (0.15/0.65/0.85/0.30),
+   which lifted heliosli's no-mirror stack, applied to goodpjw2008's V25 stack (R224 mirror, tiny reader) display 0.957 against
+   V25's 0.958. Per-finding weights chosen for one stack do not transfer to a changed stack; with L46/L47, every own change to
+   the per-finding R6 recipe lost a display step.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -501,6 +506,14 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1n. **v70 = 0.957 (2026-10-17 12:24 UTC), not adopted; own probes end.** V2's Raptor weights on the mirrored V25 stack cost a
+   display step (L48). Best stays **v68 (0.958), rank 461 of ~6,135**, outside silver (cut 306) and inside bronze (cut 613, also
+   at 0.958). Summary of Oct 16-17: public-copy improvements over the exact v62 recipe came from V26 (v67, +213) and V25 (v68,
+   +74 over v67); every own combination (v63, v64, v65, v70) displayed 0.957; the V2 copy (v69) did not beat v68. With the 0.958
+   block at ~780 teams of near-identical public recipes, public-LB silver now depends on hidden-digit noise, not on a lever we
+   control. Remaining Oct 17 slots: only for a verified higher public recipe (public watcher hourly). Oct 18 onwards: no own
+   probes; Oct 20 final-pick discussion: A = v68 (strongest witnesses, mirror is structural), B = v61 (uniform-weight hedge).
 
 1m. **v69 (heliosli V2 copy) = 0.958, not above v68 (2026-10-17 11:04 UTC).** `17e` -> `17f`: 0 / 0. The author's retitled
    "0.9586" did not show as a gain over our V25 copy. We are rank 447 of 6,133 on v68's score; 0.958 block ranks 138-914,
