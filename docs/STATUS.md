@@ -507,8 +507,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    heliosli's team jumped 534 -> 269 after its 2026-10-16 20:44 submission, above goodpjw2008 (312); we are 449 of 6,120
    (silver cut 306 at 0.958; 0.958 block 133-789). goodpjw2008's "Does S6 help next to R6?" shows 0.957 (supports keeping v66
    shelved). **v69 = V2 copy**, one code line changed: C_SLUG -> the versioned `-w1` R6 dataset (L42); plus a mojibake fix in the
-   author's credits markdown. Commit run version 2 pushed (v1 superseded only by that markdown fix). v68 still scoring;
-   v69 submits after its audit, staggered from v68.
+   author's credits markdown. Commit run audited (byte-equal to the author's run). **Submitted 2026-10-17 05:03:23 UTC
+   (ref 57296052, version 2), before-snapshot `17c` (we are rank 452)**: 5 h after v68, so the two results stay separable,
+   and early among V2 copies. 3 submissions left on Oct 17.
 
 1i. **v68 submitted 2026-10-17 00:01:12 UTC (ref 57287121).** Before-snapshot `17a`: we are rank 398 (v67's 0.958; 0 / 0
    crossings 16i -> 17a, the slide is other teams rising); 6111 teams; 0.958 block ranks 130-729; silver cut 305 at
