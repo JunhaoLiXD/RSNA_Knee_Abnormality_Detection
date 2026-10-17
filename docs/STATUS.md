@@ -507,6 +507,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
+1p. **Lottery probes (user, 2026-10-17 ~15:00 UTC: "after v71 scores, keep going; bold lottery options are fine").** Built and
+   commit runs pushed: **v72** = v69 (V2 stack) with Raptor weights one further step along heliosli's direction (0.10 / 0.70 /
+   0.90 / 0.25), declared ineligible for the finals; **v73** = v68 with weights shrunk halfway to uniform (0.35 / 0.55 / 0.65 /
+   0.425), a hedge-B candidate next to v71. Not pursued: small R7/S6F0 adds (v67 R7 0.4 below V25; goodpjw2008's S6-next-to-R6
+   0.957), byte-equal resubmission of v68 (a re-draw of float noise that ranks later on ties). Order: v71 scores -> snapshot ->
+   v72 (last Oct 17 slot) -> v73 after the 00:00 UTC reset.
+
 1o. **User: keep trying (2026-10-17 ~12:45 UTC); Codex unavailable (no CLI), sub-agent stand-in reviewed options.** The user
    asked about pushing the per-finding weights further ("the author's extreme parameters"; already tested: v69 = V2 copy, 0
    witnesses vs v68; v70 = V2 weights on V25, 0.957). Review: decline as a final pick (every own change lost a step, L46-48;
