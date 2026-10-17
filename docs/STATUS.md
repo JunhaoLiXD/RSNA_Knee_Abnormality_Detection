@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-17 06:05 UTC (v68 0.958 adopted, rank 387/6,121, outside silver (cut ~306); v69 scoring).
+Last updated: 2026-10-17 06:25 UTC (v68 0.958 best, rank 392, outside silver (cut ~306); v69 and v70 scoring).
 
 ## Current phase
 
@@ -510,6 +510,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    not > v69, v69 + R224 mirror. No more extreme weights. Our own probes stop Oct 18; verified public copies allowed to Oct 20.
    Final picks (proposal for Oct 20 with the user): A = best of v68/v69/v70 by witnesses (v68 on a tie: fewer fitted steps);
    B = v61 (uniform weights, hedge against per-finding overfit).
+   **v70 submitted 2026-10-17 06:24:01 UTC (ref 57298911, version 2), before-snapshot `17e` (rank 392).** 2 slots left today.
 
 1k. **v68 = 0.958, adopted over v67 (2026-10-17 06:02 UTC).** `17c` -> `17d`: 74 stable witnesses (all 0.958), 0 reverse; so
    goodpjw2008's V25 recipe (no R7) is above V26 (with R7) in hidden digits. Rank 452 -> 387 of 6,121; still outside silver
