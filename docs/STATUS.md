@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-17 00:05 UTC (v67 0.958 best, rank 398, outside silver (cut 305); v68 scoring).
+Last updated: 2026-10-17 05:05 UTC (v67 0.958 best, rank 449, outside silver (cut 306); v68 scoring; v69 (heliosli V2) commit run).
 
 ## Current phase
 
@@ -500,6 +500,15 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1j. **heliosli V2 -> v69 (2026-10-17 ~05:00 UTC).** Public watcher: heliosli's `this-is-best-public-dataset-new-version-0-9576`
+   now shows 0.958 ("V2" = v62's recipe with more extreme per-finding Raptor weights Lateral OA 0.15, PF OA 0.65, Synovitis 0.85,
+   Baker's 0.30, plus goodpjw2008's reader at 0.003-0.035; author's receipt: bundle fe055406, 0 failures). Snapshot `17b`:
+   heliosli's team jumped 534 -> 269 after its 2026-10-16 20:44 submission, above goodpjw2008 (312); we are 449 of 6,120
+   (silver cut 306 at 0.958; 0.958 block 133-789). goodpjw2008's "Does S6 help next to R6?" shows 0.957 (supports keeping v66
+   shelved). **v69 = V2 copy**, one code line changed: C_SLUG -> the versioned `-w1` R6 dataset (L42); plus a mojibake fix in the
+   author's credits markdown. Commit run version 2 pushed (v1 superseded only by that markdown fix). v68 still scoring;
+   v69 submits after its audit, staggered from v68.
 
 1i. **v68 submitted 2026-10-17 00:01:12 UTC (ref 57287121).** Before-snapshot `17a`: we are rank 398 (v67's 0.958; 0 / 0
    crossings 16i -> 17a, the slide is other teams rising); 6111 teams; 0.958 block ranks 130-729; silver cut 305 at
