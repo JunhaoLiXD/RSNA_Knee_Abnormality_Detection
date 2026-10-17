@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-17 12:30 UTC (v68 0.958 best, rank 461, outside silver (cut 306), inside bronze; v70 0.957 (L48); own probes end).
+Last updated: 2026-10-17 14:50 UTC (v68 0.958 best, rank 489; v71 (uniform-weight hedge) scoring).
 
 ## Current phase
 
@@ -516,7 +516,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    outputs, only if it needs no extra runtime; (3) shrunk weights halfway between uniform and V25; (4) R7/S6F0 small adds and
    (5) byte-equal resubmission: skip. Public rank differences inside the ~780-team 0.958 block (~1e-4) are far below private
    noise (~3e-3). **Revised final-pick plan: A = v68 (frozen, never edited); B = best of v71 / shrunk-weights v68, v61 only
-   as fallback.** v71 built (one line vs v68), commit run pushed.
+   as fallback.** v71 built (one line vs v68), audited (R6 output float noise 1.4e-4 vs v68, ranks identical) and **submitted
+   by the user's decision 2026-10-17 14:46:19 UTC (ref 57315112), before-snapshot `17h` (rank 489)**. The extreme-weights
+   lottery was not chosen. 1 slot left today.
 
 1n. **v70 = 0.957 (2026-10-17 12:24 UTC), not adopted; own probes end.** V2's Raptor weights on the mirrored V25 stack cost a
    display step (L48). Best stays **v68 (0.958), rank 461 of ~6,135**, outside silver (cut 306) and inside bronze (cut 613, also
