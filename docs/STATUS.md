@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-17 06:25 UTC (v68 0.958 best, rank 392, outside silver (cut ~306); v69 and v70 scoring).
+Last updated: 2026-10-17 11:10 UTC (v68 0.958 best, rank 447/6,133, outside silver (cut 306); v69 0.958 not above v68; v70 scoring).
 
 ## Current phase
 
@@ -501,6 +501,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1m. **v69 (heliosli V2 copy) = 0.958, not above v68 (2026-10-17 11:04 UTC).** `17e` -> `17f`: 0 / 0. The author's retitled
+   "0.9586" did not show as a gain over our V25 copy. We are rank 447 of 6,133 on v68's score; 0.958 block ranks 138-914,
+   silver cut 306 and bronze cut 613 both at 0.958; 137 teams at >= 0.959. By rule 1l, "v69 + mirror" is not triggered (v69 did
+   not beat v68). v70 still scoring (`17f` is its before-snapshot as well). 2 slots left today, held for a verified higher public
+   recipe.
 
 1l. **v70 and the Oct 17 plan (sub-agent reviewed, 2026-10-17 06:05 UTC).** v70 = v68 (V25) with heliosli's V2 Raptor weights
    (one line; reader stays at V25's 0.008-0.035), commit run pushed. Review: sound as a probe (V2 most likely above V25: heliosli
