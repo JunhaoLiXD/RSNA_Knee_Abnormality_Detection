@@ -507,6 +507,17 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
+1o. **User: keep trying (2026-10-17 ~12:45 UTC); Codex unavailable (no CLI), sub-agent stand-in reviewed options.** The user
+   asked about pushing the per-finding weights further ("the author's extreme parameters"; already tested: v69 = V2 copy, 0
+   witnesses vs v68; v70 = V2 weights on V25, 0.957). Review: decline as a final pick (every own change lost a step, L46-48;
+   weights likely fitted to a few-hundred-study public split); at most one lottery slot on the v69 stack (0.10/0.70/0.90/0.25),
+   pre-declared ineligible for the finals. Ranked probes: (1) **v71 = v68 with uniform 0.5 Raptor weights** (keeps R6, flip,
+   mirror; drops the fitted part; a better hedge B than v61, which also lacks R6 and the mirror); (2) average of v68 and v69
+   outputs, only if it needs no extra runtime; (3) shrunk weights halfway between uniform and V25; (4) R7/S6F0 small adds and
+   (5) byte-equal resubmission: skip. Public rank differences inside the ~780-team 0.958 block (~1e-4) are far below private
+   noise (~3e-3). **Revised final-pick plan: A = v68 (frozen, never edited); B = best of v71 / shrunk-weights v68, v61 only
+   as fallback.** v71 built (one line vs v68), commit run pushed.
+
 1n. **v70 = 0.957 (2026-10-17 12:24 UTC), not adopted; own probes end.** V2's Raptor weights on the mirrored V25 stack cost a
    display step (L48). Best stays **v68 (0.958), rank 461 of ~6,135**, outside silver (cut 306) and inside bronze (cut 613, also
    at 0.958). Summary of Oct 16-17: public-copy improvements over the exact v62 recipe came from V26 (v67, +213) and V25 (v68,
