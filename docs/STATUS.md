@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-17 14:50 UTC (v68 0.958 best, rank 489; v71 (uniform-weight hedge) scoring).
+Last updated: 2026-10-17 20:20 UTC (v68 0.958 best, rank 531/6,151, inside bronze (cut 615); v71 0.957; v72 lottery scoring; v73 at 00:01 UTC).
 
 ## Current phase
 
@@ -506,6 +506,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1q. **v71 = 0.957 (hedge B, as expected); v72 (lottery) submitted 2026-10-17 20:17:07 UTC (ref 57324686).** `17h` -> `17i`:
+   0 / 0. We are rank 531 of 6,151 on v68's 0.958; the 0.958 block is ranks 146-1041, silver cut 307 and bronze cut 615 both at
+   0.958 (bronze margin 84 places and shrinking as copies accumulate). Oct 17 slots used up. v73 submits at 00:01 UTC Oct 18
+   (timer). Public scan 18:54 UTC: the only new 0.958 (kaiwalyaatulraut) is a V25 copy.
 
 1p. **Lottery probes (user, 2026-10-17 ~15:00 UTC: "after v71 scores, keep going; bold lottery options are fine").** Built and
    commit runs pushed: **v72** = v69 (V2 stack) with Raptor weights one further step along heliosli's direction (0.10 / 0.70 /
