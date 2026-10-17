@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-16 20:50 UTC (v67 0.958 best but rank 352, outside silver (cut 305); v65 0.957; v68 at 00:01 UTC Oct 17).
+Last updated: 2026-10-17 00:05 UTC (v67 0.958 best, rank 398, outside silver (cut 305); v68 scoring).
 
 ## Current phase
 
@@ -500,6 +500,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1i. **v68 submitted 2026-10-17 00:01:12 UTC (ref 57287121).** Before-snapshot `17a`: we are rank 398 (v67's 0.958; 0 / 0
+   crossings 16i -> 17a, the slide is other teams rising); 6111 teams; 0.958 block ranks 130-729; silver cut 305 at
+   0.958; 129 teams at >= 0.959. 4 submissions left on Oct 17. Watchers: v68 score (30 min), public top-5 (hourly).
 
 1h. **v65 = 0.957 (not adopted, L47); we fell back out of silver (2026-10-16 20:46 UTC).** `16h` -> `16i`: rank 291 -> 352
    of 6,100+; silver cut rank 305 at 0.958; 0.958 block ranks 126-669; 125 teams at >= 0.959. 61 teams moved above us (59 at
