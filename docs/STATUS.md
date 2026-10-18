@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 00:05 UTC (v68 0.958 best, rank 561; v72 and v73 scoring; 4 slots left today).
+Last updated: 2026-10-18 02:15 UTC (v68 0.958 best, rank 578, 38 above the bronze cut; v72 0.957; v73 scoring).
 
 ## Current phase
 
@@ -506,6 +506,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1s. **v72 (lottery) = 0.957 (2026-10-18 ~02:00 UTC).** More extreme weights on the V2 stack lost a display step (consistent with
+   L46-48). `18b`: rank 578 of ~6,156 (v68's 0.958), silver cut 308, **bronze cut 616: margin 38 places**, sliding ~8 places/hour
+   as copies accumulate. v73 scoring. 4 slots left on Oct 18. Public rank is not the medal (private decides), but staying inside
+   the public bronze line is the user's visible goal.
 
 1r. **v73 submitted 2026-10-18 00:01:13 UTC (ref 57329866), user request.** Before-snapshot `18a`: rank 561 (v68's 0.958;
    0 / 0 since `17i`). v72 (lottery) still scoring. 4 slots left on Oct 18. Analysis of teams above us (2026-10-17 ~22:30 UTC):
