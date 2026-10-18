@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-17 20:20 UTC (v68 0.958 best, rank 531/6,151, inside bronze (cut 615); v71 0.957; v72 lottery scoring; v73 at 00:01 UTC).
+Last updated: 2026-10-18 00:05 UTC (v68 0.958 best, rank 561; v72 and v73 scoring; 4 slots left today).
 
 ## Current phase
 
@@ -506,6 +506,14 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1r. **v73 submitted 2026-10-18 00:01:13 UTC (ref 57329866), user request.** Before-snapshot `18a`: rank 561 (v68's 0.958;
+   0 / 0 since `17i`). v72 (lottery) still scoring. 4 slots left on Oct 18. Analysis of teams above us (2026-10-17 ~22:30 UTC):
+   the 385 teams at 0.958 above us mostly reached 0.958 on Oct 16-17 with the public wave and submit about twice as often
+   (median 43 vs 22 submissions); identical recipes differ by run noise (R6 output ~1e-4, v71), so repeated submissions act as
+   best-of-N draws on the public LB (no private value). Teams at >= 0.959 are almost all private (3% have a public author).
+   Public scan 22:48 UTC: nothing above 0.958. Option offered to the user for the remaining slots: 2-3 re-draws of v68
+   (public-rank only), keeping 1 slot for a higher public recipe.
 
 1q. **v71 = 0.957 (hedge B, as expected); v72 (lottery) submitted 2026-10-17 20:17:07 UTC (ref 57324686).** `17h` -> `17i`:
    0 / 0. We are rank 531 of 6,151 on v68's 0.958; the 0.958 block is ranks 146-1041, silver cut 307 and bronze cut 615 both at
