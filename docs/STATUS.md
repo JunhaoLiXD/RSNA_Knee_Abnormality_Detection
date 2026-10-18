@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 07:50 UTC (v68 0.958 best, rank 637, outside public bronze (cut 616); re-draw 2 no gain; re-draw 3 scoring).
+Last updated: 2026-10-18 10:35 UTC (v68 0.958 best, rank 660, outside public bronze (cut 616); re-draws gave nothing (L49)).
 
 ## Current phase
 
@@ -493,6 +493,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    V25's 0.958. Per-finding weights chosen for one stack do not transfer to a changed stack; with L46/L47, every own change to
    the per-finding R6 recipe lost a display step.
 
+49. **Re-submitting the same notebook did not buy a better public draw** (v68 re-draws 2 and 3): both scored 0.958 with no
+   crossing above the original run, although R6's output varies by ~1e-4 between runs (v71). Run noise exists but is too small
+   (or our first draw was already favourable) to move us inside the 0.958 block; ranking gains of other teams are not explained
+   by re-draws alone.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -506,6 +511,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1w. **v68 re-draw 3 = 0.958, 0 witnesses (2026-10-18 ~10:00 UTC); re-draws end.** Neither re-draw (L49) beat the original v68
+   run. Rank 660 of ~6,164 at `18f` (bronze cut 616, silver 308). 2 slots left today, held for a higher public recipe (standing
+   hand-over authorization, block 1t). Final picks for the Oct 20 discussion: A = v68 (original ref 57287121), B = v71 or v73.
 
 1v. **v68 re-draw 2 = 0.958, 0 witnesses (2026-10-18 ~07:30 UTC).** No higher hidden draw. Rank 637 of ~6,160 at `18e`: **now
    outside the public bronze cut (616)**; silver 308; gold 22 at 0.964. Re-draw 3 scoring. 2 slots left today.
