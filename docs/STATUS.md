@@ -511,6 +511,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    L46-48). `18b`: rank 578 of ~6,156 (v68's 0.958), silver cut 308, **bronze cut 616: margin 38 places**, sliding ~8 places/hour
    as copies accumulate. v73 scoring. 4 slots left on Oct 18. Public rank is not the medal (private decides), but staying inside
    the public bronze line is the user's visible goal.
+   **User decision 02:15 UTC: two staggered re-draws of v68, one slot in reserve.** Re-draw 2 submitted 02:15:26 (ref 57334606,
+   before-snapshot `18b`); re-draw 3 at 04:30 UTC (timer). Same notebook version; a re-draw helps only if its hidden score is
+   higher (equal scores rank later on time).
 
 1r. **v73 submitted 2026-10-18 00:01:13 UTC (ref 57329866), user request.** Before-snapshot `18a`: rank 561 (v68's 0.958;
    0 / 0 since `17i`). v72 (lottery) still scoring. 4 slots left on Oct 18. Analysis of teams above us (2026-10-17 ~22:30 UTC):
