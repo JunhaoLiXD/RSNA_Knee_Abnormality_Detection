@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 10:35 UTC (v68 0.958 best, rank 660, outside public bronze (cut 616); re-draws gave nothing (L49)).
+Last updated: 2026-10-18 13:15 UTC (v68 0.958 best, rank 677; re-draw 4 scoring; 1 slot left today).
 
 ## Current phase
 
@@ -511,6 +511,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1x. **v68 re-draw 4 submitted 2026-10-18 13:12:34 UTC (ref 57355411), user request.** Before-snapshot `18g`: rank 677. Public
+   scan 10:55 UTC: kaiwalyaatulraut/rsna-knee (0.958) is identical to their earlier V25 copy; nothing above 0.958. 1 slot left today.
 
 1w. **v68 re-draw 3 = 0.958, 0 witnesses (2026-10-18 ~10:00 UTC); re-draws end.** Neither re-draw (L49) beat the original v68
    run. Rank 660 of ~6,164 at `18f` (bronze cut 616, silver 308). 2 slots left today, held for a higher public recipe (standing
