@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 05:35 UTC (v68 0.958 best, rank 607, 9 above the bronze cut; v73 0.957; two v68 re-draws scoring).
+Last updated: 2026-10-18 07:50 UTC (v68 0.958 best, rank 637, outside public bronze (cut 616); re-draw 2 no gain; re-draw 3 scoring).
 
 ## Current phase
 
@@ -506,6 +506,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1v. **v68 re-draw 2 = 0.958, 0 witnesses (2026-10-18 ~07:30 UTC).** No higher hidden draw. Rank 637 of ~6,160 at `18e`: **now
+   outside the public bronze cut (616)**; silver 308; gold 22 at 0.964. Re-draw 3 scoring. 2 slots left today.
 
 1u. **v73 = 0.957 (2026-10-18 ~05:00 UTC).** Shrinking the per-finding weights halfway to uniform also loses the display step
    (as v71). Rank 607 of ~6,160 at `18d`, bronze cut 616 (margin 9). v71 and v73 both display 0.957; the leaderboard shows only a
