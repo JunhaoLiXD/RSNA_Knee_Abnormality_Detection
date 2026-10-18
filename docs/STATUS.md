@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 04:35 UTC (v68 0.958 best, rank 600, ~16 above the bronze cut; v73 and two v68 re-draws scoring; user hand-over).
+Last updated: 2026-10-18 05:35 UTC (v68 0.958 best, rank 607, 9 above the bronze cut; v73 0.957; two v68 re-draws scoring).
 
 ## Current phase
 
@@ -506,6 +506,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1u. **v73 = 0.957 (2026-10-18 ~05:00 UTC).** Shrinking the per-finding weights halfway to uniform also loses the display step
+   (as v71). Rank 607 of ~6,160 at `18d`, bronze cut 616 (margin 9). v71 and v73 both display 0.957; the leaderboard shows only a
+   team's best, so their hidden order is not observable. Re-draws 2 and 3 of v68 scoring.
 
 1t. **Re-draw 3 submitted 2026-10-18 04:30:14 UTC (ref 57338423); user hand-over (04:30 UTC): "take over; when a higher public
    recipe appears, copy it and submit to the LB directly".** Standing authorization for this hand-over: a public notebook with a
