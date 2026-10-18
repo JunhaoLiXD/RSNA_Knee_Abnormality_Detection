@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 18:45 UTC (v68 0.958 best, rank 722; re-draw 4 no gain; v74 (own leg) scoring).
+Last updated: 2026-10-18 21:35 UTC (v68 0.958 best, rank 738; v74 own leg 0.957 (L50); all additions lose a step).
 
 ## Current phase
 
@@ -498,6 +498,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    (or our first draw was already favourable) to move us inside the 0.958 block; ranking gains of other teams are not explained
    by re-draws alone.
 
+50. **Our own model did not help the per-finding V25 host** (v74 vs v68): the fold-0 local-view leg (v26 + v29), which lifted the
+   0.950 and 0.954 hosts (v30, v33), lowers V25 by a display step at outer 0.15 although every check passed and its ranks differ
+   from the anchor (Spearman 0.61). A weaker, different model at 0.15 costs more than its diversity adds on this host (cf. L38,
+   L47).
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -511,6 +516,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+2a. **v74 (v68 + our own leg at 0.15) = 0.957 (2026-10-18 ~21:00 UTC), not adopted (L50).** `18i` -> `18j`: 0 / 0; rank 738 of
+   ~6,185 on v68's 0.958 (silver 309, bronze 619). Every addition to the per-finding R6 stack has now lost a display step: v63
+   (v61 anchor), v64/v65 (reader 0.10, R7), v70 (V2 weights), v74 (own leg); weight changes v71/v72/v73 too; re-draws 2-4 gave
+   no gain. Remaining options are lotteries with negative evidence (kitchen-sink R7/S6F0 adds; v68 without the reader). Oct 19
+   slots from 00:00 UTC.
 
 1z. **v74 submitted 2026-10-18 15:00:15 UTC (ref 57358783), before-snapshot `18h` (rank 696).** Commit run: leg used (reference
    and OOF checks pass under torch 2.10; mean Spearman with the v68 anchor 0.61). Staggered ~1.8 h after v68 re-draw 4 (13:12).
