@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 02:15 UTC (v68 0.958 best, rank 578, 38 above the bronze cut; v72 0.957; v73 scoring).
+Last updated: 2026-10-18 04:35 UTC (v68 0.958 best, rank 600, ~16 above the bronze cut; v73 and two v68 re-draws scoring; user hand-over).
 
 ## Current phase
 
@@ -506,6 +506,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1t. **Re-draw 3 submitted 2026-10-18 04:30:14 UTC (ref 57338423); user hand-over (04:30 UTC): "take over; when a higher public
+   recipe appears, copy it and submit to the LB directly".** Standing authorization for this hand-over: a public notebook with a
+   displayed score above our best (> 0.958, or a 0.958 recipe with clear hidden-digit evidence) is pulled, reproduced unchanged
+   (provenance cell; versioned inputs), commit-run audited against the author's output, then submitted without asking. Snapshot
+   `18c`: rank 600 of ~6,159 (v68's 0.958), bronze cut ~616 (margin ~16). Pending: v73, re-draws 2 and 3. 2 slots left on Oct 18
+   (1 reserved for a higher public recipe). Public watcher hourly; full API scan on each wake-up.
 
 1s. **v72 (lottery) = 0.957 (2026-10-18 ~02:00 UTC).** More extreme weights on the V2 stack lost a display step (consistent with
    L46-48). `18b`: rank 578 of ~6,156 (v68's 0.958), silver cut 308, **bronze cut 616: margin 38 places**, sliding ~8 places/hour
