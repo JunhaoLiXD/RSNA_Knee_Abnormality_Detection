@@ -522,6 +522,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    (v61 anchor), v64/v65 (reader 0.10, R7), v70 (V2 weights), v74 (own leg); weight changes v71/v72/v73 too; re-draws 2-4 gave
    no gain. Remaining options are lotteries with negative evidence (kitchen-sink R7/S6F0 adds; v68 without the reader). Oct 19
    slots from 00:00 UTC.
+   **User decision ~21:40 UTC: v75 = v68 without the goodpjw2008 reader (mirror kept), the last structural probe**; built
+   (v68 cells 1-13 unchanged, Part B cells 14-19 removed), commit run pushed; timer submits it at 00:01 UTC Oct 19 after the audit.
 
 1z. **v74 submitted 2026-10-18 15:00:15 UTC (ref 57358783), before-snapshot `18h` (rank 696).** Commit run: leg used (reference
    and OOF checks pass under torch 2.10; mean Spearman with the v68 anchor 0.61). Staggered ~1.8 h after v68 re-draw 4 (13:12).
