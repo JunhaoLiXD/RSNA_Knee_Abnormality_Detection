@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 13:15 UTC (v68 0.958 best, rank 677; re-draw 4 scoring; 1 slot left today).
+Last updated: 2026-10-18 15:05 UTC (v68 0.958 best, rank 696; re-draw 4 and v74 (own leg, D-035) scoring; no slots left today).
 
 ## Current phase
 
@@ -511,6 +511,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+1z. **v74 submitted 2026-10-18 15:00:15 UTC (ref 57358783), before-snapshot `18h` (rank 696).** Commit run: leg used (reference
+   and OOF checks pass under torch 2.10; mean Spearman with the v68 anchor 0.61). Staggered ~1.8 h after v68 re-draw 4 (13:12).
+   All Oct 18 slots used. Next: results of re-draw 4 and v74; Oct 19: 5 slots.
 
 1y. **Structural options after the user asked for non-tuning attempts (2026-10-18 ~13:20 UTC).** (A) v74 = v68 + our own fold-0
    local-view leg (v26/v29, as v33/v39) at outer 0.15 (D-035): sub-agent build verified (v68 cells unchanged; 19 offline
