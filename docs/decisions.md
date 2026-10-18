@@ -3,6 +3,15 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-035 - 2026-10-18 - Reopen our own-model leg as a structural lottery on the V25 host (v74)
+
+**Decision.** The user asked for non-tuning, structurally different attempts that may score badly. Our fold-0 local-view leg
+(v26 + v29 fold 0, the v33/v39 code) is the only model family available to us that differs from the public stack, so D-029's
+closure of the leg line is lifted for one probe: v74 = v68 (goodpjw2008 V25 copy, our best) + the leg at outer rank weight 0.15
+(pre-registered in v25-local-views-design.md), every failure restoring v68's submission byte for byte. Evidence: the leg gained on
+the 0.950 and 0.954 hosts (v30, v33) and nothing on v37 (v39); untested on the per-finding R6 host. Not a final-pick candidate
+unless it crosses above v68 by the usual rule. Cross-label post-processing (STATUS 1y) was rejected offline and is not submitted.
+
 ## D-034 - 2026-10-16 - Full agent takeover; v63 submitted before v62's score; Claude sub-agents replace Codex reviews
 
 **Decision.** The user (2026-10-16 ~03:45 UTC) told the agent to submit v63 at once, to check every 30 minutes whether v62

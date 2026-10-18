@@ -513,7 +513,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 ## Next steps
 
 1y. **Structural options after the user asked for non-tuning attempts (2026-10-18 ~13:20 UTC).** (A) v74 = v68 + our own fold-0
-   local-view leg (v26/v29, as v33/v39) at outer 0.15: sub-agent build in progress. (B) Cross-label post-processing tested offline
+   local-view leg (v26/v29, as v33/v39) at outer 0.15 (D-035): sub-agent build verified (v68 cells unchanged; 19 offline
+   blend tests incl. 14 fallbacks restoring v68 byte for byte; 546 kB); commit run pushed 13:29 UTC. (B) Cross-label post-processing tested offline
    on the v13 N OOF (4,349 studies, scanner-grouped nested CV, soft target at 0.5): clinical pair rules 0 (inner CV picks weight 0;
    any positive weight hurts), pairwise ridge +0.0015 (study CI +0.0007..+0.0022, scanner-cluster CI -0.0002..+0.0029; weights
    mostly negative and unstable), per-label logistic -0.0012; on gold-58 every model (N, CoAtNet, reader, stacks) points down; the
