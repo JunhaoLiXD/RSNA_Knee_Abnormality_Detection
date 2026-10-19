@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-19 04:05 UTC (v68 0.958 best; full takeover; v75 scoring; v76/v77 built; 1 slot/day reserved for public copies).
+Last updated: 2026-10-19 15:25 UTC (v68 0.958 best, rank 846; v75-v78 all no gain (L51); weight probing ends; 1 slot reserved).
 
 ## Current phase
 
@@ -533,7 +533,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    **v76 = 0.957 (10:07 UTC)**: PF OA 0.65 + Synovitis 0.85 on the mirrored stack lose a step, against the hypothesis that the
    mirror favours the Raptor half; likely the source of v70's drop. v77 (opposite direction on Lateral OA/Baker's) scoring.
    **v78** (PF OA 0.55 + Synovitis 0.75, the opposite of v76) submitted 10:18 UTC (ref 57392649, `19f`); last Oct 19 slot reserved.
-   **v77 = 0.957 (12:00 UTC)**: Lateral OA 0.25 + Baker's 0.40 also lose a step (L51). v78 scoring.
+   **v77 = 0.957 (12:00 UTC)**: Lateral OA 0.25 + Baker's 0.40 also lose a step (L51). **v78 = 0.957 (15:18 UTC)**: PF OA/
+   Synovitis toward R6 lose a step too. Weight probing ends: V25's weights are a sharp public optimum in every tested
+   direction. Rank 846 at `19h` (silver 310, bronze 621). Remaining Oct 19 slot stays reserved for a higher public recipe.
    **v75 = 0.958, 0 / 0 (`19b` -> `19c`)**: no gain from dropping the reader; v76/v77 stay on the v68 base. v76 submitted 04:06; v77 at 06:30 UTC (timer).
 
 2c. **GitHub repo stays private until the competition ends (user decision 2026-10-19).** Kaggle's public-sharing rule requires
