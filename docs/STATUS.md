@@ -517,6 +517,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 
 ## Next steps
 
+2c. **GitHub repo stays private until the competition ends (user decision 2026-10-19).** Kaggle's public-sharing rule requires
+   code shared during the competition to be posted on Kaggle as well; the user chose to make
+   `JunhaoLiXD/RSNA_Knee_Abnormality_Detection` public only after the 2026-10-22 deadline (history scanned 2026-10-19: no secrets,
+   no data, no AGENTS.md). After the deadline: switch to public (ask first), then restore the `[code]` link of the RSNA entry in
+   the user's resume (removed while private; updated copy `Downloads/Junhao_Li_Resume_updated.docx`, top-13% figure to be
+   replaced by the private-LB result).
+
 2b. **v75 submitted 2026-10-19 00:01:13 UTC (ref 57372955), before-snapshot `19a` (rank 753).** Commit run: output = v68's
    stage-3 output exactly. 4 slots left on Oct 19. Next: v75 result (~06:00 UTC); Oct 20 final-pick discussion.
 
