@@ -503,6 +503,11 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    from the anchor (Spearman 0.61). A weaker, different model at 0.15 costs more than its diversity adds on this host (cf. L38,
    L47).
 
+51. **V25's per-finding weights sit at a sharp public-LB optimum** (v70, v72, v76, v77 vs v68): every tested move of +-0.05 on
+   two or four findings (toward or away from the Raptor half, on Lateral OA, PF OA, Synovitis, Baker's) displays 0.957 against
+   0.958. A sharp optimum found by the public authors on the public split is what leaderboard fitting looks like; private
+   transfer is unverified, which supports a final hedge without these weights (v71/v73).
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -528,6 +533,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    **v76 = 0.957 (10:07 UTC)**: PF OA 0.65 + Synovitis 0.85 on the mirrored stack lose a step, against the hypothesis that the
    mirror favours the Raptor half; likely the source of v70's drop. v77 (opposite direction on Lateral OA/Baker's) scoring.
    **v78** (PF OA 0.55 + Synovitis 0.75, the opposite of v76) submitted 10:18 UTC (ref 57392649, `19f`); last Oct 19 slot reserved.
+   **v77 = 0.957 (12:00 UTC)**: Lateral OA 0.25 + Baker's 0.40 also lose a step (L51). v78 scoring.
    **v75 = 0.958, 0 / 0 (`19b` -> `19c`)**: no gain from dropping the reader; v76/v77 stay on the v68 base. v76 submitted 04:06; v77 at 06:30 UTC (timer).
 
 2c. **GitHub repo stays private until the competition ends (user decision 2026-10-19).** Kaggle's public-sharing rule requires
