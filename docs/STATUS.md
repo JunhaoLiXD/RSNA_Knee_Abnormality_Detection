@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-19 00:05 UTC (v68 0.958 best, rank 753; v75 (no reader) scoring; 4 slots left today).
+Last updated: 2026-10-19 04:05 UTC (v68 0.958 best; full takeover; v75 scoring; v76/v77 built; 1 slot/day reserved for public copies).
 
 ## Current phase
 
@@ -516,6 +516,15 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+2d. **Full takeover to the deadline (user, 2026-10-19 ~03:40 UTC).** Priority 1: a higher public recipe is reproduced and
+   submitted at once (`scripts/d033/copy_public.py <ref> <vNN> --push`, then `scripts/d033/audit_copy.py <run> <author output>`;
+   public watcher now every 30 min). Priority 2: last attempts, always keeping **one slot per day in reserve** for a higher public
+   recipe. Attempt tool: `scripts/d033/build_weights.py <base> <new> <reason> Finding=w ...` (one weight line changed, asserted).
+   Today's probes (built on v68; rebuilt on v75 if v75 crosses above v68): **v76** = PF OA 0.65 + Synovitis 0.85 (V2's
+   Raptor-raising half only); **v77** = Lateral OA 0.25 + Baker's 0.40 (opposite of V2's Raptor-lowering half; hypothesis: the
+   R224 mirror strengthens the Raptor half, so V2's moves toward R6 hurt on the mirrored stack, cf. v70). Commit runs pushed.
+   Slots on Oct 19: v75 used; v76, v77 planned (staggered); 1 reserved.
 
 2c. **GitHub repo stays private until the competition ends (user decision 2026-10-19).** Kaggle's public-sharing rule requires
    code shared during the competition to be posted on Kaggle as well; the user chose to make
