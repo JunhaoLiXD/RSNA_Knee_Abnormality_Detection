@@ -527,6 +527,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    Slots on Oct 19: v75 used; v76, v77 planned (staggered); 1 reserved.
    **v76 = 0.957 (10:07 UTC)**: PF OA 0.65 + Synovitis 0.85 on the mirrored stack lose a step, against the hypothesis that the
    mirror favours the Raptor half; likely the source of v70's drop. v77 (opposite direction on Lateral OA/Baker's) scoring.
+   **v78** (PF OA 0.55 + Synovitis 0.75, the opposite of v76) submitted 10:18 UTC (ref 57392649, `19f`); last Oct 19 slot reserved.
    **v75 = 0.958, 0 / 0 (`19b` -> `19c`)**: no gain from dropping the reader; v76/v77 stay on the v68 base. v76 submitted 04:06; v77 at 06:30 UTC (timer).
 
 2c. **GitHub repo stays private until the competition ends (user decision 2026-10-19).** Kaggle's public-sharing rule requires
