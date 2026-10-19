@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-19 15:25 UTC (v68 0.958 best, rank 846; v75-v78 all no gain (L51); weight probing ends; 1 slot reserved).
+Last updated: 2026-10-19 23:20 UTC (v68 0.958 best, rank 903; v79 (A224 0.5) scoring; Oct 20: final-pick discussion).
 
 ## Current phase
 
@@ -521,6 +521,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+2e. **Oct 19 evening (UTC).** Rank-slide analysis (17d -> 19i): the 0.958 block grew from 692 to 1,271 teams; 478 teams passed us,
+   322 of them were below 0.958 on Oct 17 (copied the public recipes and landed above us, so their hidden digits are higher) and
+   156 were 0.958 teams that iterated (~9 submissions each); public authors iterate heavily and rank above their public versions
+   (heliosli 198 with 71 submissions, nartaa 394, goodpjw2008 481); our v68 sits about mid-block. evgendvorkin/rsna-versia-7
+   (0.958, 440 votes) = V25 code byte for byte (author's team 989, below us). User: use the last Oct 19 slot: **v79** = v68 with
+   A224 0.35 -> 0.5 (the one untested blend parameter), submitted 23:14 UTC (ref 57412125, `19k`, rank 903).
 
 2d. **Full takeover to the deadline (user, 2026-10-19 ~03:40 UTC).** Priority 1: a higher public recipe is reproduced and
    submitted at once (`scripts/d033/copy_public.py <ref> <vNN> --push`, then `scripts/d033/audit_copy.py <run> <author output>`;
