@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-18 21:35 UTC (v68 0.958 best, rank 738; v74 own leg 0.957 (L50); all additions lose a step).
+Last updated: 2026-10-19 00:05 UTC (v68 0.958 best, rank 753; v75 (no reader) scoring; 4 slots left today).
 
 ## Current phase
 
@@ -516,6 +516,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+2b. **v75 submitted 2026-10-19 00:01:13 UTC (ref 57372955), before-snapshot `19a` (rank 753).** Commit run: output = v68's
+   stage-3 output exactly. 4 slots left on Oct 19. Next: v75 result (~06:00 UTC); Oct 20 final-pick discussion.
 
 2a. **v74 (v68 + our own leg at 0.15) = 0.957 (2026-10-18 ~21:00 UTC), not adopted (L50).** `18i` -> `18j`: 0 / 0; rank 738 of
    ~6,185 on v68's 0.958 (silver 309, bronze 619). Every addition to the per-finding R6 stack has now lost a display step: v63
