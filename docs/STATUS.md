@@ -526,6 +526,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    `20b`, 0 / 0). Built and audited: v80 (A224 0.25), v81 (A224 0.65; dropped since v79 lost), v82 (V26 with R7 0.2). v82
    submitted 05:03 (ref 57422919); v80 at 07:05 UTC (timer); third probe after these; 1+ slot reserved for a higher public recipe.
    Rank 947 at `20b` (silver 312, bronze 625, both 0.958).
+   **v82 = 0.958, 0 / 0 (`20c` -> `20d`)**: not above v68. Rank 985. v80 scoring.
 
 2e. **Oct 19 evening (UTC).** Rank-slide analysis (17d -> 19i): the 0.958 block grew from 692 to 1,271 teams; 478 teams passed us,
    322 of them were below 0.958 on Oct 17 (copied the public recipes and landed above us, so their hidden digits are higher) and
