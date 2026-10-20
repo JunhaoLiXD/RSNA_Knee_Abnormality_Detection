@@ -531,6 +531,7 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
    224-px CoAtNet in the Raptor half (v79 at 0.5 lost a step). Next: v83 = A224 0.15 (same direction), commit run pushed; then
    possibly 0.0 / 0.10 (R384 alone in the Raptor half) depending on v83. Final-pick candidate A becomes v80 (L52).
+   **v83 (A224 0.15) = 0.958, 0 / 0 (`20f` -> `20g`)**: not above v80. **v84 (A224 0.20)** submitted 19:48 UTC (ref 57451463, `20h`). Last Oct 20 slot reserved.
 
 2f. **Oct 20 (user: full takeover, use 3 slots on probes of my choosing, keep monitoring).** v79 (A224 0.5) = 0.957 (`20a` ->
    `20b`, 0 / 0). Built and audited: v80 (A224 0.25), v81 (A224 0.65; dropped since v79 lost), v82 (V26 with R7 0.2). v82
