@@ -6,11 +6,11 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-20 05:50 UTC (v68 0.958 best, rank 947; v79 0.957; v82 scoring; v80 at 07:05).
+Last updated: 2026-10-20 13:15 UTC (v80 adopted: A224 0.25, +265 witnesses, rank 693; v83 (A224 0.15) commit run).
 
 ## Current phase
 
-**2026-10-17 12:30 UTC: best is v68 (goodpjw2008 V25 copy), public 0.958, rank 461 of ~6,135; silver cut 306 and bronze cut 613 both at 0.958; see block 1n.**
+**2026-10-20 13:05 UTC: best is v80 (v68 with A224 0.25), public 0.958, rank 693 of 6,265; silver cut 313 and bronze cut 626 both at 0.958; see block 2g.**
 
 **Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best was
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
@@ -84,6 +84,7 @@ against the 4-source soft targets rounded at 0.5. Gold = macro AUC on the 58 gol
 | v54 | 2026-10-14 | submit (D-033) | v53 + anatomical mirror TTA on R224; R7 flip-TTA and reader retained | inherited best; baseline outputs retained in `results/v54/run1` | 0.956 | former incumbent (+44 stable witnesses over v53, L41); superseded by v61 |
 | v61 | 2026-10-15 | submit (D-033) | v54 + nartaa's all-data S6 (S6F0) at 0.35 of the ConvNeXt slot | commit run re-audited: S6F 3/3, used at 0.35; reader used; blend recomputed | **0.957** | **adopted over v54**: 37 stable positive / 0 reverse witnesses (`15d` -> `15e`), persistence pending; ref 57233540 COMPLETE; rank 441/6,047, silver cut 302 |
 | v62 | 2026-10-16 | submit (D-033) | heliosli's public 0.958 notebook unchanged: R384 + R224 (0.65/0.35), R6 `fe055406fad6a12f` flip-TTA, per-finding rank weights | commit run: raptor/raptor224/ours/submission SHA-256 equal the author's; receipts PASS | **0.958** | **adopted over v61: 191 stable witnesses, 0 reverse (`16a` -> `16c`); rank 449 -> 195 of 6,065, inside silver (cut rank 303)**; ref 57249396 |
+| v80 | 2026-10-20 | submit (D-034) | v68 with A224 (224-px CoAtNet share of the Raptor half) 0.35 -> 0.25 | commit run audited | **0.958** | **adopted over v68: 265 stable witnesses, 0 reverse (`20d` -> `20e`); rank 693 of 6,265**; ref 57427109 |
 | v68 | 2026-10-17 | public copy (D-034) | goodpjw2008's public 0.958 V27 (= V25 recipe: per-finding weights, R224 mirror, R6 alone, tiny reader) unchanged | commit run byte-equal to the author's | **0.958** | **adopted over v67: 74 stable witnesses, 0 reverse (`17c` -> `17d`); rank 387 of 6,121 (outside silver, cut ~306)**; ref 57287121 |
 | v67 | 2026-10-16 | public copy (D-034) | goodpjw2008's public 0.958 notebook (V26) unchanged: per-finding weights, mirrored R224, R6 0.6 + R7 0.4, tiny reader | provenance cell only; author cells identical; validator passes | **0.958** | **adopted over v62: 213 stable witnesses, 0 reverse (`16g` -> `16h`); rank 507 -> 291 of 6,100, inside silver (cut 305)**; ref 57268665 |
 | v64 | 2026-10-16 | submit candidate (D-034) | v63 with anchor weight 0: v62 recipe (R384 + mirrored R224 + R6, per-finding weights) then the reader at 0.10; v61 fallback | built from the v63 builder; 3 cells differ from v63; validator passes; sub-agent review: no blocker | 0.957 | **not above v62** (`16f` -> `16g`: 0 / 0); ref 57266285; reader 0.10 suspected (L47) |
@@ -508,6 +509,10 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    0.958. A sharp optimum found by the public authors on the public split is what leaderboard fitting looks like; private
    transfer is unverified, which supports a final hedge without these weights (v71/v73).
 
+52. **A smaller share of the 224-px CoAtNet helped the V25 stack** (v80 vs v68, v79): A224 0.25 crosses above v68 by 265 stable
+   witnesses, while 0.5 loses a display step. Unlike the per-finding weights (L51), the Raptor-slot mix still had room; the 0.35
+   inherited from the unmirrored era was not optimal for the mirrored R224.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -521,6 +526,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
+   `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
+   224-px CoAtNet in the Raptor half (v79 at 0.5 lost a step). Next: v83 = A224 0.15 (same direction), commit run pushed; then
+   possibly 0.0 / 0.10 (R384 alone in the Raptor half) depending on v83. Final-pick candidate A becomes v80 (L52).
 
 2f. **Oct 20 (user: full takeover, use 3 slots on probes of my choosing, keep monitoring).** v79 (A224 0.5) = 0.957 (`20a` ->
    `20b`, 0 / 0). Built and audited: v80 (A224 0.25), v81 (A224 0.65; dropped since v79 lost), v82 (V26 with R7 0.2). v82
