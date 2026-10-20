@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-19 23:20 UTC (v68 0.958 best, rank 903; v79 (A224 0.5) scoring; Oct 20: final-pick discussion).
+Last updated: 2026-10-20 05:50 UTC (v68 0.958 best, rank 947; v79 0.957; v82 scoring; v80 at 07:05).
 
 ## Current phase
 
@@ -521,6 +521,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+2f. **Oct 20 (user: full takeover, use 3 slots on probes of my choosing, keep monitoring).** v79 (A224 0.5) = 0.957 (`20a` ->
+   `20b`, 0 / 0). Built and audited: v80 (A224 0.25), v81 (A224 0.65; dropped since v79 lost), v82 (V26 with R7 0.2). v82
+   submitted 05:03 (ref 57422919); v80 at 07:05 UTC (timer); third probe after these; 1+ slot reserved for a higher public recipe.
+   Rank 947 at `20b` (silver 312, bronze 625, both 0.958).
 
 2e. **Oct 19 evening (UTC).** Rank-slide analysis (17d -> 19i): the 0.958 block grew from 692 to 1,271 teams; 478 teams passed us,
    322 of them were below 0.958 on Oct 17 (copied the public recipes and landed above us, so their hidden digits are higher) and
