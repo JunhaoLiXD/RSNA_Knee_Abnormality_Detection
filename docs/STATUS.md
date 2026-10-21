@@ -542,7 +542,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    3 h, push two experiments of the agent's choice. Public check 03:55 UTC: nothing above 0.958 (only new entry in the top 12:
    picond's 0.9576 R6 copy of Oct 15); evgendvorkin/rsna-versia-7 re-run Oct 20 is still V25 code byte for byte. Built and
    validated (from v82, one or two lines): **v86** = v80 + R7 0.2 of the compact slot (candidate A); **v87** = v85 + R7 0.2
-   (uniform weights, candidate B). Commit runs at ~06:50 UTC, then audit and submit (Oct 21: 4 slots, 1 reserve). v85 scoring.
+   (uniform weights, candidate B). Commit runs at ~06:50 UTC, then audit and submit (Oct 21: 4 slots, 1 reserve). **v85 = 0.957** (06:00 UTC), as v71.
+   User (04:40 UTC): no non-OAI hedge (public scan: every >= 0.950 public recipe uses the OAI CoAtNet).
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
