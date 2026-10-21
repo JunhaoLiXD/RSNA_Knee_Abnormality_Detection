@@ -549,6 +549,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    (ref 57474956, `21d`, rank 758)**; `21c` -> `21d`: 0 / 0. Oct 21: 2 slots left (1 reserve).
    **v86 (v80 + R7 0.2) = 0.958, 0 / 0 (`21d` -> `21e`, 13:10 UTC; v87 pending, clean read): not above v80.** R7 at 0.2 neither
    gains nor loses a display step on the V25 stack (as on V26, v82). v80 stays best; rank 767 of ~6,306 (silver 315, bronze 631).
+   **v87 = 0.957 (15:10 UTC)**, as v71/v85. **Final-pair recommendation (to the user, 2026-10-21): A = v80 (ref 57427109; the
+   only 0.958 entry with crossing evidence, L52), B = v87 (ref 57474956; uniform weights hedge the public-fitted per-finding weights,
+   L51, and keeps A224 0.25 plus R7; fallback v85).** Selection is manual on the Submissions page by 2026-10-22 23:59 UTC (user).
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
