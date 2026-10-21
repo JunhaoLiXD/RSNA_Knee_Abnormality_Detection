@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-20 13:15 UTC (v80 adopted: A224 0.25, +265 witnesses, rank 693; v83 (A224 0.15) commit run).
+Last updated: 2026-10-21 00:15 UTC (v85 = v71 hedge with A224 0.25 submitted; v84 still scoring).
 
 ## Current phase
 
@@ -532,6 +532,10 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    224-px CoAtNet in the Raptor half (v79 at 0.5 lost a step). Next: v83 = A224 0.15 (same direction), commit run pushed; then
    possibly 0.0 / 0.10 (R384 alone in the Raptor half) depending on v83. Final-pick candidate A becomes v80 (L52).
    **v83 (A224 0.15) = 0.958, 0 / 0 (`20f` -> `20g`)**: not above v80. **v84 (A224 0.20)** submitted 19:48 UTC (ref 57451463, `20h`). Last Oct 20 slot reserved.
+   **v85 = v71 (uniform-weight hedge B) with A224 0.25**, built 10-20, audited and submitted by user request 2026-10-21 00:08:53
+   UTC (ref 57457762, before-snapshot `21a`, rank 741; silver 314, bronze 629, both 0.958). Purpose: a better hedge B for the final pair
+   (keeps v80's structural gain, drops the per-finding weights, L51/L52). v84 still pending: if both display 0.958 the crossings are
+   not separable. Oct 20 reserve slot unused; Oct 21: 4 slots left.
 
 2f. **Oct 20 (user: full takeover, use 3 slots on probes of my choosing, keep monitoring).** v79 (A224 0.5) = 0.957 (`20a` ->
    `20b`, 0 / 0). Built and audited: v80 (A224 0.25), v81 (A224 0.65; dropped since v79 lost), v82 (V26 with R7 0.2). v82
