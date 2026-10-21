@@ -20,6 +20,10 @@ A second compact training is expected to reduce dependence on one model on the p
 recomputed), then submitted (2 of the 4 Oct 21 slots; 1 reserve). Background watchers (public notebooks, our scoring) allowed
 for this hand-over. Final pair with the user before the deadline: A = v80 or v86, B = v87, v85 or v71.
 
+**Addendum 2026-10-21 ~04:40 UTC.** The public scan (`docs/research/public-landscape-2026-10-21.md`) found no public recipe
+at >= 0.950 without the OAI CoAtNet. Offered a non-OAI hedge (compact-only R6 + R7 + reader, or v15); the user declined:
+they expect OAI not to be banned. The final pair hedges only the per-finding-weight risk (B = v87/v85/v71).
+
 ## D-035 - 2026-10-18 - Reopen our own-model leg as a structural lottery on the V25 host (v74)
 
 **Decision.** The user asked for non-tuning, structurally different attempts that may score badly. Our fold-0 local-view leg
