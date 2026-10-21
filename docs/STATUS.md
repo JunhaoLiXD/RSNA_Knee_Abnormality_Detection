@@ -552,6 +552,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    **v87 = 0.957 (15:10 UTC)**, as v71/v85. **Final-pair recommendation (to the user, 2026-10-21): A = v80 (ref 57427109; the
    only 0.958 entry with crossing evidence, L52), B = v87 (ref 57474956; uniform weights hedge the public-fitted per-finding weights,
    L51, and keeps A224 0.25 plus R7; fallback v85).** Selection is manual on the Submissions page by 2026-10-22 23:59 UTC (user).
+   **User selected v80 + v87 (2026-10-21).** Then (user): keep the public watcher; one more probe **v88 = v80 with A224 0.30**
+   (completes the sweep), audited and submitted 17:32:14 UTC (ref 57491731, `21g`, rank 779). Adopt only by crossing above v80.
+   Oct 21: 1 slot left.
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
