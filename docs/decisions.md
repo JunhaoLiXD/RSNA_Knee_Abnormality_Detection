@@ -3,6 +3,23 @@
 Record decisions that change project direction, conventions, or architecture. Newest
 first. Each entry: ID, date, decision, reason, consequences.
 
+## D-036 - 2026-10-21 - Final hand-over: copy higher public recipes; after 3 h without one, two R7 experiments (v86, v87)
+
+**Decision.** The user (2026-10-21 ~03:50 UTC) handed over full control again: keep watching, reproduce and submit any higher
+public recipe at once (the 10-18/10-19 standing rule), and if none appears within 3 h, push two experiments of the agent's
+choosing (not necessarily weight tuning). Chosen, built from v82 with one or two lines changed:
+- `v86` = v80 + heliosli's R7 at 0.2 of the compact slot (R6 0.8). Final-pick A candidate if it crosses above v80.
+- `v87` = v85 (uniform Raptor weights, A224 0.25) + R7 at 0.2. Final-pick B candidate (most private-robust variant).
+
+**Reason.** Per-finding weight moves are exhausted (L51), the A224 sweep ended at 0.25 (v83, v84), and every weaker addition
+lost a step (L38, L47, L50). R7 is the one verified, independent, already attached model left: at 0.2 it kept V26's display
+step (v82, 0 / 0 vs v68) while R7 at 0.4 and R7 flip-TTA (goodpjw2008 V26/V23) were below V25; S6 next to R6 displayed 0.957.
+A second compact training is expected to reduce dependence on one model on the private split; public effect likely 0 / 0.
+
+**Consequences.** Commit runs (about 21 min each, 3.4 GPU h left of 30) are pushed at ~06:50 UTC, audited (stage-3
+recomputed), then submitted (2 of the 4 Oct 21 slots; 1 reserve). Background watchers (public notebooks, our scoring) allowed
+for this hand-over. Final pair with the user before the deadline: A = v80 or v86, B = v87, v85 or v71.
+
 ## D-035 - 2026-10-18 - Reopen our own-model leg as a structural lottery on the V25 host (v74)
 
 **Decision.** The user asked for non-tuning, structurally different attempts that may score badly. Our fold-0 local-view leg

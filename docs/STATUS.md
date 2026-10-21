@@ -538,6 +538,12 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    comparison and attribution limits: `docs/research/final-picks-2026-10-20.md`; hashes/evidence in
    `results/v80/final_audit_20261021T0031Z.json`. No probe, training, submission, or selection mutation in this wakeup.
 
+2h. **Final hand-over (user, 2026-10-21 ~03:50 UTC, D-036).** Watch; copy a higher public recipe at once; if none appears in
+   3 h, push two experiments of the agent's choice. Public check 03:55 UTC: nothing above 0.958 (only new entry in the top 12:
+   picond's 0.9576 R6 copy of Oct 15); evgendvorkin/rsna-versia-7 re-run Oct 20 is still V25 code byte for byte. Built and
+   validated (from v82, one or two lines): **v86** = v80 + R7 0.2 of the compact slot (candidate A); **v87** = v85 + R7 0.2
+   (uniform weights, candidate B). Commit runs at ~06:50 UTC, then audit and submit (Oct 21: 4 slots, 1 reserve). v85 scoring.
+
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
    224-px CoAtNet in the Raptor half (v79 at 0.5 lost a step). Next: v83 = A224 0.15 (same direction), commit run pushed; then
