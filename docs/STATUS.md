@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-21 00:15 UTC (v85 = v71 hedge with A224 0.25 submitted; v84 still scoring).
+Last updated: 2026-10-21 00:33 UTC (final-pick audit: Kaggle already selects v80 + v71; v80 persistence 154/154 still below, zero reversed; rank 742/6,298; v84/v85 pending).
 
 ## Current phase
 
@@ -526,6 +526,17 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
 - Attention pooling over all slots versus simpler per-slot pooling; not ablated.
 
 ## Next steps
+
+2h. **Final-pick heartbeat, 2026-10-20 EDT / 2026-10-21 ~00:35 UTC.** Actual Kaggle selected-submission filter returns
+   **v80 (57427109, COMPLETE 0.958) + v71 (57315112, COMPLETE 0.957)**; selections were not changed. v84 (57451463) and
+   v85 (57457762) remain PENDING. Snapshot `2026-10-21T0032Z` (captured 00:31:18 UTC): **rank 742/6,298**, silver 314,
+   bronze 629, both 0.958. Original v80 gain (`20d` -> `20e`): 265 witnesses; 154 unchanged survivors, all 154 still below,
+   0 reversed, 111 excluded. Persistence confirmed. Original v61's 37 all changed; zero survivors is inconclusive, not a pass.
+   Four contender notebooks validate; local commit CSV format and R6 receipts pass (3 placeholder studies only). Exact remote
+   source API returned 403, so pinned remote source parity was not established. Recommend retaining the current pair until
+   pending results and user discussion; B hedges the main per-finding blend vector, not shared OAI/R6/anchor risks. Detailed
+   comparison and attribution limits: `docs/research/final-picks-2026-10-20.md`; hashes/evidence in
+   `results/v80/final_audit_20261021T0031Z.json`. No probe, training, submission, or selection mutation in this wakeup.
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
