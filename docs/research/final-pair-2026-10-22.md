@@ -3,7 +3,8 @@
 - Date: 2026-10-22 (deadline 23:59 UTC); D-036, STATUS block 2h, lessons L51-L53.
 - Question (user): which two submissions to select so that the pair is strong and the two hedge each other.
 - Kaggle scores a team by the better of its two selected submissions on the private split; the public split is the only
-  feedback we have. Public differences inside the 0.958 block are ~1e-4; private noise is ~3e-3.
+  feedback we have. Public differences inside the 0.958 block are ~1e-4; the private-split uncertainty of a difference
+  between two highly correlated entries is not quantified here (the earlier ~3e-3 figure was a rough guess, see review 1).
 
 ## Evidence
 
@@ -49,7 +50,7 @@ A pair hedges best when the two picks differ in the risks that are both plausibl
   settings moving the same way makes "public-specific" (risk 2) less likely than a single crossing would.
 - **Runtime risk is settled for scored entries.** v91 errored on the runtime limit; v90 and v93 completed, and a code
   competition computes public and private scores in the same run, so a completed pick cannot time out later.
-- v93 is not above v90 (0 / 0), so on public v93 <= v90 inside the 0.958 block.
+- v93 shows no crossing against v90 (0 / 0): no evidence that it is above v90 on public (not a proof that it is below).
 
 ## Recommendation
 
@@ -65,6 +66,19 @@ deadline.
 - Alternatives considered: v90 + v87 (hedges both risks, but B is weaker on every observable); v90 + v80 (hedges only the
   fusion, keeps the fitted weights in both); v90 + v89 (two near-identical stacks, little hedge).
 
-## Review (Codex)
+## Review (Codex, GPT-6 Astra, effort high, read-only, 2026-10-22 ~20:00 UTC)
 
-PENDING.
+Codex re-ran the crossings (v89 43 / 0, v90 309 / 0, v93 0 / 0: equal to ours) and read the stage-3 code. Its pick:
+**A = v90, B = v93, medium confidence**; second choice v90 + v87 if both risks must be covered.
+
+| # | Finding | Verified | Disposition |
+|---|---|---|---|
+| 1 | 309 witnesses are not 309 independent validations; both stacks use the same public labels, so public selection bias is not excluded; "0 / 0 means v93 <= v90" is too strong; the ~3e-3 private noise figure is unsupported | Yes (reasoning; wording in this doc) | **Accepted**: wording corrected above. The direction of the recommendation does not change. |
+| 2 | v93 (and v87, v82, v86) fallback defect: when R6 fails on a study, R7's fill of the compact side is overwritten by `b[our_fail] = rr[our_fail]`; if R384 and R6 both fail, the row gets 0.0 even when R7 scored it | Yes (`notebooks/v93-submit.ipynb` cell 16 blend loop) | **Accepted as a real defect, low impact**: it only touches studies R6 fails on (0 in every commit run, receipts PASS); such rows fall back to the Raptor side as in v90. It weakens the R7 part of the hedge on failed rows only and exists in v87 too, so it does not favour another B. Not fixable before the deadline (no slots). |
+| 3 | +-14 logits are not a reason to reject z-logit: standardisation uses the whole test set (the private split is a subset scored from the same run), the mean shift is order-neutral and the logit temperature cancels in the sd; the real risk is a few over-confident errors and the sd changing with case mix | Yes (code: `zlogit_on` standardises over all non-failed test rows) | **Accepted**: the fusion risk is real but unquantified; rank fusion would hedge it at the cost of the observed gain. |
+| 4 | v93 is a substantive hedge for the per-finding weights (Lateral OA / PF OA / Synovitis / Baker's 0.20 / 0.60 / 0.80 / 0.35 -> 0.50; R7 about 10 % of the pre-fusion weight), not for a common z-logit failure | Yes | **Accepted**; matches the "not hedged" line of the recommendation. |
+| 5 | `pct(b)` keeps the fused order; Part B (reader at 0.003-0.035) re-ranks without undoing it; the both-failed centre 0.0 is not necessarily the median; the reader subprocess has no hard timeout (the 8.2 h check only gates its start), a plausible but unproven cause of v91's timeout; completed entries are unaffected | Yes | **Accepted**; no action (completed picks cannot time out). |
+| 6 | Replace A by v94 only on a clean crossing that meets the >= 20 / 0 rule; do not select v90 + v94 together (no hedge); do not change scored code now | - | **Accepted**. |
+
+**Final recommendation (after review): A = v90 (57510370), B = v93 (57522487).** If v94 scores before the deadline and
+crosses above v90 by >= 20 stable witnesses with 0 reverse, A = v94 and B stays v93.

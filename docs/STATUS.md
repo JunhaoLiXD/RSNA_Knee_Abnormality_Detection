@@ -592,6 +592,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    `22i`, rank 445)**; 5 of 5 Oct 22 slots used. Pending: v91, v94, v93.
    **v93 (hedge with z-logit) = 0.958 (17:22 UTC), 0 / 0 vs v90 (`22i` -> `22j`)**: the uniform-weight hedge now shows 0.958
    (v71/v85/v87: 0.957), so the fusion gain carries over to the hedge. Rank 448 (silver 319, bronze 639). Pending: v91, v94.
+   **v91 = scoring error (19:37 UTC): hidden-test runtime limit exceeded**, no score (stage 3 adds only seconds; runtime
+   variance on a ~9 h pipeline; v90/v93 completed, so they cannot time out). **Final pair after a Codex review (GPT-6 Astra, read-
+   only; `docs/research/final-pair-2026-10-22.md`): A = v90, B = v93**; v94 replaces A only on a clean >= 20 / 0 crossing. Codex
+   found a low-impact fallback defect shared by v82/v86/v87/v93 (R7's fill is overwritten on rows R6 fails; 0 such rows in any
+   commit run).
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
