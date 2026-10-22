@@ -555,6 +555,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    **User selected v80 + v87 (2026-10-21).** Then (user): keep the public watcher; one more probe **v88 = v80 with A224 0.30**
    (completes the sweep), audited and submitted 17:32:14 UTC (ref 57491731, `21g`, rank 779). Adopt only by crossing above v80.
    Oct 21: 1 slot left.
+   **v88 = 0.958, 0 / 0 (`21g` -> `22a`, 02:34 UTC Oct 22): not above v80.** A224 sweep complete: 0.15/0.20/0.30 tie v80 (0.25),
+   0.50 loses a step, 0.35 is v68 (265 below v80). Final pair stays **v80 + v87** (selected). Rank 801 of ~6,326 (silver 317,
+   bronze 635). No further probes planned; public watcher to Oct 22 20:00 UTC.
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
