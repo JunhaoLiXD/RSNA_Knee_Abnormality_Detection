@@ -565,8 +565,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    (standardised logits of R384 raw and R6, Gaussian rank for R224 which is saved as ranks); output back to a percentile rank.
    Offline: the harness reproduces v80's stage 3 exactly (0.0); synthetic 500 studies with R384/R6/both failures pass, independent
    Gaussian recompute 0.0, mean Spearman vs v80 0.999. Commit runs pushed 03:43 UTC; submit staggered after audit.
-   Both audited (offline re-execution = run 0.0). **v89 submitted 03:56:19 UTC (ref 57508576, `22b`, rank 802)**; v90 by timer
-   ~04:56 UTC after `22c`. Oct 22 slots after v90: 3 (agent's cap 5).
+   Both audited (offline re-execution = run 0.0). **v89 submitted 03:56:19 UTC (ref 57508576, `22b`, rank 802)**; **v90 submitted 04:56:39 UTC
+   by timer (ref 57510370, `22c`, rank 804)**; `22b` -> `22c`: 0 / 0. Oct 22: 3 slots left (agent's cap 5, 2 used).
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
