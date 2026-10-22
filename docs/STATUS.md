@@ -590,6 +590,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    by this test and fixed before any push. Commit runs pushed 10:33 UTC.
    Both audited. **v94 submitted 10:49:52 UTC (ref 57521503, `22h`, rank 444)**; **v93 submitted 11:20:11 UTC by timer (ref 57522487,
    `22i`, rank 445)**; 5 of 5 Oct 22 slots used. Pending: v91, v94, v93.
+   **v93 (hedge with z-logit) = 0.958 (17:22 UTC), 0 / 0 vs v90 (`22i` -> `22j`)**: the uniform-weight hedge now shows 0.958
+   (v71/v85/v87: 0.957), so the fusion gain carries over to the hedge. Rank 448 (silver 319, bronze 639). Pending: v91, v94.
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
