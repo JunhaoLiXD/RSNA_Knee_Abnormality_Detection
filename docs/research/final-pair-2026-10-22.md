@@ -15,8 +15,8 @@
 | v86 | v80 + R7 0.2 | 0.958 | none above v80 (0 / 0) |
 | v89 | v80 with Gaussian-rank fusion | 0.958 | above v80 (+43) |
 | **v90** | v80 with z-logit fusion (R384 raw and R6 as standardised logits, R224 Gaussian rank) | 0.958 | **above v89 (+309); rank 444** |
-| v91 | v80 with logistic-rank fusion | RESULT_V91 | RESULT_V91_X |
-| v94 | v90 with R224 probabilities as z-logit too | RESULT_V94 | RESULT_V94_X |
+| v91 | v80 with logistic-rank fusion | **error** | hidden-test run exceeded the runtime limit (no score); stage 3 differs from v80 only by a rank transform (seconds), so most likely runtime variance on a pipeline already near 9 h (v88 took ~9 h to score) |
+| v94 | v90 with R224 probabilities as z-logit too | pending at 19:40 UTC | same pipeline as v90, also exposed to the runtime limit |
 | v71 / v85 / v87 | uniform Raptor weights (v87: + A224 0.25, R7 0.2) | 0.957 | not observable (below our best) |
 | v93 | v87 with z-logit fusion (R7 z-logit too) | **0.958** | not above v90 (0 / 0, `22i` -> `22j`); first uniform-weight entry at 0.958 |
 
@@ -42,9 +42,28 @@ A pair hedges best when the two picks differ in the risks that are both plausibl
 | v90 + v80 | not hedged | hedged | v80 = v90 without the fusion change only |
 | v94 / v91 variants | as v90 | as v90 | only if they cross above v90 |
 
+## Additional facts (2026-10-22 19:40 UTC)
+
+- **The fusion gain is not specific to one stack.** z-logit lifted the per-finding stack (v80 -> v89 +43 -> v90 +309) and
+  the uniform-weight stack (v87 0.957 -> v93 0.958, the first uniform entry to reach the 0.958 display). Two different weight
+  settings moving the same way makes "public-specific" (risk 2) less likely than a single crossing would.
+- **Runtime risk is settled for scored entries.** v91 errored on the runtime limit; v90 and v93 completed, and a code
+  competition computes public and private scores in the same run, so a completed pick cannot time out later.
+- v93 is not above v90 (0 / 0), so on public v93 <= v90 inside the 0.958 block.
+
 ## Recommendation
 
-PENDING the three results. Draft before results: A = v90 (or v94 if it crosses above v90), B = v93 if it scores normally.
+**A = v90 (ref 57510370), B = v93 (ref 57522487).** v94 replaces A only if it scores and crosses above v90 before the
+deadline.
+
+- A carries every public gain we have evidence for (A224 0.25 +265, fusion +43 +309).
+- B differs from A in the per-finding weights, the one choice with sharp-optimum evidence of public fitting (L51), and adds
+  R7 (a second compact training): if the weights were fitted to the public split, B is the pick that does not depend on
+  them. B keeps the fusion gain, which now has support on two stacks, so the hedge no longer costs a display step.
+- Not hedged: the fusion itself (both picks use z-logit). Hedging it would mean B = v87 (rank fusion), which gives up the
+  gain on the uniform stack (0.957 vs 0.958) to protect against a risk the second stack's result makes less likely.
+- Alternatives considered: v90 + v87 (hedges both risks, but B is weaker on every observable); v90 + v80 (hedges only the
+  fusion, keeps the fitted weights in both); v90 + v89 (two near-identical stacks, little hedge).
 
 ## Review (Codex)
 
