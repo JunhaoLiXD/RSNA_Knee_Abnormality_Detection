@@ -588,8 +588,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    as z-logit (falls back to v90 if missing or inconsistent). Offline: v93 exact (3.3e-8); v94 = v90 without the file (0.0), exact
    with a consistent file, falls back on an inconsistent one; a bug (renaming FUSION switched R384/R6 back to Gaussian) was caught
    by this test and fixed before any push. Commit runs pushed 10:33 UTC.
-   Both audited. **v94 submitted 10:49:52 UTC (ref 57521503, `22h`, rank 444)**; v93 by timer ~11:20 UTC after `22i` (last slot,
-   5 of 5 used). Pending: v91, v94, v93.
+   Both audited. **v94 submitted 10:49:52 UTC (ref 57521503, `22h`, rank 444)**; **v93 submitted 11:20:11 UTC by timer (ref 57522487,
+   `22i`, rank 445)**; 5 of 5 Oct 22 slots used. Pending: v91, v94, v93.
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
