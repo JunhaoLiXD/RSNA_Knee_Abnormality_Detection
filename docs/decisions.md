@@ -24,6 +24,10 @@ for this hand-over. Final pair with the user before the deadline: A = v80 or v86
 at >= 0.950 without the OAI CoAtNet. Offered a non-OAI hedge (compact-only R6 + R7 + reader, or v15); the user declined:
 they expect OAI not to be banned. The final pair hedges only the per-finding-weight risk (B = v87/v85/v71).
 
+**Addendum 2026-10-22 ~02:50 UTC.** Final pair v80 + v87 selected by the user. User: keep watching and take over fully;
+submit anything the agent judges valuable without asking, **at most 3 submissions on Oct 22**. Changing the final
+selection stays with the user (the agent notifies them if a new submission should replace a pick).
+
 ## D-035 - 2026-10-18 - Reopen our own-model leg as a structural lottery on the V25 host (v74)
 
 **Decision.** The user asked for non-tuning, structurally different attempts that may score badly. Our fold-0 local-view leg
