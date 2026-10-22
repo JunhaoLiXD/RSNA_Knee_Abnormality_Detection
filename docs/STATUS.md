@@ -560,6 +560,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    bronze 635). No further probes planned; public watcher to Oct 22 20:00 UTC.
    **Oct 22 ~02:50 UTC: full takeover (user), at most 3 submissions today; public scan 02:44 UTC: nothing above 0.958, no new
    scored notebook since Oct 20.** Re-selection of the final pair stays with the user.
+   **User (~03:00 UTC): try the untested fusion function; keep going if it gains; up to 5 submissions today, agent decides.**
+   Built from v80 (cell 13 only): **v89** = Gaussian-rank fusion (inverse-normal of each model's rank), **v90** = z-logit fusion
+   (standardised logits of R384 raw and R6, Gaussian rank for R224 which is saved as ranks); output back to a percentile rank.
+   Offline: the harness reproduces v80's stage 3 exactly (0.0); synthetic 500 studies with R384/R6/both failures pass, independent
+   Gaussian recompute 0.0, mean Spearman vs v80 0.999. Commit runs pushed 03:43 UTC; submit staggered after audit.
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
