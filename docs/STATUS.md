@@ -578,6 +578,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    re-select A = v89 (ref 57508576). Follow-ups built from the same change, offline exact (3.3e-8) and synthetic failure tests
    pass, commit runs pushed ~10:00 UTC: **v91** = v80 with logistic-rank fusion (heavier tails, continues the direction);
    **v92** = v87 (hedge B) with v89's Gaussian fusion (B carries the gain).
+   Both audited (offline re-execution = run 0.0). **v91 submitted 10:14:22 UTC (ref 57520364, `22e`, rank 757)**; v92 by timer
+   ~10:44 UTC after `22f`. Oct 22: after v92, 1 slot left (cap 5).
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
