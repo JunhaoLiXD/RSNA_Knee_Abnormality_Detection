@@ -10,7 +10,7 @@ Last updated: 2026-10-21 00:33 UTC (final-pick audit: Kaggle already selects v80
 
 ## Current phase
 
-**2026-10-22 09:58 UTC: best is v89 (v80 with Gaussian-rank fusion), public 0.958, rank 757 of ~6,359; silver cut 318 and bronze cut 636 both at 0.958; see block 2h. Final pair to re-select: v89 + v87 (or v92).**
+**2026-10-22 10:30 UTC: best is v90 (v80 with z-logit fusion), public 0.958, rank 444 of ~6,371; silver cut ~318 at 0.958; see block 2h. Final pair to re-select: v90 + v93 (hedge with the same fusion) once v93 is submitted.**
 
 **Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best was
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
@@ -516,8 +516,9 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
 53. **Changing the fusion function helped where weight moves did not** (v89 vs v80): mapping every model's rank to an
    inverse-normal score before the same weighted mean (weights unchanged) crossed above v80 by 43 stable witnesses, 0 reverse,
    while every weight move on the same stack lost or tied (L51, L52). Giving more say to studies a model ranks at an extreme
-   was the one untested knob of the public recipe; whether heavier tails (v91) or the same change on the hedge (v92) help is
-   being tested.
+   was the one untested knob of the public recipe. **z-logit fusion (v90: standardised logits of the probability outputs, so
+   model confidence counts) crossed above v89 by a further 309 stable witnesses**: most of the gain is the confidence information
+   that rank averaging throws away, not the tail shape.
 
 ## Open hypotheses for why v08 is weak (untested)
 
@@ -580,6 +581,13 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    **v92** = v87 (hedge B) with v89's Gaussian fusion (B carries the gain).
    Both audited (offline re-execution = run 0.0). **v91 submitted 10:14:22 UTC (ref 57520364, `22e`, rank 757)**; v92 by timer
    ~10:44 UTC after `22f`. Oct 22: after v92, 1 slot left (cap 5).
+   **v90 (z-logit fusion) = 0.958, ADOPTED over v89: 309 stable witnesses, 0 reverse (`22e` -> `22g`, 10:30 UTC; v91 pending,
+   clean read); rank 757 -> 444 of ~6,371** (silver ~318). Model confidence (standardised logits) carries most of the gain (L53).
+   User asked to re-select A = v90 (ref 57510370). v92 (Gaussian hedge) timer cancelled before submission. Last 2 slots: **v93** =
+   v87 (hedge B) with v90's z-logit fusion (R7 as z-logit too); **v94** = v90 with R224's probabilities saved by its stage and used
+   as z-logit (falls back to v90 if missing or inconsistent). Offline: v93 exact (3.3e-8); v94 = v90 without the file (0.0), exact
+   with a consistent file, falls back on an inconsistent one; a bug (renaming FUSION switched R384/R6 back to Gaussian) was caught
+   by this test and fixed before any push. Commit runs pushed 10:33 UTC.
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
