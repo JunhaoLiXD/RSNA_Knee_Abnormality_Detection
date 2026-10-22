@@ -17,7 +17,7 @@
 | v89 | v80 with Gaussian-rank fusion | 0.958 | above v80 (+43) |
 | **v90** | v80 with z-logit fusion (R384 raw and R6 as standardised logits, R224 Gaussian rank) | 0.958 | **above v89 (+309); rank 444** |
 | v91 | v80 with logistic-rank fusion | **error** | hidden-test run exceeded the runtime limit (no score); stage 3 differs from v80 only by a rank transform (seconds), so most likely runtime variance on a pipeline already near 9 h (v88 took ~9 h to score) |
-| v94 | v90 with R224 probabilities as z-logit too | pending at 19:40 UTC | same pipeline as v90, also exposed to the runtime limit |
+| v94 | v90 with R224 probabilities as z-logit too | **error** | hidden-test run exceeded the runtime limit (20:08 UTC), no score |
 | v71 / v85 / v87 | uniform Raptor weights (v87: + A224 0.25, R7 0.2) | 0.957 | not observable (below our best) |
 | v93 | v87 with z-logit fusion (R7 z-logit too) | **0.958** | not above v90 (0 / 0, `22i` -> `22j`); first uniform-weight entry at 0.958 |
 
@@ -80,5 +80,5 @@ Codex re-ran the crossings (v89 43 / 0, v90 309 / 0, v93 0 / 0: equal to ours) a
 | 5 | `pct(b)` keeps the fused order; Part B (reader at 0.003-0.035) re-ranks without undoing it; the both-failed centre 0.0 is not necessarily the median; the reader subprocess has no hard timeout (the 8.2 h check only gates its start), a plausible but unproven cause of v91's timeout; completed entries are unaffected | Yes | **Accepted**; no action (completed picks cannot time out). |
 | 6 | Replace A by v94 only on a clean crossing that meets the >= 20 / 0 rule; do not select v90 + v94 together (no hedge); do not change scored code now | - | **Accepted**. |
 
-**Final recommendation (after review): A = v90 (57510370), B = v93 (57522487).** If v94 scores before the deadline and
-crosses above v90 by >= 20 stable witnesses with 0 reverse, A = v94 and B stays v93.
+**Final recommendation (after review): A = v90 (57510370), B = v93 (57522487).** v94 timed out (20:08 UTC), so the
+conditional A = v94 no longer applies; the pair is final.

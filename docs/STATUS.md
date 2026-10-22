@@ -597,6 +597,9 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    only; `docs/research/final-pair-2026-10-22.md`): A = v90, B = v93**; v94 replaces A only on a clean >= 20 / 0 crossing. Codex
    found a low-impact fallback defect shared by v82/v86/v87/v93 (R7's fill is overwritten on rows R6 fails; 0 such rows in any
    commit run).
+   **v94 = scoring error (20:08 UTC), runtime limit, no score.** Final pair stays **v90 + v93**. No slots left; no public
+   recipe above 0.958 appeared. Post-deadline: private-LB retrospective (did the uniform/fusion hedge matter, L51/L53), then
+   STATUS 2c (repo public on the user's yes, resume link).
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
