@@ -10,7 +10,7 @@ Last updated: 2026-10-21 00:33 UTC (final-pick audit: Kaggle already selects v80
 
 ## Current phase
 
-**2026-10-20 13:05 UTC: best is v80 (v68 with A224 0.25), public 0.958, rank 693 of 6,265; silver cut 313 and bronze cut 626 both at 0.958; see block 2g.**
+**2026-10-22 09:58 UTC: best is v89 (v80 with Gaussian-rank fusion), public 0.958, rank 757 of ~6,359; silver cut 318 and bronze cut 636 both at 0.958; see block 2h. Final pair to re-select: v89 + v87 (or v92).**
 
 **Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best was
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
@@ -513,6 +513,12 @@ gold 0.881 at fold 0 and was dropped (Gate F0).
    witnesses, while 0.5 loses a display step. Unlike the per-finding weights (L51), the Raptor-slot mix still had room; the 0.35
    inherited from the unmirrored era was not optimal for the mirrored R224.
 
+53. **Changing the fusion function helped where weight moves did not** (v89 vs v80): mapping every model's rank to an
+   inverse-normal score before the same weighted mean (weights unchanged) crossed above v80 by 43 stable witnesses, 0 reverse,
+   while every weight move on the same stack lost or tied (L51, L52). Giving more say to studies a model ranks at an extreme
+   was the one untested knob of the public recipe; whether heavier tails (v91) or the same change on the hedge (v92) help is
+   being tested.
+
 ## Open hypotheses for why v08 is weak (untested)
 
 Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
@@ -567,6 +573,11 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    Gaussian recompute 0.0, mean Spearman vs v80 0.999. Commit runs pushed 03:43 UTC; submit staggered after audit.
    Both audited (offline re-execution = run 0.0). **v89 submitted 03:56:19 UTC (ref 57508576, `22b`, rank 802)**; **v90 submitted 04:56:39 UTC
    by timer (ref 57510370, `22c`, rank 804)**; `22b` -> `22c`: 0 / 0. Oct 22: 3 slots left (agent's cap 5, 2 used).
+   **v89 (Gaussian-rank fusion) = 0.958, ADOPTED over v80: 43 stable witnesses, 0 reverse (`22c` -> `22d`, 09:58 UTC; v90
+   pending, clean read); rank 804 -> 757** (silver 318, bronze 636). First gain from the fusion function (L53). User asked to
+   re-select A = v89 (ref 57508576). Follow-ups built from the same change, offline exact (3.3e-8) and synthetic failure tests
+   pass, commit runs pushed ~10:00 UTC: **v91** = v80 with logistic-rank fusion (heavier tails, continues the direction);
+   **v92** = v87 (hedge B) with v89's Gaussian fusion (B carries the gain).
 
 2g. **v80 (v68 with A224 0.25) = 0.958, ADOPTED over v68 (2026-10-20 13:05 UTC): 265 stable witnesses, 0 reverse (`20d` ->
    `20e`); rank 985 -> 693 of 6,265** (silver 313, bronze 626, both 0.958). First gain since v68: a smaller share of the mirrored
