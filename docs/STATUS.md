@@ -6,7 +6,7 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-23 00:35 UTC (private leaderboard: rank 486 of 6,425, v90/v93 private 0.943).
+Last updated: 2026-10-23 (repository public; retrospective pending).
 
 ## Current phase
 
@@ -552,6 +552,8 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    (v90) and uniform (v93) weights tie on private at 3 decimals, so the L51 hedge cost nothing and the fitted weights did not
    hurt. The day-before pair v80 + v87 would have scored 0.942. Post-deadline to-dos: retrospective; STATUS 2c (repo public on
    the user's yes, resume link with the private result).
+   **Done 2026-10-23 (user): latest commits pushed; repository made PUBLIC** (history re-scanned first: no AGENTS.md,
+   data, models, results or external/ ever tracked; no key-like strings). Remaining: resume link, retrospective.
 
 2h. **Final hand-over (user, 2026-10-21 ~03:50 UTC, D-036).** Watch; copy a higher public recipe at once; if none appears in
    3 h, push two experiments of the agent's choice. Public check 03:55 UTC: nothing above 0.958 (only new entry in the top 12:
