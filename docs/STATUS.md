@@ -6,11 +6,11 @@
 > changed project state and whenever a version gets a new result. Raw run rows live in
 > `experiments.md`; decisions in `decisions.md`.
 
-Last updated: 2026-10-21 00:33 UTC (final-pick audit: Kaggle already selects v80 + v71; v80 persistence 154/154 still below, zero reversed; rank 742/6,298; v84/v85 pending).
+Last updated: 2026-10-23 00:35 UTC (private leaderboard: rank 486 of 6,425, v90/v93 private 0.943).
 
 ## Current phase
 
-**2026-10-22 10:30 UTC: best is v90 (v80 with z-logit fusion), public 0.958, rank 444 of ~6,371; silver cut ~318 at 0.958; see block 2h. Final pair to re-select: v90 + v93 (hedge with the same fusion) once v93 is submitted.**
+**FINAL (2026-10-23): private rank 486 of 6,425 (bronze zone, pending verification); selected v90 + v93, both private 0.943 = our best two of 71; see block 2i.**
 
 **Current operating state (Codex takeover, 2026-10-15 EDT): D-033 inference-only silver push.** Best was
 **v61, public 0.957**, submission `57233540`, replacing v54 (0.956). The `15d` -> `15e` comparison has 37 stable
@@ -544,6 +544,14 @@ Each needs evidence before it drives `IMPROVEMENT_PLAN.md`:
    pending results and user discussion; B hedges the main per-finding blend vector, not shared OAI/R6/anchor risks. Detailed
    comparison and attribution limits: `docs/research/final-picks-2026-10-20.md`; hashes/evidence in
    `results/v80/final_audit_20261021T0031Z.json`. No probe, training, submission, or selection mutation in this wakeup.
+
+2i. **PRIVATE LEADERBOARD (2026-10-23 ~00:30 UTC): team JerryMouse private rank 486 of 6,425 (public 457, -29); inside the
+   bronze zone (top 10% = rank 642; silver top 5% = 321), pending Kaggle's final verification.** The selected pair **v90 and v93
+   both score private 0.943, the only two of our 71 scored submissions at 0.943**; every other entry is <= 0.942 (v89, v80, v68,
+   v62, v87, v85 all 0.942). The z-logit fusion (L53) carried over to private (+0.001 over every rank-fusion entry); per-finding
+   (v90) and uniform (v93) weights tie on private at 3 decimals, so the L51 hedge cost nothing and the fitted weights did not
+   hurt. The day-before pair v80 + v87 would have scored 0.942. Post-deadline to-dos: retrospective; STATUS 2c (repo public on
+   the user's yes, resume link with the private result).
 
 2h. **Final hand-over (user, 2026-10-21 ~03:50 UTC, D-036).** Watch; copy a higher public recipe at once; if none appears in
    3 h, push two experiments of the agent's choice. Public check 03:55 UTC: nothing above 0.958 (only new entry in the top 12:

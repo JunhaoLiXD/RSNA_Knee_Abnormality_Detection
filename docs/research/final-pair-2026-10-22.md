@@ -82,3 +82,8 @@ Codex re-ran the crossings (v89 43 / 0, v90 309 / 0, v93 0 / 0: equal to ours) a
 
 **Final recommendation (after review): A = v90 (57510370), B = v93 (57522487).** v94 timed out (20:08 UTC), so the
 conditional A = v94 no longer applies; the pair is final.
+
+## Outcome (private leaderboard, 2026-10-23)
+
+v90 and v93 both scored **private 0.943**, the only two of our 71 scored submissions at that value (all others <= 0.942,
+including v80, v87, v89). Team private rank 486 of 6,425 (public 457). The fusion gain transferred; the weight hedge tied.
